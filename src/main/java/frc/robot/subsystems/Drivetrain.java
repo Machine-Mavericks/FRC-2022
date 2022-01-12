@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.PigeonIMU;
+import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
@@ -69,7 +69,7 @@ public class Drivetrain extends SubsystemBase {
     // The important thing about how you configure your gyroscope is that rotating
     // the robot counter-clockwise should
     // cause the angle reading to increase until it wraps back over to zero.
-    private final PigeonIMU m_pigeon;
+    private final AHRS m_navx;
 
     /**
      * The model representing the drivetrain's kinematics
@@ -99,15 +99,15 @@ public class Drivetrain extends SubsystemBase {
      * @param frontRightModule Front-right swerve module
      * @param backLeftModule Back-left swerve module
      * @param backRightModule Back-right swerve module
-     * @param pigeon Pigeon IMU
+     * @param navx Pigeon IMU
      */
     public Drivetrain(SwerveModule frontLeftModule, SwerveModule frontRightModule, SwerveModule backLeftModule,
-            SwerveModule backRightModule, PigeonIMU pigeon) {
+            SwerveModule backRightModule, AHRS navx) {
         m_frontLeftModule = frontLeftModule;
         m_frontRightModule = frontRightModule;
         m_backLeftModule = backLeftModule;
         m_backRightModule = backRightModule;
-        m_pigeon = pigeon;
+        m_navx = navx;
     }
 
     /**
@@ -116,26 +116,18 @@ public class Drivetrain extends SubsystemBase {
      * 'forwards' direction.
      */
     public void zeroGyroscope() {
-        // FIXME Remove if you are using a Pigeon
-        m_pigeon.setFusedHeading(0.0);
-
-        // FIXME Uncomment if you are using a NavX
-        // m_navx.zeroYaw();
+        m_navx.zeroYaw();
     }
 
     public Rotation2d getGyroscopeRotation() {
-        // FIXME Remove if you are using a Pigeon
-        return Rotation2d.fromDegrees(m_pigeon.getFusedHeading());
-
-        // FIXME Uncomment if you are using a NavX
-        // if (m_navx.isMagnetometerCalibrated()) {
-        // // We will only get valid fused headings if the magnetometer is calibrated
-        // return Rotation2d.fromDegrees(m_navx.getFusedHeading());
-        // }
-        //
-        // // We have to invert the angle of the NavX so that rotating the robot
+        if (m_navx.isMagnetometerCalibrated()) {
+                // We will only get valid fused headings if the magnetometer is calibrated
+                return Rotation2d.fromDegrees(m_navx.getFusedHeading());
+        }
+        
+        // We have to invert the angle of the NavX so that rotating the robot
         // counter-clockwise makes the angle increase.
-        // return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
+        return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
     }
 
     /**
@@ -149,7 +141,7 @@ public class Drivetrain extends SubsystemBase {
         rotation *= 2.0 / Math.hypot(WHEELBASE_METERS, TRACKWIDTH_METERS);
         if (fieldOriented) {
             m_chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation,
-                    Rotation2d.fromDegrees(m_pigeon.getFusedHeading()));
+                    getGyroscopeRotation());
         } else {
             m_chassisSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
         }

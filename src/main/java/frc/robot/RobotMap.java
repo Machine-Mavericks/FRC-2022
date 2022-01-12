@@ -1,9 +1,10 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.sensors.PigeonIMU;
+import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SwerveModule;
+
+import edu.wpi.first.wpilibj.SPI;
 
 /**
  * This class cointains definitions for the robot's hardware devices.
@@ -43,7 +44,7 @@ public class RobotMap {
 
     public static final Mk4SwerveModuleHelper.GearRatio DRIVE_RATIO = Mk4SwerveModuleHelper.GearRatio.L1;
 
-    public static final PigeonIMU pigeon = new PigeonIMU(0); // TODO: Set pigeon id properly
+    public static final AHRS navx = new AHRS(SPI.Port.kMXP, (byte) 200);
 
     /** Front-left swerve module */
     public static final SwerveModule frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(DRIVE_RATIO, CANID.FL_DRIVE_FALCON, CANID.FL_STEER_FALCON, CANID.FL_STEER_ENCODER, 0);
