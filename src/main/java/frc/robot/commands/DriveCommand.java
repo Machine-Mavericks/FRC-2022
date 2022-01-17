@@ -28,9 +28,9 @@ public class DriveCommand extends CommandBase {
   public void execute() {
     // Driver inputs, should be in range [-1,1]
     // TODO: Map to controller, using functions like OI.driverController.getLeftX()
-    double xInput = 0;
-    double yInput = 0;
-    double rotInput = 0;
+    double xInput = OI.driverController.getLeftX();
+    double yInput = OI.driverController.getLeftY();
+    double rotInput = OI.driverController.getRightX();
     
     m_drivetrain.drive(new Translation2d(xInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND, yInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND), rotInput*Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, true);
   }
