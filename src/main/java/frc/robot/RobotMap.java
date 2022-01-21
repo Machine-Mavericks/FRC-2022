@@ -15,32 +15,38 @@ public class RobotMap {
     /**
      * Inner class containing CANIDs
      */
-    private static class CANID {
+    public static class CANID {
         /** CAN ID for front-left drive falcon */
-        static final int FL_DRIVE_FALCON = 3;
+        public static final int FL_DRIVE_FALCON = 3;
         /** CAN ID for front-left steer falcon */
-        static final int FL_STEER_FALCON = 4;
+        public static final int FL_STEER_FALCON = 4;
         /** CAN ID for front-left steer encoder */
-        static final int FL_STEER_ENCODER = 10;
+        public static final int FL_STEER_ENCODER = 10;
         /** CAN ID for front-right drive falcon */
-        static final int FR_DRIVE_FALCON = 5;
+        public static final int FR_DRIVE_FALCON = 5;
         /** CAN ID for front-right steer falcon */
-        static final int FR_STEER_FALCON = 6;
+        public static final int FR_STEER_FALCON = 6;
         /** CAN ID for front-left steer encoder */
-        static final int FR_STEER_ENCODER = 11;
+        public static final int FR_STEER_ENCODER = 11;
         /** CAN ID for back-left drive falcon */
-        static final int BL_DRIVE_FALCON = 1;
+        public static final int BL_DRIVE_FALCON = 1;
         /** CAN ID for back-left steer falcon */
-        static final int BL_STEER_FALCON = 2;
+        public static final int BL_STEER_FALCON = 2;
         /** CAN ID for front-left steer encoder */
-        static final int BL_STEER_ENCODER = 9;
+        public static final int BL_STEER_ENCODER = 9;
         /** CAN ID for back-right drive falcon */
-        static final int BR_DRIVE_FALCON = 7;
+        public static final int BR_DRIVE_FALCON = 7;
         /** CAN ID for back-right steer falcon */
-        static final int BR_STEER_FALCON = 8;
+        public static final int BR_STEER_FALCON = 8;
         /** CAN ID for front-left steer encoder */
-        static final int BR_STEER_ENCODER = 12;
+        public static final int BR_STEER_ENCODER = 12;
+        public static final int LEADER_INTAKE_FALCON = 98;
+        public static final int FOLLOWER_INTAKE_FALCON = 99;
+
     }
+
+    public static final int INTAKE_SOLENOID_EXTEND = 96;
+    public static final int INTAKE_SOLENOID_RETRACT = 97;
 
     public static final Mk4SwerveModuleHelper.GearRatio DRIVE_RATIO = Mk4SwerveModuleHelper.GearRatio.L1;
 

@@ -15,6 +15,7 @@ public class OI {
     private static class Bindings {
         /** Example button */
         static final Button EXAMPLE_BUTTON = XboxController.Button.kA;
+        static final Button INTAKE_BUTTON = XboxController.Button.kX;
     }
 
     /** Port for controller used by driver */
@@ -29,4 +30,6 @@ public class OI {
 
     /** Example button. Mapped to {@link Bindings#EXAMPLE_BUTTON} */
     public static final JoystickButton exampleButton = new JoystickButton(driverController, Bindings.EXAMPLE_BUTTON.value);
+    /** Button to deploy intake for 5 seconds. Mapped to {@link Bindings#INTAKE_BUTTON} */
+    public static final JoystickButton intakeButton = new JoystickButton(operatorController, Bindings.INTAKE_BUTTON.value);
 }
