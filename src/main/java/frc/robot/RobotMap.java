@@ -57,25 +57,25 @@ public class RobotMap {
             tab.getLayout("Front Left Module", BuiltInLayouts.kList)
                     .withSize(2, 4)
                     .withPosition(0, 0),
-            DRIVE_RATIO, CANID.FL_DRIVE_FALCON, CANID.FL_STEER_FALCON, CANID.FL_STEER_ENCODER, -Math.toRadians(335.742188));
+            DRIVE_RATIO, CANID.FL_DRIVE_FALCON, CANID.FL_STEER_FALCON, CANID.FL_STEER_ENCODER, -Math.toRadians(155+180));
     /** Front-left swerve module */
     public static final SwerveModule frontRightModule = Mk4SwerveModuleHelper.createFalcon500(
             tab.getLayout("Front right Module", BuiltInLayouts.kList)
                     .withSize(2, 4)
                     .withPosition(2, 0),
-            DRIVE_RATIO, CANID.FR_DRIVE_FALCON, CANID.FR_STEER_FALCON, CANID.FR_STEER_ENCODER, -Math.toRadians(275.880432));
+            DRIVE_RATIO, CANID.FR_DRIVE_FALCON, CANID.FR_STEER_FALCON, CANID.FR_STEER_ENCODER, -Math.toRadians(94+180));
     /** Front-left swerve module */
     public static final SwerveModule backLeftModule = Mk4SwerveModuleHelper.createFalcon500(
             tab.getLayout("Back Left Module", BuiltInLayouts.kList)
                     .withSize(2, 4)
                     .withPosition(4, 0),
-            DRIVE_RATIO, CANID.BL_DRIVE_FALCON, CANID.BL_STEER_FALCON, CANID.BL_STEER_ENCODER, -Math.toRadians(16.699219));
+            DRIVE_RATIO, CANID.BL_DRIVE_FALCON, CANID.BL_STEER_FALCON, CANID.BL_STEER_ENCODER, -Math.toRadians(200+180));
     /** Front-left swerve module */
     public static final SwerveModule backRightModule = Mk4SwerveModuleHelper.createFalcon500(
             tab.getLayout("Back Right Module", BuiltInLayouts.kList)
                     .withSize(2, 4)
                     .withPosition(6, 0),
-            DRIVE_RATIO, CANID.BR_DRIVE_FALCON, CANID.BR_STEER_FALCON, CANID.BR_STEER_ENCODER, -Math.toRadians(314.736328));
+            DRIVE_RATIO, CANID.BR_DRIVE_FALCON, CANID.BR_STEER_FALCON, CANID.BR_STEER_ENCODER, -Math.toRadians(135+180));
 
     /**
      * Function to initialise hardware
