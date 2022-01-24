@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
@@ -20,13 +21,13 @@ public class Drivetrain extends SubsystemBase {
      *
      * Should be measured from center to center.
      */
-    public static final double TRACKWIDTH_METERS = 1.0; // FIXME Measure and set trackwidth
+    public static final double TRACKWIDTH_METERS = 0.6;
     /**
      * The front-to-back distance between the drivetrain wheels.
      *
      * Should be measured from center to center.
      */
-    public static final double WHEELBASE_METERS = 1.0; // FIXME Measure and set wheelbase
+    public static final double WHEELBASE_METERS = 0.6;
 
     /**
      * The maximum voltage that will be delivered to the drive motors.
@@ -151,6 +152,7 @@ public class Drivetrain extends SubsystemBase {
     public void periodic() {
         SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
+        SmartDashboard.putString("Speeds", m_chassisSpeeds.toString());
 
         m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
                 states[0].angle.getRadians());
