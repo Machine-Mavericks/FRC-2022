@@ -23,7 +23,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final Gyro m_gyro = new Gyro();
-  private final Drivetrain m_drivetrain = new Drivetrain(RobotMap.frontLeftModule, RobotMap.frontRightModule, RobotMap.backLeftModule, RobotMap.backRightModule, RobotMap.navx);
+  private final Drivetrain m_drivetrain = new Drivetrain(RobotMap.frontLeftModule, RobotMap.frontRightModule, RobotMap.backLeftModule, RobotMap.backRightModule, m_gyro);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
