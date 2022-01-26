@@ -17,13 +17,13 @@ public class ShuffleboardOI extends SubsystemBase {
     // example autonomous path shuffleboard selection boxes
     // true if selected, false if not
     // <add any other controls here that go on main shufflebard page
-    private NetworkTableEntry ToggleCenter;
-    private NetworkTableEntry ToggleOffCenter;
-    private NetworkTableEntry ToggleSimpleLeft;
-    private NetworkTableEntry ToggleSimpleRight;
+    private NetworkTableEntry m_toggleCenter;
+    private NetworkTableEntry m_toggleOffCenter;
+    private NetworkTableEntry m_toggleSimpleLeft;
+    private NetworkTableEntry m_toggleSimpleRight;
 
     // other controls on main page
-    private NetworkTableEntry TimeLeft;
+    private NetworkTableEntry m_timeLeft;
 
     /** Initializes the Shuffleboard
      * Creates the subsystem pages */
@@ -40,7 +40,7 @@ public class ShuffleboardOI extends SubsystemBase {
 
         // update main page
         // update remaining time in match (rounded to nearest second)
-        TimeLeft.setDouble(Math.round(Timer.getMatchTime()));
+        m_timeLeft.setDouble(Math.round(Timer.getMatchTime()));
     }
 
 
@@ -52,23 +52,23 @@ public class ShuffleboardOI extends SubsystemBase {
     private void initializeMainShuffleboardPage() {
 
         // Create Main Tab in Shuffleboard
-        ShuffleboardTab Tab = Shuffleboard.getTab("Auto");
+        ShuffleboardTab tab = Shuffleboard.getTab("Auto");
 
         // add autonomous commands to page - example adds toggle switches
-        ToggleCenter = Tab.add("Center", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(0, 0)
+        m_toggleCenter = tab.add("Center", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(0, 0)
                 .withSize(1, 1).getEntry();
-        ToggleOffCenter = Tab.add("OffCenter", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(1, 0)
+        m_toggleOffCenter = tab.add("OffCenter", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(1, 0)
                 .withSize(1, 1).getEntry();
-        ToggleSimpleLeft = Tab.add("SimpleLeft", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(2, 0)
+        m_toggleSimpleLeft = tab.add("SimpleLeft", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(2, 0)
                 .withSize(1, 1).getEntry();
-        ToggleSimpleRight = Tab.add("SimpleRight", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(3, 0)
+        m_toggleSimpleRight = tab.add("SimpleRight", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(3, 0)
                 .withSize(1, 1).getEntry();
 
         // add match time remaining in autonomous/teleop part of match (seconds)
-        ShuffleboardLayout l1 = Tab.getLayout("Timer", BuiltInLayouts.kList);
+        ShuffleboardLayout l1 = tab.getLayout("Timer", BuiltInLayouts.kList);
         l1.withPosition(0, 2);
         l1.withSize(1, 2);
-        TimeLeft = l1.add("TimeLeft", 0.0).getEntry();
+        m_timeLeft = l1.add("TimeLeft", 0.0).getEntry();
     }
 
     // returns position of autonomous commands on shuffleboard
@@ -78,22 +78,22 @@ public class ShuffleboardOI extends SubsystemBase {
 
     /** Get status of Auto Center toggle switch */
     public boolean getAutoCommandCenter() {
-        return ToggleCenter.getBoolean(false);
+        return m_toggleCenter.getBoolean(false);
     }
 
     /** Get status of Auto offCenter toggle switch */
     public boolean getAutoCommandOffCenter() {
-        return ToggleOffCenter.getBoolean(false);
+        return m_toggleOffCenter.getBoolean(false);
     }
 
     /** Get status of Auto SimpleLeft toggle switch */
     public boolean getAutoCommandSimpleLeft() {
-        return ToggleSimpleLeft.getBoolean(false);
+        return m_toggleSimpleLeft.getBoolean(false);
     }
 
     /** Get status of Auto SimpleRight toggle switch */
     public boolean getAutoCommandSimpleRight() {
-        return ToggleSimpleRight.getBoolean(false);
+        return m_toggleSimpleRight.getBoolean(false);
     }
 
 } // end class ShuffleboardOI
