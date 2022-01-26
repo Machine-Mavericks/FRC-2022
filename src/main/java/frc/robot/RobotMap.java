@@ -1,10 +1,8 @@
 package frc.robot;
 
-import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -47,8 +45,6 @@ public class RobotMap {
     }
 
     public static final Mk4SwerveModuleHelper.GearRatio DRIVE_RATIO = Mk4SwerveModuleHelper.GearRatio.L1;
-
-    public static final AHRS navx = new AHRS(SPI.Port.kMXP, (byte) 200);
 
     static ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 

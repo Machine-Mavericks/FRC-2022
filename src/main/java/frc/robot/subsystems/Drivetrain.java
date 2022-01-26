@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
@@ -70,7 +69,7 @@ public class Drivetrain extends SubsystemBase {
     // The important thing about how you configure your gyroscope is that rotating
     // the robot counter-clockwise should
     // cause the angle reading to increase until it wraps back over to zero.
-    private final AHRS m_navx;
+    private Gyro m_gyro;
 
     /**
      * The model representing the drivetrain's kinematics
@@ -103,32 +102,12 @@ public class Drivetrain extends SubsystemBase {
      * @param navx Pigeon IMU
      */
     public Drivetrain(SwerveModule frontLeftModule, SwerveModule frontRightModule, SwerveModule backLeftModule,
-            SwerveModule backRightModule, AHRS navx) {
+            SwerveModule backRightModule, Gyro gyro) {
         m_frontLeftModule = frontLeftModule;
         m_frontRightModule = frontRightModule;
         m_backLeftModule = backLeftModule;
         m_backRightModule = backRightModule;
-        m_navx = navx;
-    }
-
-    /**
-     * Sets the gyroscope angle to zero. This can be used to set the direction the
-     * robot is currently facing to the
-     * 'forwards' direction.
-     */
-    public void zeroGyroscope() {
-        m_navx.zeroYaw();
-    }
-
-    public Rotation2d getGyroscopeRotation() {
-        if (m_navx.isMagnetometerCalibrated()) {
-                // We will only get valid fused headings if the magnetometer is calibrated
-                return Rotation2d.fromDegrees(m_navx.getFusedHeading());
-        }
-        
-        // We have to invert the angle of the NavX so that rotating the robot
-        // counter-clockwise makes the angle increase.
-        return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
+        m_gyro = gyro;
     }
 
     /**
@@ -142,7 +121,7 @@ public class Drivetrain extends SubsystemBase {
         rotation *= 2.0 / Math.hypot(WHEELBASE_METERS, TRACKWIDTH_METERS);
         if (fieldOriented) {
             m_chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation,
-                    getGyroscopeRotation());
+                Rotation2d.fromDegrees(360.0 - m_gyro.getYaw()));
         } else {
             m_chassisSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
         }
