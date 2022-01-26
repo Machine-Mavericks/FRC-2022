@@ -46,7 +46,7 @@ public class SwerveOdometry extends SubsystemBase {
     // create robot odometry - set to (0,0,0)(x,y,ang)
 
     // initialize swerve drive odometry
-    m_Odometry = new SwerveDriveOdometry(RobotContainer.m_drivetrain.getKinematics(),
+    m_Odometry = new SwerveDriveOdometry(RobotContainer.drivetrain.getKinematics(),
         new Rotation2d(0.0),
         new Pose2d(0.0, 0.0, new Rotation2d(0.0)));
 
@@ -92,7 +92,7 @@ public class SwerveOdometry extends SubsystemBase {
     Rotation2d gyroangle = new Rotation2d(0.0 * DEGtoRAD); // TODO: get current angle from gyro subystem
 
     // get states of all swerve modules from subsystem
-    SwerveModuleState[] states = RobotContainer.m_drivetrain.getSwerveStates();
+    SwerveModuleState[] states = RobotContainer.drivetrain.getSwerveStates();
     
     // ensure we have proper length array of states before accessing elements of array
     if (states.length >=4) {
