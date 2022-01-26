@@ -12,6 +12,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveOdometry;
+import frc.robot.subsystems.Gyro;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -27,6 +28,7 @@ public class RobotContainer {
   // The robot's subsystems are defined here...
   public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
   public static final Drivetrain drivetrain = new Drivetrain();
+  public static final Gyro gyro = new Gyro();
   public static final SwerveOdometry odometry = new SwerveOdometry();
   
   // The robot's subsystems are defined here...

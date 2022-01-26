@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
@@ -14,9 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
-import edu.wpi.first.wpilibj.SPI;
-// import com.kauailabs.navx.frc.AHRS;
 
 /**
  * Subsystem representing the swerve drivetrain
@@ -76,7 +74,7 @@ public class Drivetrain extends SubsystemBase {
     // The important thing about how you configure your gyroscope is that rotating
     // the robot counter-clockwise should
     // cause the angle reading to increase until it wraps back over to zero.
-    private final AHRS m_navx;
+    private Gyro m_gyro;
 
     /**
      * The model representing the drivetrain's kinematics
@@ -113,9 +111,6 @@ public class Drivetrain extends SubsystemBase {
      */
     public Drivetrain() {
      
-        //@todo remove gyro instance and access gyro module for needed info
-        m_navx = new AHRS(SPI.Port.kMXP, (byte) 200);
-
         final Mk4SwerveModuleHelper.GearRatio DRIVE_RATIO = Mk4SwerveModuleHelper.GearRatio.L1;
 
         ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -153,18 +148,13 @@ public class Drivetrain extends SubsystemBase {
      * 'forwards' direction.
      */
     public void zeroGyroscope() {
-        m_navx.zeroYaw();
+        RobotContainer.gyro.resetGyro();;
     }
 
     public Rotation2d getGyroscopeRotation() {
-        if (m_navx.isMagnetometerCalibrated()) {
-                // We will only get valid fused headings if the magnetometer is calibrated
-                return Rotation2d.fromDegrees(m_navx.getFusedHeading());
-        }
-        
         // We have to invert the angle of the NavX so that rotating the robot
         // counter-clockwise makes the angle increase.
-        return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
+        return Rotation2d.fromDegrees(360.0 - RobotContainer.gyro.getYaw());
     }
 
     /**
@@ -178,7 +168,7 @@ public class Drivetrain extends SubsystemBase {
         rotation *= 2.0 / Math.hypot(WHEELBASE_METERS, TRACKWIDTH_METERS);
         if (fieldOriented) {
             m_chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation,
-                    getGyroscopeRotation());
+                Rotation2d.fromDegrees(360.0 - m_gyro.getYaw()));
         } else {
             m_chassisSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
         }
