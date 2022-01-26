@@ -6,7 +6,7 @@
 // x and y coordinates are relative to when odometry was last reset
 
 // Jan 25/2022
-// TODO  a) need gyro module, and to connect up
+// TODO  a) need gyro module, and to connect up odometry to gyro
 
 package frc.robot.subsystems;
 
@@ -91,15 +91,15 @@ public class SwerveOdometry extends SubsystemBase {
     // get gyro angle (in degrees) and make rotation vector
     Rotation2d gyroangle = new Rotation2d(0.0 * DEGtoRAD); // TODO: get current angle from gyro subystem
 
-
-    SwerveModuleState stateFL = new SwerveModuleState(); // get current module states from drive subsystem
-    SwerveModuleState stateFR = new SwerveModuleState();
-    SwerveModuleState stateBL = new SwerveModuleState();
-    SwerveModuleState stateBR = new SwerveModuleState();
-
-    // update the robot's odometry
-    m_Odometry.update(gyroangle, stateFL, stateFR, stateBL, stateBR);
-
+    // get states of all swerve modules from subsystem
+    SwerveModuleState[] states = RobotContainer.m_drivetrain.getSwerveStates();
+    
+    // ensure we have proper length array of states before accessing elements of array
+    if (states.length >=4) {
+      // update the robot's odometry
+      m_Odometry.update(gyroangle, states[0], states[1], states[2], states[3]);
+    }
+    
     // update odemetry shuffleboard page
     updateShuffleboard();
   }
@@ -144,7 +144,7 @@ public class SwerveOdometry extends SubsystemBase {
     GyroAngle = l1.add("Gyro(deg)", 0.0).getEntry();
 
     // Controls to set initial robot position and angle
-    // Unsure if this will be needed. If not, can be deleted.
+    // TODO Unsure if this will be needed. If not, can be deleted.
     ShuffleboardLayout l2 = Tab.getLayout("Initial Position", BuiltInLayouts.kList);
     l2.withPosition(4, 0);
     l2.withSize(1, 3);
