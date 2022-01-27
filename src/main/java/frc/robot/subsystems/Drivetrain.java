@@ -69,13 +69,6 @@ public class Drivetrain extends SubsystemBase {
     public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
             Math.hypot(TRACKWIDTH_METERS / 2.0, WHEELBASE_METERS / 2.0);
 
-    // By default we use a Pigeon for our gyroscope. But if you use another
-    // gyroscope, like a NavX, you can change this.
-    // The important thing about how you configure your gyroscope is that rotating
-    // the robot counter-clockwise should
-    // cause the angle reading to increase until it wraps back over to zero.
-    private Gyro m_gyro;
-
     /**
      * The model representing the drivetrain's kinematics
      */
@@ -143,21 +136,6 @@ public class Drivetrain extends SubsystemBase {
     }
 
     /**
-     * Sets the gyroscope angle to zero. This can be used to set the direction the
-     * robot is currently facing to the
-     * 'forwards' direction.
-     */
-    public void zeroGyroscope() {
-        RobotContainer.gyro.resetGyro();;
-    }
-
-    public Rotation2d getGyroscopeRotation() {
-        // We have to invert the angle of the NavX so that rotating the robot
-        // counter-clockwise makes the angle increase.
-        return Rotation2d.fromDegrees(360.0 - RobotContainer.gyro.getYaw());
-    }
-
-    /**
      * Control the drivetrain
      * 
      * @param translation X/Y translation, in meters per second
@@ -168,7 +146,7 @@ public class Drivetrain extends SubsystemBase {
         rotation *= 2.0 / Math.hypot(WHEELBASE_METERS, TRACKWIDTH_METERS);
         if (fieldOriented) {
             m_chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation,
-                Rotation2d.fromDegrees(360.0 - m_gyro.getYaw()));
+                Rotation2d.fromDegrees(360.0 - RobotContainer.gyro.getYaw()));
         } else {
             m_chassisSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
         }
