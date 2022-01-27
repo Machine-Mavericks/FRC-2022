@@ -18,6 +18,9 @@ public class Gyro extends SubsystemBase {
   // subsystem shuffleboard controls
   private NetworkTableEntry m_gyroPitch;
   private NetworkTableEntry m_gyroYaw;
+  private NetworkTableEntry m_gyroRoll;
+  private NetworkTableEntry m_xAcceleration;
+  private NetworkTableEntry m_yAcceleration;
   // make our gyro object
   AHRS gyro;
 
@@ -63,10 +66,37 @@ public class Gyro extends SubsystemBase {
   /**
    * Accumulated yaw
    * 
-   * @return
+   * @return accumulated angle in degrees
    */
   public double continuousYaw() {
     return gyro.getAngle();
+  }
+
+  /** 
+   * Get Roll
+   * 
+   * @return -180 to 180 degrees
+   */
+  public double getRoll() {
+    return gyro.getRoll();
+  }
+
+  /**
+   * X Acceleration
+   * 
+   * @return ratio of gravity
+   */
+  public double getXAcceleration() {
+    return gyro.getRawAccelX();
+  }
+
+  /**
+   * Y Acceleration
+   * 
+   * @return ratio of gravity
+   */
+  public double getYAcceleration() {
+    return gyro.getRawAccelY();
   }
 
   /** Gyro Shuffleboard */
@@ -82,15 +112,21 @@ public class Gyro extends SubsystemBase {
     ShuffleboardLayout l1 = Tab.getLayout("Gyroscope", BuiltInLayouts.kList);
     l1.withPosition(0, 0);
     l1.withSize(1, 4);
-    m_gyroPitch = l1.add("Gyro(deg)", 0.0).getEntry();
-    m_gyroYaw = l1.add("Gyro(deg)", 0.0).getEntry();
+    m_gyroPitch = l1.add("Pitch (deg)", 0.0).getEntry();
+    m_gyroYaw = l1.add("Yaw (deg)", 0.0).getEntry();
+    m_gyroRoll = l1.add("Roll (deg)", 0.0).getEntry();
+    m_xAcceleration = l1.add("X Acceleration", 0.0).getEntry();
+    m_yAcceleration = l1.add("Y Acceleration", 0.0).getEntry();
   }
 
   /** Update subsystem shuffle board page with current Gyro values */
   private void updateShuffleboard() {
     // write current robot Gyro
-    m_gyroPitch.setDouble(getYaw());
+    m_gyroPitch.setDouble(getPitch());
     m_gyroYaw.setDouble(getYaw());
+    m_gyroRoll.setDouble(getRoll());
+    m_xAcceleration.setDouble(getXAcceleration());
+    m_yAcceleration.setDouble(getYAcceleration());
   }
 
 }
