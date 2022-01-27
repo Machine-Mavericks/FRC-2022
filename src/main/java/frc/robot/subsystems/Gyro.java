@@ -7,10 +7,20 @@ package frc.robot.subsystems;
 // libraries needed for NavX
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
-
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 
 public class Gyro extends SubsystemBase {
+  // subsystem shuffleboard controls
+  private NetworkTableEntry m_gyroPitch;
+  private NetworkTableEntry m_gyroYaw;
+  private NetworkTableEntry m_gyroRoll;
+  private NetworkTableEntry m_xAcceleration;
+  private NetworkTableEntry m_yAcceleration;
   // make our gyro object
   AHRS gyro;
 
@@ -18,27 +28,31 @@ public class Gyro extends SubsystemBase {
   public Gyro() {
     gyro = new AHRS(SPI.Port.kMXP);
     gyro.reset();
+    initializeShuffleboard();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    updateShuffleboard();
   }
 
   /**
    * Gets the yaw of the robot
+   * 
    * @return current yaw value (-180 to 180)
    */
-  public float getYaw() {
+  public double getYaw() {
     return gyro.getYaw();
 
   }
 
   /**
    * Gets the pitch of the robot
+   * 
    * @return current pitch value (-180 to 180)
    */
-  public float getPitch() {
+  public double getPitch() {
     return gyro.getPitch();
   }
 
@@ -50,10 +64,69 @@ public class Gyro extends SubsystemBase {
   }
 
   /**
-   * Accumulated yaw 
-   * @return 
+   * Accumulated yaw
+   * 
+   * @return accumulated angle in degrees
    */
   public double continuousYaw() {
     return gyro.getAngle();
   }
+
+  /** 
+   * Get Roll
+   * 
+   * @return -180 to 180 degrees
+   */
+  public double getRoll() {
+    return gyro.getRoll();
+  }
+
+  /**
+   * X Acceleration
+   * 
+   * @return ratio of gravity
+   */
+  public double getXAcceleration() {
+    return gyro.getRawAccelX();
+  }
+
+  /**
+   * Y Acceleration
+   * 
+   * @return ratio of gravity
+   */
+  public double getYAcceleration() {
+    return gyro.getRawAccelY();
+  }
+
+  /** Gyro Shuffleboard */
+
+  // -------------------- Subsystem Shuffleboard Methods --------------------
+
+  /** Initialize subsystem shuffleboard page and controls */
+  private void initializeShuffleboard() {
+    // Create odometry page in shuffleboard
+    ShuffleboardTab Tab = Shuffleboard.getTab("Gyroscope");
+
+    // create controls to display robot position, angle, and gyro angle
+    ShuffleboardLayout l1 = Tab.getLayout("Gyroscope", BuiltInLayouts.kList);
+    l1.withPosition(0, 0);
+    l1.withSize(1, 4);
+    m_gyroPitch = l1.add("Pitch (deg)", 0.0).getEntry();
+    m_gyroYaw = l1.add("Yaw (deg)", 0.0).getEntry();
+    m_gyroRoll = l1.add("Roll (deg)", 0.0).getEntry();
+    m_xAcceleration = l1.add("X Acceleration", 0.0).getEntry();
+    m_yAcceleration = l1.add("Y Acceleration", 0.0).getEntry();
+  }
+
+  /** Update subsystem shuffle board page with current Gyro values */
+  private void updateShuffleboard() {
+    // write current robot Gyro
+    m_gyroPitch.setDouble(getPitch());
+    m_gyroYaw.setDouble(getYaw());
+    m_gyroRoll.setDouble(getRoll());
+    m_xAcceleration.setDouble(getXAcceleration());
+    m_yAcceleration.setDouble(getYAcceleration());
+  }
+
 }
