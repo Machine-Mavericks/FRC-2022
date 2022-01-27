@@ -6,7 +6,6 @@
 // x and y coordinates are relative to when odometry was last reset
 
 // Jan 25/2022
-// TODO  a) need gyro module, and to connect up odometry to gyro
 
 package frc.robot.subsystems;
 
@@ -89,7 +88,7 @@ public class SwerveOdometry extends SubsystemBase {
   public void periodic() {
 
     // get gyro angle (in degrees) and make rotation vector
-    Rotation2d gyroangle = new Rotation2d(0.0 * DEGtoRAD); // TODO: get current angle from gyro subystem
+    Rotation2d gyroangle = new Rotation2d(RobotContainer.gyro.getYaw() * DEGtoRAD);
 
     // get states of all swerve modules from subsystem
     SwerveModuleState[] states = RobotContainer.drivetrain.getSwerveStates();
