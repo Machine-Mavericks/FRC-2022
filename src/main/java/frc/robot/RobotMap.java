@@ -17,7 +17,7 @@ public class RobotMap {
     /**
      * Inner class containing CANIDs
      */
-    private static class CANID {
+    public static class CANID {
         /** CAN ID for front-left drive falcon */
         static final int FL_DRIVE_FALCON = 3;
         /** CAN ID for front-left steer falcon */
@@ -42,7 +42,12 @@ public class RobotMap {
         static final int BR_STEER_FALCON = 8;
         /** CAN ID for front-left steer encoder */
         static final int BR_STEER_ENCODER = 10;
+        public static final int RIGHT_SHOOTER_FALCON = 98;
+        public static final int LEFT_SHOOTER_FALCON = 99;
     }
+
+    public static final int SHOOTER_SOLENOID_EXTEND = 96;
+    public static final int SHOOTER_SOLENOID_RETRACT = 97;
 
     public static final Mk4SwerveModuleHelper.GearRatio DRIVE_RATIO = Mk4SwerveModuleHelper.GearRatio.L1;
 

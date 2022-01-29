@@ -12,6 +12,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,6 +26,7 @@ public class RobotContainer {
   private final Gyro m_gyro = new Gyro();
   private final Drivetrain m_drivetrain = new Drivetrain(RobotMap.frontLeftModule, RobotMap.frontRightModule, RobotMap.backLeftModule, RobotMap.backRightModule, m_gyro);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  public static final Shooter m_shooter = new Shooter();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
