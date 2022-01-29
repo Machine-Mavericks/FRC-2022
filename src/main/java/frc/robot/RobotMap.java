@@ -44,6 +44,10 @@ public class RobotMap {
         static final int BR_STEER_ENCODER = 10;
     }
 
+    public static class PWMPorts {
+        /** PWM Port for led strip */
+        static final int LED_STRIP = 9;
+    }
     public static final Mk4SwerveModuleHelper.GearRatio DRIVE_RATIO = Mk4SwerveModuleHelper.GearRatio.L1;
 
     static ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
