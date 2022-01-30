@@ -43,8 +43,9 @@ public class Gyro extends SubsystemBase {
    * @return current yaw value (-180 to 180)
    */
   public double getYaw() {
-    return gyro.getYaw();
-
+    // Flip angle since gyro is mounted upside down
+    double raw = 360-gyro.getYaw();
+    return raw > 180 ? raw - 360 : raw;
   }
 
   /**
