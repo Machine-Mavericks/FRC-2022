@@ -299,4 +299,4 @@ private void updateShuffleboard() {
   m_Roll.setDouble(vector.roll);
 }
 
-}  // end class LImelight
+} // end class LImelight
