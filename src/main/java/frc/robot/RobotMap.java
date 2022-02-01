@@ -37,14 +37,10 @@ public class RobotMap {
         public static final int BR_STEER_ENCODER = 10;
 
         // TODO: Set CANIDs
-        public static final int LEADER_INTAKE_FALCON = 98;
-        public static final int FOLLOWER_INTAKE_FALCON = 99;
+        public static final int INTAKE_FALCON = 98;
     }
 
     public static class PneumaticsChannel {
-        // TODO: Set Channels
-        public static final int INTAKE_SOLENOID_EXTEND = 96;
-        public static final int INTAKE_SOLENOID_RETRACT = 97;
     }
 
 

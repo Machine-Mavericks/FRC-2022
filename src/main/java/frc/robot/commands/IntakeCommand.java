@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Intake;
 
 public class IntakeCommand extends CommandBase {
   private int m_timer = 0;
@@ -22,7 +23,7 @@ public class IntakeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.intake.extend();
+    RobotContainer.intake.setMotorSpeed(Intake.MOTORSPEED);
     m_timer = 0;
   }
 
@@ -35,7 +36,7 @@ public class IntakeCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.intake.retract();
+    RobotContainer.intake.setMotorSpeed(0);
   }
 
   // Returns true when the command should end.
