@@ -6,13 +6,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Intake;
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.SwerveOdometry;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,15 +23,24 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final Drivetrain m_drivetrain = new Drivetrain(RobotMap.frontLeftModule, RobotMap.frontRightModule, RobotMap.backLeftModule, RobotMap.backRightModule, RobotMap.navx);
-  public static final Intake intake = new Intake();
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  
+  // Create robot's shuffboard operator interface
+  public static final ShuffleboardOI shuffleboard = new ShuffleboardOI();
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    m_drivetrain.setDefaultCommand(new DriveCommand(m_drivetrain));
+  // The robot's subsystems are defined here...
+  public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
+  public static final Drivetrain drivetrain = new Drivetrain();
+  public static final Gyro gyro = new Gyro();
+  public static final SwerveOdometry odometry = new SwerveOdometry();
+  public static final Intake intake = new Intake();
+  
+  // The robot's subsystems are defined here...
+  private static final ExampleCommand autoCommand = new ExampleCommand(exampleSubsystem);
+
+
+  /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
+  public static void init() {
+    drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -41,7 +52,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
+  private static void configureButtonBindings() {
     OI.intakeButton.whenPressed(new IntakeCommand());
   }
 
@@ -50,8 +61,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public static Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return autoCommand;
   }
 }

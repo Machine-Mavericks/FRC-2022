@@ -17,7 +17,7 @@ public class Intake extends SubsystemBase {
   private TalonFX leaderIntakeFalcon = new TalonFX(RobotMap.CANID.LEADER_INTAKE_FALCON);
   private TalonFX followerIntakeFalcon = new TalonFX(RobotMap.CANID.FOLLOWER_INTAKE_FALCON);
   private DoubleSolenoid pistonSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
-      RobotMap.INTAKE_SOLENOID_EXTEND, RobotMap.INTAKE_SOLENOID_RETRACT);
+      RobotMap.PneumaticsChannel.INTAKE_SOLENOID_EXTEND, RobotMap.PneumaticsChannel.INTAKE_SOLENOID_RETRACT);
 
   private static final DoubleSolenoid.Value PISTON_EXTENDED = DoubleSolenoid.Value.kForward;
   private static final DoubleSolenoid.Value PISTON_RETRACTED = DoubleSolenoid.Value.kReverse;
