@@ -73,7 +73,11 @@ public class Intake extends SubsystemBase {
     l1.withSize(1, 4);
 
     m_speed = l1.add("Speed", 0.0).getEntry();
-    m_speedslider = Tab.add("Speed", MOTORSPEED).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 1)).getEntry();
+    m_speedslider = Tab.add("Speed", MOTORSPEED).withWidget(BuiltInWidgets.kNumberSlider)
+                                                .withPosition(2, 0)
+                                                .withSize(4, 1)
+                                                .withProperties(Map.of("min", 0, "max", 1))
+                                                .getEntry();
   }
 
   /** Update subsystem shuffle board page with current Intake values */
