@@ -1,14 +1,5 @@
 package frc.robot;
 
-import com.kauailabs.navx.frc.AHRS;
-import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
-import com.swervedrivespecialties.swervelib.SwerveModule;
-
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
 /**
  * This class cointains definitions for the robot's hardware devices.
  * These include components such as motor controllers and soleniods used by the
@@ -16,6 +7,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
  */
 public class RobotMap {
 
+<<<<<<< HEAD
         /**
          * Inner class containing CANIDs
          */
@@ -68,6 +60,38 @@ public class RobotMap {
         public static final Mk4SwerveModuleHelper.GearRatio DRIVE_RATIO = Mk4SwerveModuleHelper.GearRatio.L1;
 
         public static final AHRS navx = new AHRS(SPI.Port.kMXP, (byte) 200);
+=======
+    /**
+     * Inner class containing CANIDs
+     */
+    public static class CANID {
+        /** CAN ID for front-left drive falcon */
+        public static final int FL_DRIVE_FALCON = 3;
+        /** CAN ID for front-left steer falcon */
+        public static final int FL_STEER_FALCON = 4;
+        /** CAN ID for front-left steer encoder */
+        public static final int FL_STEER_ENCODER = 12;
+        /** CAN ID for front-right drive falcon */
+        public static final int FR_DRIVE_FALCON = 5;
+        /** CAN ID for front-right steer falcon */
+        public static final int FR_STEER_FALCON = 6;
+        /** CAN ID for front-left steer encoder */
+        public  static final int FR_STEER_ENCODER = 11;
+        /** CAN ID for back-left drive falcon */
+        public static final int BL_DRIVE_FALCON = 1;
+        /** CAN ID for back-left steer falcon */
+        public static final int BL_STEER_FALCON = 2;
+        /** CAN ID for front-left steer encoder */
+        public static final int BL_STEER_ENCODER = 9;
+        /** CAN ID for back-right drive falcon */
+        public static final int BR_DRIVE_FALCON = 7;
+        /** CAN ID for back-right steer falcon */
+        public static final int BR_STEER_FALCON = 8;
+        /** CAN ID for front-left steer encoder */
+        public static final int BR_STEER_ENCODER = 10;
+    }
+
+>>>>>>> d6ac79ebca4ac37bc5457120d107765deb08cebd
 
         static ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
