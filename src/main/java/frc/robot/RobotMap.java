@@ -37,6 +37,31 @@ public class RobotMap {
         public static final int BR_STEER_ENCODER = 10;
     }
 
+    /**
+     * Inner class containing odometry constants
+     */
+    public static class ODOMETRY {
+        /** feed-forward gain */
+        public static final int ksVolts = 3;
+        /** feed-forward gain */
+        public static final int kvVoltSecondsPerMeter = 3;
+        /** feed-forward gain */
+        public static final int kaVoltSecondsSquaredPerMeter = 3;
+        /** robot max speed */
+        public static final int kMaxSpeedMetersPerSecond = 3;
+        /** robot max acceleration */
+        public static final int kMaxAccelerationMetersPerSecondSquared = 3;
+        /** proportional gain */
+        public static final int kPDriveVel = 3;
+    }
+
+    public static class AUTONOMOUS {
+        /** feed-forward gain */
+        public static final int kRamseteB = 3;
+        /** feed-forward gain */
+        public static final int kRamseteZeta = 3;
+    }
+
 
     /**
      * Function to initialise hardware
