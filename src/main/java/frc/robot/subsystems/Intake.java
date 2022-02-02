@@ -28,6 +28,12 @@ public class Intake extends SubsystemBase {
   
   public static double MOTORSPEED = 0.8;
 
+  // Convert pulses per 100ms to rpm 
+  // Multiply by 10 to get pulses/second
+  // Divide by 2048, motor has 2048 pulses in a revolution, we now have the number of rotations per second
+  // Multiply by 60 to get rpm
+  public static double MOTORSPEEDCONVERSION = (10.0/2048.0)*60.0;
+
   /** Creates a new Intake. */
   public Intake() {
     intakeFalcon.set(ControlMode.PercentOutput, 0);
@@ -47,8 +53,10 @@ public class Intake extends SubsystemBase {
     intakeFalcon.set(ControlMode.PercentOutput, motorSpeed);
   }
 
+
+  /** Get intake motor speed in rpm */
   public double getMotorSpeed() {
-    return 0;
+    return intakeFalcon.getSelectedSensorVelocity() * MOTORSPEEDCONVERSION;
   }
 
     // -------------------- Subsystem Shuffleboard Methods --------------------
@@ -66,10 +74,6 @@ public class Intake extends SubsystemBase {
 
     m_speed = l1.add("Speed", 0.0).getEntry();
     m_speedslider = Tab.add("Speed", MOTORSPEED).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 1)).getEntry();
-    // m_robotX = l1.add("X (m)", 0.0).getEntry();
-    // m_robotY = l1.add("Y (m)", 0.0).getEntry();
-    // m_robotAngle = l1.add("Angle(deg)", 0.0).getEntry();
-    // m_gyroAngle = l1.add("Gyro(deg)", 0.0).getEntry();
   }
 
   /** Update subsystem shuffle board page with current Intake values */
