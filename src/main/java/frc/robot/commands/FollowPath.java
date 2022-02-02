@@ -19,14 +19,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.SwerveOdometry;
 
 public class FollowPath extends CommandBase {
 
   private Drivetrain m_drivetrain;
+  private SwerveOdometry m_odometry;
 
   public final static DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
-      m_drivetrain.TRACKWIDTH_METERS);
-
+      Drivetrain.TRACKWIDTH_METERS);
 
   /** Creates a new FollowPath. */
   public FollowPath(Drivetrain m_drivetrain) {
@@ -40,23 +41,23 @@ public class FollowPath extends CommandBase {
     // Create a voltage constraint to ensure we don't accelerate too fast
     var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
         new SimpleMotorFeedforward(
-            RobotMap.Odometry.ksVolts,
-            RobotMap.Odometry.kvVoltSecondsPerMeter,
-            RobotMap.Odometry.kaVoltSecondsSquaredPerMeter),
+            RobotMap.ODOMETRY.ksVolts,
+            RobotMap.ODOMETRY.kvVoltSecondsPerMeter,
+            RobotMap.ODOMETRY.kaVoltSecondsSquaredPerMeter),
         kDriveKinematics,
         10);
 
     // Create config for trajectory
     TrajectoryConfig config = new TrajectoryConfig(
-        RobotMap.Odometry.kMaxSpeedMetersPerSecond,
-        RobotMap.Odometry.kMaxAccelerationMetersPerSecondSquared)
+        RobotMap.ODOMETRY.kMaxSpeedMetersPerSecond,
+        RobotMap.ODOMETRY.kMaxAccelerationMetersPerSecondSquared)
 
             // Add kinematics to ensure max speed is actually obeyed
             .setKinematics(kDriveKinematics)
             // Apply volatge constraint
             .addConstraint(autoVoltageConstraint);
 
-    // Create Trajectory
+    // Create example Trajectory
     Trajectory autoTrajectory = TrajectoryGenerator.generateTrajectory(
         // Define starting point
         new Pose2d(0, 0, new Rotation2d(0)),
@@ -71,22 +72,22 @@ public class FollowPath extends CommandBase {
 
     RamseteCommand ramseteCommand = new RamseteCommand(
         autoTrajectory,
-        m_drivetrain::getPose,
-        new RamseteController(RobotMap.Autonomous.kRamseteB, RobotMap.Autonomous.kRamseteZeta),
+        m_odometry::getPose2d,
+        new RamseteController(RobotMap.AUTONOMOUS.kRamseteB, RobotMap.AUTONOMOUS.kRamseteZeta),
         new SimpleMotorFeedforward(
             RobotMap.Drivetrain.ksVolts,
             RobotMap.Drivetrain.kvVoltSecondsPerMeter,
             RobotMap.Drivetrain.kaVoltSecondsSquaredPerMeter),
         kDriveKinematics,
         m_drivetrain::getWheelSpeeds,
-        new PIDController(RobotMap.Drivetrain.kPDriveVel, 0, 0),
-        new PIDController(RobotMap.Drivetrain.kPDriveVel, 0, 0),
+        new PIDController(RobotMap.ODOMETRY.kPDriveVel, 0, 0),
+        new PIDController(RobotMap.ODOMETRY.kPDriveVel, 0, 0),
         // RamseteCommand passes volts to the callback
         m_drivetrain::driveVoltageOutput,
         m_drivetrain);
 
     // Reset odometry to the starting pose of the trajectory
-    m_drivetrain.resetOdometry(autoTrajectory.getInitialPose());
+    m_odometry.resetOdometry(autoTrajectory.getInitialPose());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
