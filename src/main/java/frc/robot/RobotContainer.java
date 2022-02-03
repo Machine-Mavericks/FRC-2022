@@ -38,7 +38,8 @@ public class RobotContainer {
   /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
-
+    // Initialise gyro to be forward-facing
+    gyro.setCurrentYaw(0);
     // Configure the button bindings
     configureButtonBindings();
   }
