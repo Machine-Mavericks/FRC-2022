@@ -25,11 +25,13 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.SwerveOdometry;
-
+import edu.wpi.first.math.geometry.Transform2d;
 
 public class FollowPath extends CommandBase {
     private Drivetrain m_drivetrain;
+    private Trajectory robotRelativeTrajectory;
     private Trajectory trajectory;
+
     private Timer timer = new Timer();
     private SwerveOdometry m_odometry;
     
@@ -117,15 +119,19 @@ public class FollowPath extends CommandBase {
                 Translation2d point = new Translation2d(points[i][0], points[i][1]);
                 path.add(point);
             }
-        }
 
         TrajectoryConfig trajectoryConfig = new TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION);
         trajectoryConfig.setStartVelocity(startVelocity);
         trajectoryConfig.setEndVelocity(endVelocity);
 
-        return TrajectoryGenerator.generateTrajectory(startPose, path, endPose, trajectoryConfig);
-    }
+        robotRelativeTrajectory = TrajectoryGenerator.generateTrajectory(startPose, path, endPose, trajectoryConfig);
 
+        // translate/rotate path so it starts the robot's current position/angle
+        Trajectory trajectory = robotRelativeTrajectory.transformBy(new Transform2d(m_odometry.getPose2d(),startPose));  
+    
+        return trajectory;
+    }
+}
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
