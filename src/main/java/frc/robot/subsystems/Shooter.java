@@ -4,16 +4,12 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
-import frc.robot.RobotContainer;
 
 
 public class Shooter extends SubsystemBase {
@@ -24,24 +20,18 @@ public class Shooter extends SubsystemBase {
 
   private TalonFX rightShooterFalcon = new TalonFX(RobotMap.CANID.RIGHT_SHOOTER_FALCON);
   private TalonFX leftShooterFalcon = new TalonFX(RobotMap.CANID.LEFT_SHOOTER_FALCON);
-  private DoubleSolenoid shooterSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
-      RobotMap.SHOOTER_SOLENOID_EXTEND, RobotMap.SHOOTER_SOLENOID_RETRACT);
 
-  private static final DoubleSolenoid.Value PISTON_EXTENDED = DoubleSolenoid.Value.kForward;
-  private static final DoubleSolenoid.Value PISTON_RETRACTED = DoubleSolenoid.Value.kReverse;
-  private static double MOTORSPEED = 0.8;
   private double idleSpeed;
   private boolean isIdling;
   /** Creates a new Shooter. */
   public Shooter() {
     leftShooterFalcon.follow(rightShooterFalcon);
     leftShooterFalcon.setInverted(InvertType.OpposeMaster);
-    shooterSolenoid.set(PISTON_RETRACTED);
     rightShooterFalcon.set(ControlMode.PercentOutput, 0);
     isIdling = false;
     rightShooterFalcon.configPeakOutputForward(1,0);
     rightShooterFalcon.configPeakOutputReverse(0,0);
-    double idleSpeed = 0.1;
+
     //rightShooterFalcon.configOpenLoopRamp(0.1);
   }
 
@@ -80,14 +70,14 @@ public class Shooter extends SubsystemBase {
    * This method will raise or lower the hood on the shooter for high or low shooting
    * @param state either HIGH or LOW, the desired state for the hood of the shooter to be in
    */
-  public void setShooterHood(HoodState state) {
-    switch(state) {
-      case HIGH:
-        shooterSolenoid.set(PISTON_EXTENDED);
-        break;
-      case LOW:
-        shooterSolenoid.set(PISTON_RETRACTED);
-        break;
-    }
-  }
+  // public void setShooterHood(HoodState state) {
+  //   switch(state) {
+  //     case HIGH:
+  //       shooterSolenoid.set(PISTON_EXTENDED);
+  //       break;
+  //     case LOW:
+  //       shooterSolenoid.set(PISTON_RETRACTED);
+  //       break;
+  //}
+  //}
 }
