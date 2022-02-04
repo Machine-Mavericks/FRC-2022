@@ -26,9 +26,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.SwerveOdometry;
 
+
 public class FollowPath extends CommandBase {
     private Drivetrain m_drivetrain;
-    private PathPlannerTrajectory trajectory;
+    private Trajectory trajectory;
     private Timer timer = new Timer();
     private SwerveOdometry m_odometry;
     
@@ -49,8 +50,9 @@ public class FollowPath extends CommandBase {
     private final double MAX_ACCELERATION = 4;
 
     //Input the name of the generated path in PathPlanner
-    public FollowPath(String pathName) {
-        trajectory = getTrajectory(pathName);
+    public FollowPath(double[][] points, double startAngle, double endAngle, double startVelocity,
+            double endVelocity) {
+        trajectory = calculateTrajectory(points, startAngle, endAngle, startVelocity, endVelocity);
 
         addRequirements(m_drivetrain);
     }
