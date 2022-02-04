@@ -2,107 +2,139 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-import java.util.List;
+package frc.robot.commands;
 
+import java.util.ArrayList;
+
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
+
+import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import frc.robot.RobotMap;
+import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.SwerveOdometry;
 
 public class FollowPath extends CommandBase {
+    private Drivetrain m_drivetrain;
+    private PathPlannerTrajectory trajectory;
+    private Timer timer = new Timer();
+    private SwerveOdometry m_odometry;
+    
+    //TODO: Tune these
+    private double p = 6;
+    private double i = 0;
+    private double d = 0.06;
 
-  private Drivetrain m_drivetrain;
-  private SwerveOdometry m_odometry;
+    private PathPlannerState state = new PathPlannerState();
+    private Pose2d odometryPose = new Pose2d();
+    private Rotation2d desiredAngle;
+    private ChassisSpeeds speeds = new ChassisSpeeds();
 
-  public final static DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
-      Drivetrain.TRACKWIDTH_METERS);
+    private HolonomicDriveController driveController;
 
-  /** Creates a new FollowPath. */
-  public FollowPath(Drivetrain m_drivetrain) {
-    addRequirements(m_drivetrain);
-  }
+    // Measured in m/s and m/s/s
+    private final double MAX_VELOCITY = 5;
+    private final double MAX_ACCELERATION = 4;
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
+    //Input the name of the generated path in PathPlanner
+    public FollowPath(String pathName) {
+        trajectory = getTrajectory(pathName);
 
-    // Create a voltage constraint to ensure we don't accelerate too fast
-    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-        new SimpleMotorFeedforward(
-            RobotMap.ODOMETRY.ksVolts,
-            RobotMap.ODOMETRY.kvVoltSecondsPerMeter,
-            RobotMap.ODOMETRY.kaVoltSecondsSquaredPerMeter),
-        kDriveKinematics,
-        10);
+        addRequirements(m_drivetrain);
+    }
 
-    // Create config for trajectory
-    TrajectoryConfig config = new TrajectoryConfig(
-        RobotMap.ODOMETRY.kMaxSpeedMetersPerSecond,
-        RobotMap.ODOMETRY.kMaxAccelerationMetersPerSecondSquared)
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
 
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(kDriveKinematics)
-            // Apply volatge constraint
-            .addConstraint(autoVoltageConstraint);
+        //Create necessary profiled PID controller and configure it to be used with the holonomic controller
+        ProfiledPIDController rotationController =
+        new ProfiledPIDController(
+            2.5,
+            0.0,
+            0.0,
+            new TrapezoidProfile.Constraints(MAX_VELOCITY, MAX_ACCELERATION));
 
-    // Create example Trajectory
-    Trajectory autoTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Define starting point
-        new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through a list of defined points
-        List.of(
-            new Translation2d(1, 1),
-            new Translation2d(2, -1)),
-        // Define Endpoint
-        new Pose2d(3, 0, new Rotation2d(0)),
-        // Pass config
-        config);
+        //Create main holonomic drive controller
+        driveController = new HolonomicDriveController(
+            new PIDController(p, i, d), new PIDController(p, i, d), rotationController);
+        driveController.setEnabled(true);
 
-    RamseteCommand ramseteCommand = new RamseteCommand(
-        autoTrajectory,
-        m_odometry::getPose2d,
-        new RamseteController(RobotMap.AUTONOMOUS.kRamseteB, RobotMap.AUTONOMOUS.kRamseteZeta),
-        new SimpleMotorFeedforward(
-            RobotMap.Drivetrain.ksVolts,
-            RobotMap.Drivetrain.kvVoltSecondsPerMeter,
-            RobotMap.Drivetrain.kaVoltSecondsSquaredPerMeter),
-        kDriveKinematics,
-        m_drivetrain::getWheelSpeeds,
-        new PIDController(RobotMap.ODOMETRY.kPDriveVel, 0, 0),
-        new PIDController(RobotMap.ODOMETRY.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        m_drivetrain::driveVoltageOutput,
-        m_drivetrain);
+        //Start timer when path begins 
+        timer.reset();
+        timer.start();
+    }
 
-    // Reset odometry to the starting pose of the trajectory
-    m_odometry.resetOdometry(autoTrajectory.getInitialPose());
-  }
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+        //To access the desired angle at the current state, the Trajectory.State must be cast to a PathPlannerState
+        state = (PathPlannerState) trajectory.sample(timer.get());
+        desiredAngle = state.holonomicRotation;
+        odometryPose = m_odometry.getPose2d();
+        speeds = driveController.calculate(odometryPose, (Trajectory.State)state, desiredAngle);
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-  }
+        //Send the desired speeds to the m_drivetrain
+        // TODO: add this to drive subsystem
+        m_drivetrain.setChassisSpeeds(speeds);
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
+    //Read the path with the given name from the PathPlanner
+    private PathPlannerTrajectory getTrajectory(String pathName) {
+        PathPlannerTrajectory currentTrajectory = PathPlanner.loadPath(pathName, MAX_VELOCITY, MAX_ACCELERATION);
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+        return currentTrajectory;
+    }
+
+    // Calculate trajectory manually with a clamped cubic spline
+    private Trajectory calculateTrajectory(double[][] points, double startAngle, double endAngle, double startVelocity,
+            double endVelocity) {
+
+        Pose2d startPose = new Pose2d(points[0][0], points[0][1], Rotation2d.fromDegrees(startAngle));
+        Pose2d endPose = new Pose2d(points[points.length - 1][0], points[points.length - 1][1],
+            Rotation2d.fromDegrees(endAngle));
+
+        ArrayList<Translation2d> path = new ArrayList<>();
+
+        // If the desired set of points contains at least one waypoint, add them to the
+        // path object
+        if (points.length > 2) {
+            for (int i = 1; i < path.size() - 1; i++) {
+                Translation2d point = new Translation2d(points[i][0], points[i][1]);
+                path.add(point);
+            }
+        }
+
+        TrajectoryConfig trajectoryConfig = new TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION);
+        trajectoryConfig.setStartVelocity(startVelocity);
+        trajectoryConfig.setEndVelocity(endVelocity);
+
+        return TrajectoryGenerator.generateTrajectory(startPose, path, endPose, trajectoryConfig);
+    }
+
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) {
+        Translation2d zeroPoint = new Translation2d(0.0, 0.0);
+        m_drivetrain.drive(zeroPoint, 0.0, true);
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }
