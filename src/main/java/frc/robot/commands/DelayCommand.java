@@ -8,8 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class DelayCommand extends CommandBase {
     //
-
-    private double m_TIMER_END = 0;
+    private Timer m_Timer;
     private double m_delayTimer;
 
     // Delay command function //
@@ -19,19 +18,19 @@ public class DelayCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        m_TIMER_END = 0;
+        m_Timer.reset();
+        m_Timer.start();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_TIMER_END += 0.02;
     }
 
     // Returns false when the command should end.
     @Override
     public boolean isFinished() {
-        if (m_delayTimer > m_TIMER_END) {
+        if (m_Timer.hasElapsed(m_delayTimer)==true) {
             return true;
         } else {
             return false;
