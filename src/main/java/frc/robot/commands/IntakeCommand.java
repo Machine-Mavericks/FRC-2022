@@ -10,6 +10,7 @@ import frc.robot.subsystems.Intake;
 
 public class IntakeCommand extends CommandBase {
   private int m_timer = 0;
+  // NOTE: Currently unsed, may be reimplemented at later date?
   // time it will take until the intake retracts, set at 5 seconds currently
   private static final int END_TIME_TICKS = 5 * 50;
 
@@ -42,10 +43,11 @@ public class IntakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_timer >= END_TIME_TICKS) {
-      return true;
-    } else {
-      return false;
-    }
+    return false;
+    // if (m_timer >= END_TIME_TICKS) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
   }
 }
