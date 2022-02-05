@@ -96,12 +96,13 @@ public class FollowPath extends CommandBase {
         m_drivetrain.setChassisSpeeds(speeds);
     }
 
+    /* Optional improved functionality
     // Read the path with the given name from the PathPlanner
     private PathPlannerTrajectory getTrajectory(String pathName) {
         PathPlannerTrajectory currentTrajectory = PathPlanner.loadPath(pathName, MAX_VELOCITY, MAX_ACCELERATION);
 
         return currentTrajectory;
-    }
+    } */
 
     // Calculate trajectory manually with a clamped cubic spline
     private Trajectory calculateTrajectory(double[][] points, double startAngle, double endAngle, double startVelocity,
