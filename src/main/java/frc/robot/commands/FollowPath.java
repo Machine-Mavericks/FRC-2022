@@ -130,9 +130,7 @@ public class FollowPath extends CommandBase {
         robotRelativeTrajectory = TrajectoryGenerator.generateTrajectory(startPose, path, endPose, trajectoryConfig);
 
         // translate/rotate path so it starts the robot's current position/angle
-        Trajectory trajectory = robotRelativeTrajectory.transformBy(new Transform2d(m_odometry.getPose2d(), startPose));
-
-        return trajectory;
+        return robotRelativeTrajectory.transformBy(new Transform2d(m_odometry.getPose2d(), startPose));
     }
 
     // Called once the command ends or is interrupted.
