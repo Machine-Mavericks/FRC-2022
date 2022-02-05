@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 // libraries needed for NavX
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -29,7 +30,8 @@ public class Gyro extends SubsystemBase {
 
   /** Creates a new Gyro. */
   public Gyro() {
-    gyro = new AHRS(SPI.Port.kMXP);
+    gyro = new AHRS(Port.kUSB);
+    gyro.calibrate();
     gyro.reset();
     initializeShuffleboard();
   }
