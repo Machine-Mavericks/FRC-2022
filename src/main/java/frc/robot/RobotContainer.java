@@ -38,7 +38,8 @@ public class RobotContainer {
   /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
-
+    // Initialise gyro to be forward-facing
+    gyro.setCurrentYaw(0);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -49,7 +50,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private static void configureButtonBindings() {}
+  private static void configureButtonBindings() {
+    // TODO: Disable binding for competition use
+    OI.zeroButton.whenPressed(() -> gyro.setCurrentYaw(0));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
