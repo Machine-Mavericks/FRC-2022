@@ -84,6 +84,6 @@ public class Intake extends SubsystemBase {
   private void updateShuffleboard() {
     // write current intake data
     m_speed.setDouble(getMotorSpeed());
-    m_speedslider.getDouble(0.0);
+    MOTORSPEED = m_speedslider.getDouble(0.0);
   }
 }

@@ -53,7 +53,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private static void configureButtonBindings() {
-    OI.intakeButton.whenPressed(new IntakeCommand());
+    OI.intakeButton.whileHeld(new IntakeCommand());
   }
 
   /**

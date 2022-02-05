@@ -37,7 +37,7 @@ public class RobotMap {
         public static final int BR_STEER_ENCODER = 10;
 
         // TODO: Set CANIDs
-        public static final int INTAKE_FALCON = 98;
+        public static final int INTAKE_FALCON = 13;
     }
 
     public static class PneumaticsChannel {
