@@ -17,6 +17,7 @@ public class OI {
         static final Button EXAMPLE_BUTTON = XboxController.Button.kA;
         /** Button to re-zero gyro */
         static final Button ZERO_GYRO = XboxController.Button.kBack;
+        static final Button INTAKE_BUTTON = XboxController.Button.kX;
     }
 
     /** Port for controller used by driver */
@@ -33,4 +34,6 @@ public class OI {
     public static final JoystickButton exampleButton = new JoystickButton(driverController, Bindings.EXAMPLE_BUTTON.value);
     /** Example button. Mapped to {@link Bindings#ZERO_GYRO} */
     public static final JoystickButton zeroButton = new JoystickButton(driverController, Bindings.ZERO_GYRO.value);
+    /** Button to deploy intake for 5 seconds. Mapped to {@link Bindings#INTAKE_BUTTON} */
+    public static final JoystickButton intakeButton = new JoystickButton(operatorController, Bindings.INTAKE_BUTTON.value);
 }
