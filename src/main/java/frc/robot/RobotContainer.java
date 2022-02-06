@@ -9,10 +9,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.SwerveOdometry;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.SwerveOdometry;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,6 +32,7 @@ public class RobotContainer {
   public static final Drivetrain drivetrain = new Drivetrain();
   public static final Gyro gyro = new Gyro();
   public static final SwerveOdometry odometry = new SwerveOdometry();
+  public static final Intake intake = new Intake();
   
   // The robot's subsystems are defined here...
   private static final ExampleCommand autoCommand = new ExampleCommand(exampleSubsystem);
@@ -49,7 +52,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private static void configureButtonBindings() {}
+  private static void configureButtonBindings() {
+    OI.intakeButton.whileHeld(new IntakeCommand());
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
