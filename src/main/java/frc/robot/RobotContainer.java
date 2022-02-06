@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.SampleAutoCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveOdometry;
@@ -32,7 +33,7 @@ public class RobotContainer {
   public static final SwerveOdometry odometry = new SwerveOdometry();
   
   // The robot's subsystems are defined here...
-  private static final ExampleCommand autoCommand = new ExampleCommand(exampleSubsystem);
+  private static final SampleAutoCommand autoCommand = new SampleAutoCommand();
 
 
   /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
