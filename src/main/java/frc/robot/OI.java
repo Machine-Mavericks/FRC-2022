@@ -15,6 +15,8 @@ public class OI {
     private static class Bindings {
         /** Example button */
         static final Button EXAMPLE_BUTTON = XboxController.Button.kA;
+        /** Button to re-zero gyro */
+        static final Button ZERO_GYRO = XboxController.Button.kBack;
     }
 
     /** Port for controller used by driver */
@@ -29,4 +31,6 @@ public class OI {
 
     /** Example button. Mapped to {@link Bindings#EXAMPLE_BUTTON} */
     public static final JoystickButton exampleButton = new JoystickButton(driverController, Bindings.EXAMPLE_BUTTON.value);
+    /** Example button. Mapped to {@link Bindings#ZERO_GYRO} */
+    public static final JoystickButton zeroButton = new JoystickButton(driverController, Bindings.ZERO_GYRO.value);
 }

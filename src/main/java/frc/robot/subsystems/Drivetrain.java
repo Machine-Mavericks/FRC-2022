@@ -138,26 +138,22 @@ public class Drivetrain extends SubsystemBase {
                                 DRIVE_RATIO, RobotMap.CANID.BR_DRIVE_FALCON, RobotMap.CANID.BR_STEER_FALCON,
                                 RobotMap.CANID.BR_STEER_ENCODER, -Math.toRadians(135 + 180));
 
+    /**
+     * Control the drivetrain
+     * 
+     * @param translation X/Y translation, in meters per second
+     * @param rotation Rotation, in radians per second
+     * @param fieldOriented Boolean indicating if directions are field- or robot-oriented
+     */
+    public void drive(Translation2d translation, double rotation, boolean fieldOriented) {
+        rotation *= 2.0 / Math.hypot(WHEELBASE_METERS, TRACKWIDTH_METERS);
+        if (fieldOriented) {
+            m_chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation,
+                Rotation2d.fromDegrees(RobotContainer.gyro.getYaw()));
+        } else {
+            m_chassisSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
         }
 
-        /**
-         * Control the drivetrain
-         * 
-         * @param translation   X/Y translation, in meters per second
-         * @param rotation      Rotation, in radians per second
-         * @param fieldOriented Boolean indicating if directions are field- or
-         *                      robot-oriented
-         */
-        public void drive(Translation2d translation, double rotation, boolean fieldOriented) {
-                rotation *= 2.0 / Math.hypot(WHEELBASE_METERS, TRACKWIDTH_METERS);
-                if (fieldOriented) {
-                        m_chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(),
-                                        rotation,
-                                        Rotation2d.fromDegrees(360.0 - RobotContainer.gyro.getYaw()));
-                } else {
-                        m_chassisSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
-                }
-        }
 
         /**
          * manually set drivetrain speed
