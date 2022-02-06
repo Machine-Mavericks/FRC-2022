@@ -20,6 +20,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
@@ -39,7 +40,7 @@ public class FollowPath extends CommandBase {
     private double i = 0;
     private double d = 0.06;
 
-    private PathPlannerState state = new PathPlannerState();
+    private MMState state = new MMState();
     private Pose2d odometryPose = new Pose2d();
     private Rotation2d desiredAngle;
     private ChassisSpeeds speeds = new ChassisSpeeds();
@@ -84,8 +85,8 @@ public class FollowPath extends CommandBase {
     @Override
     public void execute() {
         // To access the desired angle at the current state, the Trajectory.State must
-        // be cast to a PathPlannerState
-        state = (PathPlannerState) trajectory.sample(timer.get());
+        // be converted to an MMState
+        state = MMState.fromState(trajectory.sample(timer.get()));
         desiredAngle = state.holonomicRotation;
         odometryPose = m_odometry.getPose2d();
         speeds = driveController.calculate(odometryPose, (Trajectory.State) state, desiredAngle);
@@ -142,5 +143,18 @@ public class FollowPath extends CommandBase {
     @Override
     public boolean isFinished() {
         return false;
+    }
+
+    private static class MMState extends PathPlannerState {
+
+        static MMState fromState(State s){
+            MMState out = new MMState();
+            out.timeSeconds = s.timeSeconds;
+            out.velocityMetersPerSecond = s.velocityMetersPerSecond;
+            out.accelerationMetersPerSecondSq = s.accelerationMetersPerSecondSq;
+            out.poseMeters = s.poseMeters;
+            out.curvatureRadPerMeter = s.curvatureRadPerMeter;
+            return out;
+        }
     }
 }
