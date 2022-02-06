@@ -107,7 +107,7 @@ public class SwerveOdometry extends SubsystemBase {
 
   /** return robot's current position vector Pose2d */
   public Pose2d getPose2d() {
-    return m_odometry.getPoseMeters();
+    return new Pose2d(getX(), getY(), new Rotation2d(getAngle() * DEGtoRAD));
   }
 
   /** Return current odometry x displacement (in m) */
