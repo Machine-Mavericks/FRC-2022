@@ -42,7 +42,7 @@ public class FollowPath extends CommandBase {
 
     private MMState state = new MMState();
     private Pose2d odometryPose = new Pose2d();
-    private Rotation2d desiredAngle;
+    private Rotation2d desiredAngle = new Rotation2d(0,0);
     private ChassisSpeeds speeds = new ChassisSpeeds();
 
     private HolonomicDriveController driveController;
@@ -89,10 +89,12 @@ public class FollowPath extends CommandBase {
         state = MMState.fromState(trajectory.sample(timer.get()));
         desiredAngle = state.holonomicRotation;
         odometryPose = m_odometry.getPose2d();
-        speeds = driveController.calculate(odometryPose, (Trajectory.State) state, desiredAngle);
-
+        //speeds = driveController.calculate(odometryPose, (Trajectory.State) state, desiredAngle);
+        
         // Send the desired speeds to the m_drivetrain
         m_drivetrain.setChassisSpeeds(speeds);
+
+
     }
 
     /* Optional improved functionality
