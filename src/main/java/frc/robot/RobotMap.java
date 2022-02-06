@@ -22,7 +22,7 @@ public class RobotMap {
         /** CAN ID for front-right steer falcon */
         public static final int FR_STEER_FALCON = 6;
         /** CAN ID for front-left steer encoder */
-        public  static final int FR_STEER_ENCODER = 11;
+        public static final int FR_STEER_ENCODER = 11;
         /** CAN ID for back-left drive falcon */
         public static final int BL_DRIVE_FALCON = 1;
         /** CAN ID for back-left steer falcon */
@@ -35,6 +35,12 @@ public class RobotMap {
         public static final int BR_STEER_FALCON = 8;
         /** CAN ID for front-left steer encoder */
         public static final int BR_STEER_ENCODER = 10;
+
+        // TODO: Set CANIDs
+        public static final int INTAKE_FALCON = 13;
+    }
+
+    public static class PneumaticsChannel {
     }
 
     /**

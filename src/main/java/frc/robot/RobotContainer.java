@@ -8,10 +8,12 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.SampleAutoCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.SwerveOdometry;
 
 /**
@@ -30,6 +32,7 @@ public class RobotContainer {
   public static final Drivetrain drivetrain = new Drivetrain();
   public static final Gyro gyro = new Gyro();
   public static final SwerveOdometry odometry = new SwerveOdometry();
+  public static final Intake intake = new Intake();
   
   // The robot's subsystems are defined here...
   private static final SampleAutoCommand autoCommand = new SampleAutoCommand();
@@ -51,8 +54,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private static void configureButtonBindings() {
-    // TODO: Disable binding for competition use
-    OI.zeroButton.whenPressed(() -> gyro.setCurrentYaw(0));
+    OI.intakeButton.whileHeld(new IntakeCommand());
   }
 
   /**
