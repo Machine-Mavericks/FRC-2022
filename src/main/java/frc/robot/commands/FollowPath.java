@@ -6,8 +6,6 @@ package frc.robot.commands;
 
 import java.util.ArrayList;
 
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -15,6 +13,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -25,15 +24,15 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.SwerveOdometry;
-import edu.wpi.first.math.geometry.Transform2d;
+import frc.robot.RobotContainer;
 
 public class FollowPath extends CommandBase {
-    private Drivetrain m_drivetrain;
+    private Drivetrain m_drivetrain = RobotContainer.drivetrain;
     private Trajectory robotRelativeTrajectory;
     private Trajectory trajectory;
 
     private Timer timer = new Timer();
-    private SwerveOdometry m_odometry;
+    private final SwerveOdometry m_odometry = RobotContainer.odometry;
 
     // TODO: Tune these
     private double p = 6;
@@ -92,7 +91,6 @@ public class FollowPath extends CommandBase {
         speeds = driveController.calculate(odometryPose, (Trajectory.State) state, desiredAngle);
 
         // Send the desired speeds to the m_drivetrain
-        // TODO: add this to drive subsystem
         m_drivetrain.setChassisSpeeds(speeds);
     }
 
