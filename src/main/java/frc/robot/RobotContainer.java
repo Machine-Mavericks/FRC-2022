@@ -54,6 +54,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private static void configureButtonBindings() {
+    // TODO: Disable binding for competition use
+    OI.zeroButton.whenPressed(() -> gyro.setCurrentYaw(0));
     OI.intakeButton.whileHeld(new IntakeCommand());
   }
 
