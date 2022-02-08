@@ -11,10 +11,9 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.SwerveOdometry;
 import frc.robot.subsystems.Gyro;
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.SwerveOdometry;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a

@@ -8,9 +8,15 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.math.trajectory.constraint.TrajectoryConstraint.MinMax;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
-
 
 public class Shooter extends SubsystemBase {
 
@@ -23,16 +29,20 @@ public class Shooter extends SubsystemBase {
 
   private double idleSpeed;
   private boolean isIdling;
+
+  public NetworkTableEntry ChosenSpeed;
+  public NetworkTableEntry ChosenIdleSpeed;
+
   /** Creates a new Shooter. */
   public Shooter() {
     leftShooterFalcon.follow(rightShooterFalcon);
     leftShooterFalcon.setInverted(InvertType.OpposeMaster);
     rightShooterFalcon.set(ControlMode.PercentOutput, 0);
     isIdling = false;
-    rightShooterFalcon.configPeakOutputForward(1,0);
-    rightShooterFalcon.configPeakOutputReverse(0,0);
-
-    //rightShooterFalcon.configOpenLoopRamp(0.1);
+    rightShooterFalcon.configPeakOutputForward(1, 0);
+    rightShooterFalcon.configPeakOutputReverse(0, 0);
+    initializeShuffleboard();
+    // rightShooterFalcon.configOpenLoopRamp(0.1);
   }
 
   @Override
@@ -42,7 +52,8 @@ public class Shooter extends SubsystemBase {
 
   /**
    * This method will set the idle speed of the shooter
-   * @param newIdleSpeed the desired idle speed 
+   * 
+   * @param newIdleSpeed the desired idle speed
    */
 
   public void setIdleSpeed(double newIdleSpeed) {
@@ -51,6 +62,7 @@ public class Shooter extends SubsystemBase {
       idle();
     }
   }
+
   /**
    * This method will set the shooter's motors to the given idle speed
    */
@@ -58,8 +70,10 @@ public class Shooter extends SubsystemBase {
     rightShooterFalcon.set(ControlMode.PercentOutput, idleSpeed);
     isIdling = true;
   }
+
   /**
    * This method will set the motors to the given motor speed
+   * 
    * @param shooterSpeed the desired motor speed between 1 and -1
    */
   public void setShooterSpeed(double shooterSpeed) {
@@ -67,17 +81,42 @@ public class Shooter extends SubsystemBase {
     isIdling = false;
   }
   /**
-   * This method will raise or lower the hood on the shooter for high or low shooting
-   * @param state either HIGH or LOW, the desired state for the hood of the shooter to be in
+   * This method will raise or lower the hood on the shooter for high or low
+   * shooting
+   * 
+   * @param state either HIGH or LOW, the desired state for the hood of the
+   *              shooter to be in
    */
   // public void setShooterHood(HoodState state) {
-  //   switch(state) {
-  //     case HIGH:
-  //       shooterSolenoid.set(PISTON_EXTENDED);
-  //       break;
-  //     case LOW:
-  //       shooterSolenoid.set(PISTON_RETRACTED);
-  //       break;
-  //}
-  //}
+  // switch(state) {
+  // case HIGH:
+  // shooterSolenoid.set(PISTON_EXTENDED);
+  // break;
+  // case LOW:
+  // shooterSolenoid.set(PISTON_RETRACTED);
+  // break;
+  // }
+  // }
+
+  /** Shooter Shuffleboard */
+
+  // -------------------- Subsystem Shuffleboard Methods --------------------
+
+  /** Initialize subsystem shuffleboard page and controls */
+
+  public void initializeShuffleboard() {
+    ShuffleboardTab Tab = Shuffleboard.getTab("Shooter");
+    ChosenSpeed = Shuffleboard.getTab("Shooter")
+        .add("Shooter Speed", 1.0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .getEntry();
+    ChosenIdleSpeed = Shuffleboard.getTab("Shooter")
+        .add("Idle Speed", 1.0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .getEntry();
+  }
+
+  public void updateShuffleboard() {
+    setIdleSpeed(ChosenIdleSpeed.getDouble(1.0));
+  }
 }

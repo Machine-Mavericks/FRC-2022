@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Shooter;
 
 
 public class ShooterCommand extends CommandBase {
@@ -21,12 +22,11 @@ public class ShooterCommand extends CommandBase {
   public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
-  private double shooterSpeed = 0.2;
   @Override
   public void execute() {
     double shooterButton = OI.operatorController.getLeftTriggerAxis();
-    if (shooterButton == 1) {
-      RobotContainer.m_shooter.setShooterSpeed(shooterSpeed);
+    if (shooterButton >= 0.75) {
+      RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(1.0));
     } else {
       RobotContainer.m_shooter.idle();
     }
