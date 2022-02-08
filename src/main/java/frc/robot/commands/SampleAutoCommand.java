@@ -16,8 +16,8 @@ public class SampleAutoCommand extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new FollowPath(TrajectoryConstants.testPath.points, TrajectoryConstants.testPath.startAngle,
-            TrajectoryConstants.testPath.endAngle, TrajectoryConstants.testPath.startVelocity,
-            TrajectoryConstants.testPath.endVelocity));
+        new FollowPath(TrajectoryConstants.TestPath.points, TrajectoryConstants.TestPath.startAngle,
+            TrajectoryConstants.TestPath.endAngle, TrajectoryConstants.TestPath.startVelocity,
+            TrajectoryConstants.TestPath.endVelocity));
   }
 }

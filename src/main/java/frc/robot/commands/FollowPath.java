@@ -42,7 +42,7 @@ public class FollowPath extends CommandBase {
 
     private MMState state = new MMState();
     private Pose2d odometryPose = new Pose2d();
-    private Rotation2d desiredAngle = new Rotation2d(0,0);
+    private Rotation2d desiredAngle; // = new Rotation2d(0,0);
     private ChassisSpeeds speeds = new ChassisSpeeds();
 
     private HolonomicDriveController driveController;

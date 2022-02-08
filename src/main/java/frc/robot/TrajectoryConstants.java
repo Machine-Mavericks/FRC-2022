@@ -3,9 +3,9 @@ package frc.robot;
 public class TrajectoryConstants {
     
     /**
-     * Inner class containing testPath points
+     * Inner class containing TestPath points
      */
-    public static class testPath{
+    public static class TestPath{
         public static final double[][] points = {{0.0,0.0},
                                                 {0.5,0.5},
                                                 {1.0,1.0}};
