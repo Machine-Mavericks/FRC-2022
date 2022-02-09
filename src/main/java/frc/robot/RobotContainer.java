@@ -29,9 +29,9 @@ public class RobotContainer {
 
   // The robot's subsystems are defined here...
   public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-  public static final SwerveOdometry odometry = new SwerveOdometry();
-  public static final Drivetrain drivetrain = new Drivetrain();
   public static final Gyro gyro = new Gyro();
+  public static final Drivetrain drivetrain = new Drivetrain();
+  public static final SwerveOdometry odometry = new SwerveOdometry();
   public static final Intake intake = new Intake();
   
   // The robot's subsystems are defined here...

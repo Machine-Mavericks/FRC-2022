@@ -36,7 +36,7 @@ public class FollowPath extends CommandBase {
     private final SwerveOdometry m_odometry = RobotContainer.odometry;
 
     // TODO: Tune these
-    private double p = 6;
+    private double p = 1;
     private double i = 0;
     private double d = 0.06;
 
@@ -48,8 +48,8 @@ public class FollowPath extends CommandBase {
     private HolonomicDriveController driveController;
 
     // Measured in m/s and m/s/s
-    private final double MAX_VELOCITY = 0.1;
-    private final double MAX_ACCELERATION = 4;
+    private final double MAX_VELOCITY = 0.01;
+    private final double MAX_ACCELERATION = 0.5;
 
     // Input the name of the generated path in PathPlanner
     public FollowPath(double[][] points, double startAngle, double endAngle, double startVelocity,
@@ -73,7 +73,7 @@ public class FollowPath extends CommandBase {
 
         // Create main holonomic drive controller
         driveController = new HolonomicDriveController(
-                new PIDController(p, i, d), new PIDController(p, i, d), rotationController);
+                new PIDController(p, 0.0, 0.0), new PIDController(p, 0.0, 0.0), rotationController); //TODO: change back
         driveController.setEnabled(true);
 
         // Start timer when path begins

@@ -28,9 +28,9 @@ public class DriveCommand extends CommandBase {
   public void execute() {
     // Driver inputs, should be in range [-1,1]
     // TODO: Map to controller, using functions like OI.driverController.getLeftX()
-    double xInput = OI.driverController.getLeftX();
-    double yInput =   OI.driverController.getLeftY();
-    double rotInput = OI.driverController.getRightX();
+    double xInput = OI.driverController.getLeftX()*0.25;
+    double yInput =   OI.driverController.getLeftY()*0.25;
+    double rotInput = OI.driverController.getRightX()*0.25; //TODO: put slide to control max speed on shuffleboard
 
     xInput = Math.abs(xInput) > 0.1 ? xInput : 0;
     yInput = Math.abs(yInput) > 0.1 ? yInput : 0;

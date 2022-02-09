@@ -179,7 +179,6 @@ public class Drivetrain extends SubsystemBase {
         @Override
         public void periodic() {
 
-                m_field.setRobotPose(m_odometry.getPose2d());
                 m_states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
                 SwerveDriveKinematics.desaturateWheelSpeeds(m_states, MAX_VELOCITY_METERS_PER_SECOND);
                 SmartDashboard.putString("Speeds", m_chassisSpeeds.toString());
