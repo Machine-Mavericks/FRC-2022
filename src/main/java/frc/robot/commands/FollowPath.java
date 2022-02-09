@@ -48,7 +48,7 @@ public class FollowPath extends CommandBase {
     private HolonomicDriveController driveController;
 
     // Measured in m/s and m/s/s
-    private final double MAX_VELOCITY = 5;
+    private final double MAX_VELOCITY = 0.1;
     private final double MAX_ACCELERATION = 4;
 
     // Input the name of the generated path in PathPlanner
@@ -89,8 +89,7 @@ public class FollowPath extends CommandBase {
         state = MMState.fromState(trajectory.sample(timer.get()));
         desiredAngle = state.holonomicRotation;
         odometryPose = m_odometry.getPose2d();
-        //speeds = driveController.calculate(odometryPose, (Trajectory.State) state, desiredAngle);
-        
+        speeds = driveController.calculate(odometryPose, (Trajectory.State) state, desiredAngle);
         // Send the desired speeds to the m_drivetrain
         m_drivetrain.setChassisSpeeds(speeds);
 
