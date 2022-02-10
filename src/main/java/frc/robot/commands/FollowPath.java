@@ -73,7 +73,7 @@ public class FollowPath extends CommandBase {
 
         // Create main holonomic drive controller
         driveController = new HolonomicDriveController(
-                new PIDController(p, 0.0, 0.0), new PIDController(p, 0.0, 0.0), rotationController); //TODO: change back
+                new PIDController(p, i, d), new PIDController(p, i, d), rotationController);
         driveController.setEnabled(true);
 
         // Start timer when path begins
@@ -84,15 +84,20 @@ public class FollowPath extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // To access the desired angle at the current state, the Trajectory.State must
-        // be converted to an MMState
-        state = MMState.fromState(trajectory.sample(timer.get()));
-        desiredAngle = state.holonomicRotation;
-        odometryPose = m_odometry.getPose2d();
-        speeds = driveController.calculate(odometryPose, (Trajectory.State) state, desiredAngle);
-        // Send the desired speeds to the m_drivetrain
-        m_drivetrain.setChassisSpeeds(speeds);
+        // Get next trajectory state from our path
+        State targetPathState = trajectory.sample(timer.get());
 
+        // set robot's angle - for now choose same angle as the path. We can improve this after we get basic path working
+        desiredAngle = targetPathState.poseMeters.getRotation();
+
+        // get our current odeometry Pose
+        odometryPose = m_odometry.getPose2d();
+
+        // determine robot chassis speeds
+        speeds = driveController.calculate(odometryPose, targetPathState, desiredAngle);
+
+        // instruct drive system to move robot
+        m_drivetrain.setChassisSpeeds(speeds);
 
     }
 
