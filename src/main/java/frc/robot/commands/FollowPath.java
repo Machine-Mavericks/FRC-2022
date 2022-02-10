@@ -40,7 +40,6 @@ public class FollowPath extends CommandBase {
     private double i = 0;
     private double d = 0.06;
 
-    private MMState state = new MMState();
     private Pose2d odometryPose = new Pose2d();
     private Rotation2d desiredAngle; // = new Rotation2d(0,0);
     private ChassisSpeeds speeds = new ChassisSpeeds();
@@ -148,19 +147,11 @@ public class FollowPath extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        // we are finished when the time spent in this command is >= duration of path (in seconds)
+        if (timer.get() >= trajectory.getTotalTimeSeconds())
+            return true;
+        else
+            return false;
     }
 
-    private static class MMState extends PathPlannerState {
-
-        static MMState fromState(State s){
-            MMState out = new MMState();
-            out.timeSeconds = s.timeSeconds;
-            out.velocityMetersPerSecond = s.velocityMetersPerSecond;
-            out.accelerationMetersPerSecondSq = s.accelerationMetersPerSecondSq;
-            out.poseMeters = s.poseMeters;
-            out.curvatureRadPerMeter = s.curvatureRadPerMeter;
-            return out;
-        }
-    }
 }
