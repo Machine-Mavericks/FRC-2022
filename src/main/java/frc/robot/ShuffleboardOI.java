@@ -51,6 +51,8 @@ public class ShuffleboardOI extends SubsystemBase {
      * Typically contains autonomous commands and other top-level robot controls*/
     private void initializeMainShuffleboardPage() {
 
+        initializeShuffleboard();
+
         // Create Main Tab in Shuffleboard
         ShuffleboardTab tab = Shuffleboard.getTab("Auto");
 
@@ -95,5 +97,34 @@ public class ShuffleboardOI extends SubsystemBase {
     public boolean getAutoCommandSimpleRight() {
         return m_toggleSimpleRight.getBoolean(false);
     }
+
+        // -------------------- Subsystem Shuffleboard Methods --------------------
+
+        public static NetworkTableEntry x1;
+        public static NetworkTableEntry speedX;
+        public static NetworkTableEntry speedY;
+        public static NetworkTableEntry y1;
+        public static NetworkTableEntry rot;
+        public static NetworkTableEntry rot1;
+        public static NetworkTableEntry time; 
+        public static NetworkTableEntry x;
+        public static NetworkTableEntry y;
+  /** Initialize subsystem shuffleboard page and controls */
+  private void initializeShuffleboard() {
+    // Create odometry page in shuffleboard
+    ShuffleboardTab Tab = Shuffleboard.getTab("path following");
+
+    ShuffleboardLayout l1 = Tab.getLayout("path following", BuiltInLayouts.kList);
+    l1.withPosition(0, 0);
+    l1.withSize(1, 10);
+    x1 = l1.add("x1", 0.0).getEntry();
+    y1 = l1.add("y1", 0.0).getEntry();
+    x = l1.add("x", 0.0).getEntry();
+    y = l1.add("y", 0.0).getEntry();
+    speedX = l1.add("speedX", 0.0).getEntry();
+    speedY = l1.add("speedY", 0.0).getEntry();
+    rot = l1.add("rot",0.0).getEntry();
+    time = l1.add("time", 0.0).getEntry();
+  }
 
 } // end class ShuffleboardOI

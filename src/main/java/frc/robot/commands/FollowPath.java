@@ -27,10 +27,24 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.SwerveOdometry;
 import frc.robot.RobotContainer;
 
+////////////////////////////
+import java.util.Map;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
+
+
+
 public class FollowPath extends CommandBase {
+
     private Drivetrain m_drivetrain = RobotContainer.drivetrain;
     private Trajectory robotRelativeTrajectory;
     private Trajectory trajectory;
+    private double temp;
 
     private Timer timer = new Timer();
     private final SwerveOdometry m_odometry = RobotContainer.odometry;
@@ -47,7 +61,7 @@ public class FollowPath extends CommandBase {
     private HolonomicDriveController driveController;
 
     // Measured in m/s and m/s/s
-    private final double MAX_VELOCITY = 0.01;
+    private final double MAX_VELOCITY = 1.0;
     private final double MAX_ACCELERATION = 0.5;
 
     // Input the name of the generated path in PathPlanner
@@ -95,8 +109,29 @@ public class FollowPath extends CommandBase {
         // determine robot chassis speeds
         speeds = driveController.calculate(odometryPose, targetPathState, desiredAngle);
 
+        //swap x and y
+        /*temp = -speeds.vxMetersPerSecond;
+        speeds.vxMetersPerSecond = -speeds.vyMetersPerSecond;
+        speeds.vyMetersPerSecond = temp;*/
+
+        speeds.omegaRadiansPerSecond = 0.0;
+        speeds.vyMetersPerSecond = 1.0;
+        speeds.vxMetersPerSecond = 0.0;
+
         // instruct drive system to move robot
         m_drivetrain.setChassisSpeeds(speeds);
+
+       RobotContainer.shuffleboard.time.setDouble(timer.get());
+        RobotContainer.shuffleboard.x.setDouble(targetPathState.poseMeters.getX());
+        RobotContainer.shuffleboard.y.setDouble(targetPathState.poseMeters.getY());
+        RobotContainer.shuffleboard.rot.setDouble(trajectory.getTotalTimeSeconds());
+
+        RobotContainer.shuffleboard.x1.setDouble(odometryPose.getX());
+        RobotContainer.shuffleboard.y1.setDouble(odometryPose.getY());
+        //RobotContainer.shuffleboard.rot1.setDouble(odometryPose.getRotation().getDegrees());
+
+        RobotContainer.shuffleboard.speedX.setDouble(speeds.vxMetersPerSecond);
+        RobotContainer.shuffleboard.speedY.setDouble(speeds.vyMetersPerSecond);
 
     }
 
