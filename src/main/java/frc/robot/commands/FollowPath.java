@@ -50,9 +50,9 @@ public class FollowPath extends CommandBase {
     private final SwerveOdometry m_odometry = RobotContainer.odometry;
 
     // TODO: Tune these
-    private double p = 1;
+    private double p = 7;
     private double i = 0;
-    private double d = 0.06;
+    private double d = 0;  //0.06;
 
     private Pose2d odometryPose = new Pose2d();
     private Rotation2d desiredAngle; // = new Rotation2d(0,0);
@@ -86,7 +86,7 @@ public class FollowPath extends CommandBase {
 
         // Create main holonomic drive controller
         driveController = new HolonomicDriveController(
-                new PIDController(p, i, d), new PIDController(p, i, d), rotationController);
+                new PIDController(p, i, d), new PIDController(-p, i, d), rotationController);
         driveController.setEnabled(true);
 
         // Start timer when path begins
@@ -101,7 +101,7 @@ public class FollowPath extends CommandBase {
         State targetPathState = trajectory.sample(timer.get());
 
         // set robot's angle - for now choose same angle as the path. We can improve this after we get basic path working
-        desiredAngle = targetPathState.poseMeters.getRotation();
+        desiredAngle = new Rotation2d(0.0); // targetPathState.poseMeters.getRotation();
 
         // get our current odeometry Pose
         odometryPose = m_odometry.getPose2d();
@@ -109,14 +109,20 @@ public class FollowPath extends CommandBase {
         // determine robot chassis speeds
         speeds = driveController.calculate(odometryPose, targetPathState, desiredAngle);
 
+        //speeds.omegaRadiansPerSecond = 1.0;
+        //speeds.vyMetersPerSecond = -0.0;
+        //speeds.vxMetersPerSecond = 0.0;
+        
+        // negative of y speed
+        speeds.vyMetersPerSecond = -speeds.vyMetersPerSecond;
+        speeds.omegaRadiansPerSecond = - speeds.omegaRadiansPerSecond;
+        
         //swap x and y
-        /*temp = -speeds.vxMetersPerSecond;
-        speeds.vxMetersPerSecond = -speeds.vyMetersPerSecond;
-        speeds.vyMetersPerSecond = temp;*/
+        //temp = -speeds.vxMetersPerSecond;
+        //speeds.vxMetersPerSecond = -speeds.vyMetersPerSecond;
+        //speeds.vyMetersPerSecond = temp;
 
-        speeds.omegaRadiansPerSecond = 0.0;
-        speeds.vyMetersPerSecond = 1.0;
-        speeds.vxMetersPerSecond = 0.0;
+        
 
         // instruct drive system to move robot
         m_drivetrain.setChassisSpeeds(speeds);

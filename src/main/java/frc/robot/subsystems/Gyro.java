@@ -23,16 +23,17 @@ public class Gyro extends SubsystemBase {
   private NetworkTableEntry m_xAcceleration;
   private NetworkTableEntry m_yAcceleration;
   // make our gyro object
-  AHRS gyro;
+  private AHRS gyro;
 
   // Offset angle to allow for starting in various orientations
   private double m_offset = 0;
 
   /** Creates a new Gyro. */
   public Gyro() {
+    //gyro = new AHRS(Port.kMXP);
     gyro = new AHRS(Port.kUSB);
-    gyro.calibrate();
     gyro.reset();
+    gyro.calibrate();
     initializeShuffleboard();
   }
 
@@ -49,8 +50,9 @@ public class Gyro extends SubsystemBase {
    */
   public double getYaw() {
     // Flip angle since gyro is mounted upside down
-    double raw = 360-gyro.getYaw() + m_offset;
-    return raw > 180 ? raw - 360 : raw;
+    return gyro.getYaw();
+    //double raw = 360-gyro.getYaw() + m_offset;
+    //return raw > 180 ? raw - 360 : raw;
   }
 
   /**
