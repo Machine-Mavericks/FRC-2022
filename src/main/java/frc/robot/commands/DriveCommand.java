@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
@@ -37,7 +36,7 @@ public class DriveCommand extends CommandBase {
     yInput = Math.abs(yInput) > 0.1 ? yInput : 0;
     rotInput = Math.abs(rotInput) > 0.1 ? rotInput*0.25 : 0;
 
-    m_drivetrain.drive(new Translation2d(yInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND, xInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND), rotInput*Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
+    m_drivetrain.drive(new Translation2d(yInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND, xInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND), rotInput*Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, true);
   }
 
   // Called once the command ends or is interrupted.
