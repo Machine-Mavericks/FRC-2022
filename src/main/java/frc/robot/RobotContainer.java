@@ -13,6 +13,8 @@ import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveOdometry;
 
@@ -33,6 +35,8 @@ public class RobotContainer {
   public static final Gyro gyro = new Gyro();
   public static final SwerveOdometry odometry = new SwerveOdometry();
   public static final Shooter m_shooter = new Shooter();
+  public static final Lifter lifter = new Lifter();
+  public static final Intake intake = new Intake();
   
   // The robot's subsystems are defined here...
   private static final ExampleCommand autoCommand = new ExampleCommand(exampleSubsystem);
@@ -42,6 +46,8 @@ public class RobotContainer {
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
     m_shooter.idle();
+    // Initialise gyro to be forward-facing
+    gyro.setCurrentYaw(0);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -56,6 +62,10 @@ public class RobotContainer {
 
     OI.shootButton.whenPressed(new ShooterCommand());
     }
+    // TODO: Disable binding for competition use
+    //OI.zeroButton.whenPressed(() -> gyro.setCurrentYaw(0));
+    //OI.intakeButton.whileHeld(new IntakeCommand());
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
