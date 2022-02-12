@@ -14,6 +14,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveOdometry;
 
 /**
@@ -33,7 +34,8 @@ public class RobotContainer {
   public static final Gyro gyro = new Gyro();
   public static final SwerveOdometry odometry = new SwerveOdometry();
   public static final Intake intake = new Intake();
-  
+  public static final Limelight limelight = new Limelight("camera name"); //TODO: set camera name
+
   // The robot's subsystems are defined here...
   private static final ExampleCommand autoCommand = new ExampleCommand(exampleSubsystem);
 
