@@ -34,10 +34,6 @@ public class Lifter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
- 
-  public void liftBalls(){
-    leaderLifterTalon.set(ControlMode.PercentOutput, lifterSpeedEntry.getDouble(1.0));
-  }
 
   public void initializeShuffleboard(){
     ShuffleboardTab Tab = Shuffleboard.getTab("Lifter");
@@ -46,5 +42,12 @@ public class Lifter extends SubsystemBase {
         .withWidget(BuiltInWidgets.kNumberSlider)
         .getEntry();
   }
+  
+  public void liftBalls(){
+    leaderLifterTalon.set(ControlMode.PercentOutput, lifterSpeedEntry.getDouble(1.0));
+  }
 
+  public void stopMotor() {
+    leaderLifterTalon.set(ControlMode.PercentOutput, 0.0);
+  }
 }
