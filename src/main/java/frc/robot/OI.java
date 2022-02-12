@@ -14,7 +14,7 @@ public class OI {
      */
     private static class Bindings {
         /** Example button */
-        static final Button EXAMPLE_BUTTON = XboxController.Button.kA;
+        static final Button SHOOT_BUTTON = XboxController.Button.kA;
     }
 
     /** Port for controller used by driver */
@@ -28,5 +28,5 @@ public class OI {
     public static final XboxController operatorController = new XboxController(OPERATOR_CONTROLLER_PORT);
 
     /** Example button. Mapped to {@link Bindings#EXAMPLE_BUTTON} */
-    public static final JoystickButton exampleButton = new JoystickButton(driverController, Bindings.EXAMPLE_BUTTON.value);
+    public static final JoystickButton shootButton = new JoystickButton(driverController, Bindings.SHOOT_BUTTON.value);
 }

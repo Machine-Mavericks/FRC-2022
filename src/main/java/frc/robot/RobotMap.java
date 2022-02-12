@@ -35,8 +35,10 @@ public class RobotMap {
         public static final int BR_STEER_FALCON = 8;
         /** CAN ID for front-left steer encoder */
         public static final int BR_STEER_ENCODER = 10;
-        public static final int RIGHT_SHOOTER_FALCON = 98;
-        public static final int LEFT_SHOOTER_FALCON = 99;
+        /** CAN ID for right shooter motor */
+        public static final int RIGHT_SHOOTER_FALCON = 16;
+        /** CAN ID for left shooter motor */
+        public static final int LEFT_SHOOTER_FALCON = 17;
     }
 
 

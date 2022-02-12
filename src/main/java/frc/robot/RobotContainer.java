@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
@@ -40,7 +41,7 @@ public class RobotContainer {
   /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
-
+    m_shooter.idle();
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -51,7 +52,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private static void configureButtonBindings() {}
+  private static void configureButtonBindings() {
+
+    OI.shootButton.whenPressed(new ShooterCommand());
+    }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

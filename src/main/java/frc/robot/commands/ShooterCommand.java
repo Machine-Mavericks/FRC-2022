@@ -5,12 +5,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.OI;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Shooter;
 
 
 public class ShooterCommand extends CommandBase {
+  double shootTime = 0;
   /** Creates a new ShooterCommand. */
   public ShooterCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,23 +23,21 @@ public class ShooterCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double shooterButton = OI.operatorController.getLeftTriggerAxis();
-    if (shooterButton >= 0.75) {
-      RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(1.0));
-    } else {
-      RobotContainer.m_shooter.idle();
-    }
+    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(1.0));
+    shootTime += 0.02;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+    RobotContainer.m_shooter.idle();
+    shootTime = 0;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (shootTime > 4.0);
+    //return false;
   }
 }

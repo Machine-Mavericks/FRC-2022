@@ -6,15 +6,13 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import edu.wpi.first.math.trajectory.constraint.TrajectoryConstraint.MinMax;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -35,10 +33,12 @@ public class Shooter extends SubsystemBase {
 
   /** Creates a new Shooter. */
   public Shooter() {
+    rightShooterFalcon.setInverted(TalonFXInvertType.Clockwise);
     leftShooterFalcon.follow(rightShooterFalcon);
     leftShooterFalcon.setInverted(InvertType.OpposeMaster);
-    rightShooterFalcon.set(ControlMode.PercentOutput, 0);
-    isIdling = false;
+  
+    //rightShooterFalcon.set(ControlMode.PercentOutput, 0);
+    isIdling = true;
     rightShooterFalcon.configPeakOutputForward(1, 0);
     rightShooterFalcon.configPeakOutputReverse(0, 0);
     initializeShuffleboard();
@@ -48,6 +48,7 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    updateShuffleboard();
   }
 
   /**
@@ -78,7 +79,7 @@ public class Shooter extends SubsystemBase {
    */
   public void setShooterSpeed(double shooterSpeed) {
     rightShooterFalcon.set(ControlMode.PercentOutput, shooterSpeed);
-    isIdling = false;
+    //isIdling = false;
   }
   /**
    * This method will raise or lower the hood on the shooter for high or low
