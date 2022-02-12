@@ -125,12 +125,11 @@ public class Shooter extends SubsystemBase {
       l1.withPosition(0, 0);
       l1.withSize(1, 4);
       motorSpeed = l1.add("motor speed", 0.0).getEntry();
-      motorSpeed = l1.add("X (m)", 0.0).getEntry();
   }
 
   public void updateShuffleboard() {
     
     motorSpeed.setDouble(rightShooterFalcon.getSelectedSensorVelocity()*((10.0/2048.0)*60));
-    
+    setIdleSpeed(ChosenIdleSpeed.getDouble(1.0));
   }
 }
