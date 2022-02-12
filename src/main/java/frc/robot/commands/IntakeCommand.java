@@ -45,7 +45,6 @@ public class IntakeCommand extends CommandBase {
       RobotContainer.lifter.liftBalls();
     }
     
-    RobotContainer.lifter.liftBalls();
   }
 
   // Called once the command ends or is interrupted.
