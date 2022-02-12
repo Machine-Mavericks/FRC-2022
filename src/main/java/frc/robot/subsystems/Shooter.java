@@ -10,8 +10,10 @@ import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
@@ -30,6 +32,8 @@ public class Shooter extends SubsystemBase {
 
   public NetworkTableEntry ChosenSpeed;
   public NetworkTableEntry ChosenIdleSpeed;
+
+  private NetworkTableEntry motorSpeed;
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -115,9 +119,18 @@ public class Shooter extends SubsystemBase {
         .add("Idle Speed", 1.0)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .getEntry();
+
+    // create controls to display robot position, angle, and gyro angle
+    ShuffleboardLayout l1 = Tab.getLayout("Shooter", BuiltInLayouts.kList);
+      l1.withPosition(0, 0);
+      l1.withSize(1, 4);
+      motorSpeed = l1.add("motor speed", 0.0).getEntry();
+      motorSpeed = l1.add("X (m)", 0.0).getEntry();
   }
 
   public void updateShuffleboard() {
-    setIdleSpeed(ChosenIdleSpeed.getDouble(1.0));
+    
+    motorSpeed.setDouble(rightShooterFalcon.getSelectedSensorVelocity()*((10.0/2048.0)*60));
+    
   }
 }

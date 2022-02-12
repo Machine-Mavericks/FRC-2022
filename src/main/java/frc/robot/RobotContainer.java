@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -61,10 +62,10 @@ public class RobotContainer {
   private static void configureButtonBindings() {
 
     OI.shootButton.whenPressed(new ShooterCommand());
-    }
     // TODO: Disable binding for competition use
     //OI.zeroButton.whenPressed(() -> gyro.setCurrentYaw(0));
-    //OI.intakeButton.whileHeld(new IntakeCommand());
+    OI.intakeButton.whileHeld(new IntakeCommand());
+    }
   
 
   /**
