@@ -33,8 +33,8 @@ public class RobotContainer {
   public static final Drivetrain drivetrain = new Drivetrain();
   public static final Gyro gyro = new Gyro();
   public static final SwerveOdometry odometry = new SwerveOdometry();
-  public static final Intake intake = new Intake();
   public static final Lifter lifter = new Lifter();
+  public static final Intake intake = new Intake();
   
   // The robot's subsystems are defined here...
   private static final ExampleCommand autoCommand = new ExampleCommand(exampleSubsystem);

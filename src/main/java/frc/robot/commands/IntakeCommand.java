@@ -30,6 +30,7 @@ public class IntakeCommand extends CommandBase {
   @Override
   public void initialize() {
     RobotContainer.intake.setMotorSpeed(Intake.MOTORSPEED);
+    RobotContainer.lifter.liftBalls();
     m_timer = 0;
   }
 
@@ -37,13 +38,13 @@ public class IntakeCommand extends CommandBase {
   @Override
   public void execute() {
     m_timer++;
-    
+    /*
     if (liftLimit.get()){
       RobotContainer.lifter.stopMotor();
     }
     else{
       RobotContainer.lifter.liftBalls();
-    }
+    }*/
     
   }
 
