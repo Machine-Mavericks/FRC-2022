@@ -78,7 +78,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+   
+    RobotContainer.gyro.resetGyro();
+   
     autonomousCommand = RobotContainer.getAutonomousCommand();
+    RobotContainer.odometry.InitializetoZero();
 
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
@@ -100,6 +104,9 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+
+    RobotContainer.gyro.resetGyro();
+    RobotContainer.odometry.InitializetoZero();
   }
 
   /** This function is called periodically during operator control. */

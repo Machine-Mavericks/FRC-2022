@@ -7,8 +7,8 @@ public class TrajectoryConstants {
      */
     public static class TestPath{
         public static final double[][] points = {{0.0,0.0},
-                                                {0.0,0.5},
-                                                {0.0,1.0}};
+                                                {0.5,0.0},
+                                                {1.0,0.0}};
         public static final double startAngle = 0.0;
         public static final double endAngle = 0.0;
         public static final double startVelocity = 0.0;
