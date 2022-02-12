@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.LEDCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
@@ -21,16 +22,20 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  // The robot's subsystems and are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final LED m_led = new LED(RobotMap.PWMPorts.LED_STRIP);
   private final Gyro m_gyro = new Gyro();
   private final Drivetrain m_drivetrain = new Drivetrain(RobotMap.frontLeftModule, RobotMap.frontRightModule, RobotMap.backLeftModule, RobotMap.backRightModule, m_gyro);
+  
+  // The robot's commands and are defined here...
+  private final LEDCommand m_LEDCommand = new LEDCommand(m_led);
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_drivetrain.setDefaultCommand(new DriveCommand(m_drivetrain));
+    //m_led.setDefaultCommand(new LEDCommand(m_led));
 
     // Configure the button bindings
     configureButtonBindings();
