@@ -32,11 +32,11 @@ public class RobotContainer {
   public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
   public static final Drivetrain drivetrain = new Drivetrain();
   public static final Gyro gyro = new Gyro();
-  public static final LED m_led = new LED(RobotMap.PWMPorts.LED_STRIP);
+  public static final LED led = new LED(RobotMap.PWMPorts.LED_STRIP);
   public static final SwerveOdometry odometry = new SwerveOdometry();
   
   // The robot's commands are defined here...
-  private static final LEDCommand m_LEDCommand = new LEDCommand(m_led);
+  private static final LEDCommand LEDCommand = new LEDCommand(led);
   private static final ExampleCommand autoCommand = new ExampleCommand(exampleSubsystem);
 
 
@@ -54,7 +54,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private static void configureButtonBindings() {}
+  private static void configureButtonBindings() {
+    OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
