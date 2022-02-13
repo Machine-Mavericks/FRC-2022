@@ -1,0 +1,84 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.commands;
+
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.OI;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.Limelight;
+
+public class SteerTowardsTarget extends CommandBase {
+
+  private Drivetrain m_drivetrain = RobotContainer.drivetrain;
+  private Limelight m_limelight = RobotContainer.limelight;
+  private Gyro m_gyro = RobotContainer.gyro;
+  // minimum chevron detection area (# square pixels)
+  public static final double MIN_BALL_DETECTION_AREA = 1000.0;
+  public static final double MIN_BALL_VERT_SIZE = 20.0;
+
+  // get angle to target
+  double TargetAngle = 0;
+
+  /** Creates a new SteerTowardsTarget. */
+  public SteerTowardsTarget() {
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_drivetrain);
+    addRequirements(m_limelight);
+    addRequirements(m_gyro);
+  }
+
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+
+    while ((RobotContainer.limelight.isTargetPresent())
+        && (RobotContainer.limelight.getTargetArea() >= MIN_BALL_DETECTION_AREA)) {
+
+      TargetAngle = RobotContainer.limelight.getHorizontalTargetOffsetAngle();
+
+      // get speed to drive towards ball
+      double yInput = OI.driverController.getLeftY();
+      double xInput = OI.driverController.getLeftX();
+
+      double rotInput = OI.driverController.getRightX();
+
+      // is angle correction positive or negative?
+      if (TargetAngle >= 0.0) {
+        // drive towards target
+        RobotContainer.drivetrain.drive(
+            new Translation2d(yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
+                xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
+            rotInput * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
+      } // TODO: update this to be correct
+      else {
+        // drive towards target
+        RobotContainer.drivetrain.drive(
+            new Translation2d(yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
+                xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
+            rotInput * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
+      } // TODO: update this to be correct
+
+    }
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return false;
+  }
+}
