@@ -52,6 +52,7 @@ public class IntakeCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     RobotContainer.intake.setMotorSpeed(0);
+    RobotContainer.lifter.stopMotor();
   }
 
   // Returns true when the command should end.
