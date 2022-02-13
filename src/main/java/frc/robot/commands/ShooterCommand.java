@@ -23,13 +23,17 @@ public class ShooterCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // set shooter speed to that set on shuffleboard
     RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(1.0));
+
+    // increment timer
     shootTime += 0.02;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    // go back to idle speed and set timer to 0 until command starts again
     RobotContainer.m_shooter.idle();
     shootTime = 0;
   }
@@ -38,6 +42,5 @@ public class ShooterCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     return (shootTime > 4.0);
-    //return false;
   }
 }

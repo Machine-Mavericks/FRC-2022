@@ -29,14 +29,18 @@ public class IntakeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // turn on the intake and the lifter
     RobotContainer.intake.setMotorSpeed(Intake.MOTORSPEED);
     RobotContainer.lifter.liftBalls();
+
+    // initialize timer at start of command
     m_timer = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // increment timer
     m_timer++;
     /*
     if (liftLimit.get()){
@@ -51,6 +55,8 @@ public class IntakeCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    
+    // stop the intake and lifter
     RobotContainer.intake.setMotorSpeed(0);
     RobotContainer.lifter.stopMotor();
   }

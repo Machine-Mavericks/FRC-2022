@@ -32,16 +32,18 @@ public class Shooter extends SubsystemBase {
 
   public NetworkTableEntry ChosenSpeed;
   public NetworkTableEntry ChosenIdleSpeed;
-
   private NetworkTableEntry motorSpeed;
+  private NetworkTableEntry motorVoltage;
+  private NetworkTableEntry rightMotorCurrent;
+  private NetworkTableEntry leftMotorCurrent;
 
   /** Creates a new Shooter. */
   public Shooter() {
     rightShooterFalcon.setInverted(TalonFXInvertType.Clockwise);
     leftShooterFalcon.follow(rightShooterFalcon);
     leftShooterFalcon.setInverted(InvertType.OpposeMaster);
-  
-    //rightShooterFalcon.set(ControlMode.PercentOutput, 0);
+
+    // rightShooterFalcon.set(ControlMode.PercentOutput, 0);
     isIdling = true;
     rightShooterFalcon.configPeakOutputForward(1, 0);
     rightShooterFalcon.configPeakOutputReverse(0, 0);
@@ -83,7 +85,7 @@ public class Shooter extends SubsystemBase {
    */
   public void setShooterSpeed(double shooterSpeed) {
     rightShooterFalcon.set(ControlMode.PercentOutput, shooterSpeed);
-    //isIdling = false;
+    // isIdling = false;
   }
   /**
    * This method will raise or lower the hood on the shooter for high or low
@@ -115,21 +117,29 @@ public class Shooter extends SubsystemBase {
         .add("Shooter Speed", 1.0)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .getEntry();
+
     ChosenIdleSpeed = Shuffleboard.getTab("Shooter")
         .add("Idle Speed", 1.0)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .getEntry();
 
-    // create controls to display robot position, angle, and gyro angle
+    // add RPM
     ShuffleboardLayout l1 = Tab.getLayout("Shooter", BuiltInLayouts.kList);
-      l1.withPosition(0, 0);
-      l1.withSize(1, 4);
-      motorSpeed = l1.add("motor speed", 0.0).getEntry();
+    l1.withPosition(0, 0);
+    l1.withSize(1, 4);
+    motorSpeed = l1.add("motor speed", 0.0).getEntry();
+    motorVoltage = l1.add("motor voltage", 0.0).getEntry();
+    leftMotorCurrent = l1.add("L motor current",0.0).getEntry();
+    rightMotorCurrent = l1.add("R motor current",0.0).getEntry();
   }
 
   public void updateShuffleboard() {
-    
-    motorSpeed.setDouble(rightShooterFalcon.getSelectedSensorVelocity()*((10.0/2048.0)*60));
+
+    motorSpeed.setDouble(rightShooterFalcon.getSelectedSensorVelocity() * ((10.0 / 2048.0) * 60));
     setIdleSpeed(ChosenIdleSpeed.getDouble(1.0));
+    motorVoltage.setDouble(rightShooterFalcon.getMotorOutputVoltage());
+    leftMotorCurrent.setDouble(leftShooterFalcon.getSupplyCurrent());
+    rightMotorCurrent.setDouble(rightShooterFalcon.getSupplyCurrent());
+
   }
 }
