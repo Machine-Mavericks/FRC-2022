@@ -17,9 +17,7 @@ public class SteerTowardsTarget extends CommandBase {
   private Gyro m_gyro = RobotContainer.gyro;
   // minimum chevron detection area (# square pixels)
   public static final double MIN_HEX_DETECTION_AREA = 1000.0;
-  public static final double MIN_HEX_VERT_SIZE = 20.0;
-
-  int boolean 
+  public static final double MIN_HEX_VERT_SIZE = 20.0; 
 
   public TargetDetection GetTargetEstimation() {
 
