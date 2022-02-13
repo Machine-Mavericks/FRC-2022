@@ -7,9 +7,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-
 public class ShooterCommand extends CommandBase {
   double shootTime = 0;
+
   /** Creates a new ShooterCommand. */
   public ShooterCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -18,7 +18,8 @@ public class ShooterCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -34,7 +35,7 @@ public class ShooterCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     // go back to idle speed and set timer to 0 until command starts again
-    RobotContainer.m_shooter.idle();
+    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenIdleSpeed.getDouble(2500));
     shootTime = 0;
   }
 

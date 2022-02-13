@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
@@ -27,9 +29,6 @@ public class Shooter extends SubsystemBase {
   private TalonFX rightShooterFalcon = new TalonFX(RobotMap.CANID.RIGHT_SHOOTER_FALCON);
   private TalonFX leftShooterFalcon = new TalonFX(RobotMap.CANID.LEFT_SHOOTER_FALCON);
 
-  private double idleSpeed;
-  private boolean isIdling;
-
   public NetworkTableEntry ChosenSpeed;
   public NetworkTableEntry ChosenIdleSpeed;
   private NetworkTableEntry motorSpeed;
@@ -43,12 +42,11 @@ public class Shooter extends SubsystemBase {
     leftShooterFalcon.follow(rightShooterFalcon);
     leftShooterFalcon.setInverted(InvertType.OpposeMaster);
 
-    rightShooterFalcon.config_kF(0,  0.0019, 0);
-    rightShooterFalcon.config_kP(0, 0.32, 0);
-    rightShooterFalcon.config_kI(0, 0.00008, 0);
+    rightShooterFalcon.config_kF(0,  0.6, 0);
+    // rightShooterFalcon.config_kP(0, 0.32, 0);
+    // rightShooterFalcon.config_kI(0, 0.00008, 0);
 
     // rightShooterFalcon.set(ControlMode.PercentOutput, 0);
-    isIdling = true;
     rightShooterFalcon.configPeakOutputForward(1, 0);
     rightShooterFalcon.configPeakOutputReverse(0, 0);
     initializeShuffleboard();
@@ -61,26 +59,6 @@ public class Shooter extends SubsystemBase {
     updateShuffleboard();
   }
 
-  /**
-   * This method will set the idle speed of the shooter
-   * 
-   * @param newIdleSpeed the desired idle speed
-   */
-
-  public void setIdleSpeed(double newIdleSpeed) {
-    idleSpeed = newIdleSpeed;
-    if (isIdling) {
-      idle();
-    }
-  }
-
-  /**
-   * This method will set the shooter's motors to the given idle speed
-   */
-  public void idle() {
-    rightShooterFalcon.set(ControlMode.PercentOutput, idleSpeed);
-    isIdling = true;
-  }
 
   /**
    * This method will set the motors to the given motor speed
@@ -88,7 +66,7 @@ public class Shooter extends SubsystemBase {
    * @param shooterSpeed the desired motor speed in rpm
    */
   public void setShooterSpeed(double shooterSpeed) {
-    rightShooterFalcon.set(ControlMode.Velocity,shooterSpeed* 3.41333333);
+    rightShooterFalcon.set(ControlMode.Velocity,shooterSpeed* (2048/600.0));
   }
   /**
    * This method will raise or lower the hood on the shooter for high or low
@@ -116,19 +94,21 @@ public class Shooter extends SubsystemBase {
 
   public void initializeShuffleboard() {
     ShuffleboardTab Tab = Shuffleboard.getTab("Shooter");
-    ChosenSpeed = Shuffleboard.getTab("Shooter")
-        .add("Shooter Speed", 1.0)
+    ChosenIdleSpeed = Shuffleboard.getTab("Shooter")
+        .add("Idle speed (RPM)", 1.0)
         .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min", 0, "max", 5000))
         .getEntry();
 
-    ChosenIdleSpeed = Shuffleboard.getTab("Shooter")
-        .add("Idle Speed", 1.0)
+    ChosenSpeed = Shuffleboard.getTab("Shooter")
+        .add("shooter Speed (RPM)", 1.0)
         .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min", 0, "max", 5000))
         .getEntry();
 
     // add RPM
     ShuffleboardLayout l1 = Tab.getLayout("Shooter", BuiltInLayouts.kList);
-    l1.withPosition(0, 0);
+    l1.withPosition(3, 0);
     l1.withSize(1, 4);
     motorSpeed = l1.add("motor speed", 0.0).getEntry();
     motorVoltage = l1.add("motor voltage", 0.0).getEntry();
@@ -139,7 +119,6 @@ public class Shooter extends SubsystemBase {
   public void updateShuffleboard() {
 
     motorSpeed.setDouble(rightShooterFalcon.getSelectedSensorVelocity() * ((10.0 / 2048.0) * 60));
-    setIdleSpeed(ChosenIdleSpeed.getDouble(1.0));
     motorVoltage.setDouble(rightShooterFalcon.getMotorOutputVoltage());
     leftMotorCurrent.setDouble(leftShooterFalcon.getSupplyCurrent());
     rightMotorCurrent.setDouble(rightShooterFalcon.getSupplyCurrent());
