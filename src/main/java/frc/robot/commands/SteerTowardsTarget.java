@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
@@ -23,6 +24,13 @@ public class SteerTowardsTarget extends CommandBase {
 
   // get angle to target
   double TargetAngle = 0;
+
+  // TODO: set gains
+  double kp = 0.0;
+  double ki = 0.0;
+  double kd = 0.01;
+
+  PIDController pidController = new PIDController(kp, ki, kd);
 
   /** Creates a new SteerTowardsTarget. */
   public SteerTowardsTarget() {
@@ -44,13 +52,14 @@ public class SteerTowardsTarget extends CommandBase {
     while ((RobotContainer.limelight.isTargetPresent())
         && (RobotContainer.limelight.getTargetArea() >= MIN_BALL_DETECTION_AREA)) {
 
+
       TargetAngle = RobotContainer.limelight.getHorizontalTargetOffsetAngle();
+
+      double angle = pidController.calculate(TargetAngle);
 
       // get speed to drive towards ball
       double yInput = OI.driverController.getLeftY();
       double xInput = OI.driverController.getLeftX();
-
-      double rotInput = OI.driverController.getRightX();
 
       // is angle correction positive or negative?
       if (TargetAngle >= 0.0) {
@@ -58,14 +67,14 @@ public class SteerTowardsTarget extends CommandBase {
         RobotContainer.drivetrain.drive(
             new Translation2d(yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
                 xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
-            rotInput * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
+                angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
       } // TODO: update this to be correct
       else {
         // drive towards target
         RobotContainer.drivetrain.drive(
             new Translation2d(yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
                 xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
-            rotInput * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
+                angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
       } // TODO: update this to be correct
 
     }
