@@ -24,7 +24,7 @@ public class ShooterCommand extends CommandBase {
   @Override
   public void execute() {
     // set shooter speed to that set on shuffleboard
-    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(1.0));
+    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(5000.0));
 
     // increment timer
     shootTime += 0.02;

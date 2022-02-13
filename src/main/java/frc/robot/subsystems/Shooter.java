@@ -43,6 +43,10 @@ public class Shooter extends SubsystemBase {
     leftShooterFalcon.follow(rightShooterFalcon);
     leftShooterFalcon.setInverted(InvertType.OpposeMaster);
 
+    rightShooterFalcon.config_kF(0,  0.0019, 0);
+    rightShooterFalcon.config_kP(0, 0.32, 0);
+    rightShooterFalcon.config_kI(0, 0.00008, 0);
+
     // rightShooterFalcon.set(ControlMode.PercentOutput, 0);
     isIdling = true;
     rightShooterFalcon.configPeakOutputForward(1, 0);
@@ -81,11 +85,10 @@ public class Shooter extends SubsystemBase {
   /**
    * This method will set the motors to the given motor speed
    * 
-   * @param shooterSpeed the desired motor speed between 1 and -1
+   * @param shooterSpeed the desired motor speed in rpm
    */
   public void setShooterSpeed(double shooterSpeed) {
-    rightShooterFalcon.set(ControlMode.PercentOutput, shooterSpeed);
-    // isIdling = false;
+    rightShooterFalcon.set(ControlMode.Velocity,shooterSpeed* 3.41333333);
   }
   /**
    * This method will raise or lower the hood on the shooter for high or low
