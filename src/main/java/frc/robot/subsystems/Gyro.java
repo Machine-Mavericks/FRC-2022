@@ -23,7 +23,7 @@ public class Gyro extends SubsystemBase {
   private NetworkTableEntry m_xAcceleration;
   private NetworkTableEntry m_yAcceleration;
   // make our gyro object
-  AHRS gyro;
+  private AHRS gyro;
 
   // Offset angle to allow for starting in various orientations
   private double m_offset = 0;
