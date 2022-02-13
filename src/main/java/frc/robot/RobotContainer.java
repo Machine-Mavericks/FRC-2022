@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.SteerTowardsTarget;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
@@ -59,6 +60,7 @@ public class RobotContainer {
     // TODO: Disable binding for competition use
     OI.zeroButton.whenPressed(() -> gyro.setCurrentYaw(0));
     OI.intakeButton.whileHeld(new IntakeCommand());
+    OI.ballTrackingButton.whileHeld(new SteerTowardsTarget());
   }
 
   /**
