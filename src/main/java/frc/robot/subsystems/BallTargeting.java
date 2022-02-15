@@ -15,6 +15,9 @@ public class BallTargeting extends SubsystemBase {
     m_ballCamera.setPipeline(0);
   }
 
+  public void setBallPipeline(){
+    m_ballCamera.setPipeline(0);
+  }
   /**
    * Is there a ball (boolean)
    * Decides whether there is a ball based on area
