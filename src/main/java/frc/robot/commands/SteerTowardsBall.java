@@ -9,18 +9,16 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.RobotContainer;
+import frc.robot.RobotMap;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Limelight;
 
-public class SteerTowardsTarget extends CommandBase {
+public class SteerTowardsBall extends CommandBase {
 
   private Drivetrain m_drivetrain = RobotContainer.drivetrain;
   private Limelight m_limelight = RobotContainer.limelight;
   private Gyro m_gyro = RobotContainer.gyro;
-  // minimum chevron detection area (# square pixels)
-  public static final double MIN_BALL_DETECTION_AREA = 1000.0;
-  public static final double MIN_BALL_VERT_SIZE = 20.0;
 
   // get angle to target
   double TargetAngle = 0;
@@ -33,7 +31,7 @@ public class SteerTowardsTarget extends CommandBase {
   PIDController pidController = new PIDController(kp, ki, kd);
 
   /** Creates a new SteerTowardsTarget. */
-  public SteerTowardsTarget() {
+  public SteerTowardsBall() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drivetrain);
     addRequirements(m_limelight);
@@ -50,7 +48,7 @@ public class SteerTowardsTarget extends CommandBase {
   public void execute() {
 
     while ((RobotContainer.limelight.isTargetPresent())
-        && (RobotContainer.limelight.getTargetArea() >= MIN_BALL_DETECTION_AREA)) {
+        && (RobotContainer.limelight.getTargetArea() >= RobotMap.VISION_TARGETING.MIN_BALL_DETECTION_AREA)) {
 
 
       TargetAngle = RobotContainer.limelight.getHorizontalTargetOffsetAngle();
