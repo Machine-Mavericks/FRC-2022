@@ -11,7 +11,7 @@ public class BallTargeting extends SubsystemBase {
 
   /** Creates a new HubTargeting. */
   public BallTargeting() {
-    m_ballCamera = new Limelight("limelight-ball");
+    m_ballCamera = new Limelight("limelight");
     m_ballCamera.setPipeline(3);
   }
 
@@ -27,7 +27,7 @@ public class BallTargeting extends SubsystemBase {
   public boolean IsBall() {
     double ballArea = m_ballCamera.getTargetArea();
     boolean Ball;
-    if (ballArea >= 5) {
+    if (ballArea >= 0.1) {
       Ball = true;
     } else {
       Ball = false;

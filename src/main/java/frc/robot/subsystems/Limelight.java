@@ -50,13 +50,13 @@ public class Limelight extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
+    updateShuffleboard();
     // update shuffleboard - update at 5Hz is sufficient for this subsystem
-    m_UpdateTimer++;
-    if (m_UpdateTimer >= 10) {
-      updateShuffleboard();
-      m_UpdateTimer = 0;
-    }
+    // m_UpdateTimer++;
+    // if (m_UpdateTimer >= 10) {
+    //   updateShuffleboard();
+    //   m_UpdateTimer = 0;
+    //  }
   }
 
   // ---------- Camera Control Functions ----------

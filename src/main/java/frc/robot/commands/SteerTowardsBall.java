@@ -24,9 +24,9 @@ public class SteerTowardsBall extends CommandBase {
   double TargetAngle = 0;
 
   // TODO: set gains
-  double kp = 0.0;
+  double kp = -0.002;
   double ki = 0.0;
-  double kd = 0.01;
+  double kd = 0.00;
 
   PIDController pidController = new PIDController(kp, ki, kd);
 
@@ -48,17 +48,15 @@ public class SteerTowardsBall extends CommandBase {
   @Override
   public void execute() {
 
-    while ((RobotContainer.limelight.isTargetPresent())
-        && (RobotContainer.limelight.getTargetArea() >= RobotMap.VISION_TARGETING.MIN_BALL_DETECTION_AREA)) {
+    if ((RobotContainer.ballTargeting.IsBall())){
 
-
-      TargetAngle = RobotContainer.limelight.getHorizontalTargetOffsetAngle();
+      TargetAngle = RobotContainer.ballTargeting.ballAngle();
 
       double angle = pidController.calculate(TargetAngle);
 
       // get speed to drive towards ball
-      double yInput = OI.driverController.getLeftY();
-      double xInput = OI.driverController.getLeftX();
+      double yInput = OI.driverController.getLeftY()*0.2;
+      double xInput = OI.driverController.getLeftX()*0.2;
 
       // is angle correction positive or negative?
       if (TargetAngle >= 0.0) {

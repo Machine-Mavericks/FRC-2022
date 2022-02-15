@@ -62,7 +62,7 @@ public class RobotContainer {
     // TODO: Disable binding for competition use
     OI.zeroButton.whenPressed(() -> gyro.setCurrentYaw(0));
     OI.intakeButton.whileHeld(new IntakeCommand());
-    OI.ballTrackingButton.whileHeld(new SteerTowardsBall());
+    OI.ballTrackingButton.whenHeld(new SteerTowardsBall());
   }
 
   /**
