@@ -5,13 +5,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
  * Limelight subsystem class provides access of a limelight camera to the rest
@@ -121,18 +121,20 @@ public class Limelight extends SubsystemBase {
     CamTran camtran = new CamTran();
 
     // get camera translation vector from camera
-    Number vector[] = m_table.getEntry("camtran").getNumberArray(new Number[6]);
+    // Number vector[] = m_table.getEntry("camtran").getNumberArray(new Number[6]);
+
+    Number vector[] = new Number[6];
 
     // if translation vector is valid (has 6 numbers in it) go ahead and record data
     // in structure
-    if (vector.length >= 6) {
-      camtran.x = vector[0].doubleValue();
-      camtran.y = vector[1].doubleValue();
-      camtran.z = vector[2].doubleValue();
-      camtran.pitch = vector[3].doubleValue();
-      camtran.yaw = vector[4].doubleValue();
-      camtran.roll = vector[5].doubleValue();
-    }
+    // if (vector.length >= 6) {
+    //   camtran.x = vector[0].doubleValue();
+    //   camtran.y = vector[1].doubleValue();
+    //   camtran.z = vector[2].doubleValue();
+    //   camtran.pitch = vector[3].doubleValue();
+    //   camtran.yaw = vector[4].doubleValue();
+    //   camtran.roll = vector[5].doubleValue();
+    // }
 
     // return data structure
     return camtran;

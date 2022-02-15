@@ -11,6 +11,7 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.SteerTowardsBall;
+import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
@@ -36,6 +37,7 @@ public class RobotContainer {
   public static final SwerveOdometry odometry = new SwerveOdometry();
   public static final Intake intake = new Intake();
   public static final Limelight limelight = new Limelight("camera name"); //TODO: set camera name
+  public static final BallTargeting ballTargeting = new BallTargeting();
 
   // The robot's subsystems are defined here...
   private static final ExampleCommand autoCommand = new ExampleCommand(exampleSubsystem);

@@ -36,6 +36,7 @@ public class SteerTowardsBall extends CommandBase {
     addRequirements(m_drivetrain);
     addRequirements(m_limelight);
     addRequirements(m_gyro);
+    RobotContainer.ballTargeting.setBallPipeline();
   }
 
   // Called when the command is initially scheduled.
