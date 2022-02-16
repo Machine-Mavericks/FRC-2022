@@ -31,7 +31,7 @@ public class OI {
     public static final XboxController operatorController = new XboxController(OPERATOR_CONTROLLER_PORT);
 
     /** Example button. Mapped to {@link Bindings#EXAMPLE_BUTTON} */
-    public static final JoystickButton shootButton = new JoystickButton(driverController, Bindings.SHOOT_BUTTON.value);
+    public static final JoystickButton shootButton = new JoystickButton(operatorController, Bindings.SHOOT_BUTTON.value);
     /** Example button. Mapped to {@link Bindings#ZERO_GYRO} */
     public static final JoystickButton zeroButton = new JoystickButton(driverController, Bindings.ZERO_GYRO.value);
     /** Button to deploy intake for 5 seconds. Mapped to {@link Bindings#INTAKE_BUTTON} */

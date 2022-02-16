@@ -35,6 +35,7 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry motorVoltage;
   private NetworkTableEntry rightMotorCurrent;
   private NetworkTableEntry leftMotorCurrent;
+  private NetworkTableEntry targetSpeed;
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -42,9 +43,12 @@ public class Shooter extends SubsystemBase {
     leftShooterFalcon.follow(rightShooterFalcon);
     leftShooterFalcon.setInverted(InvertType.OpposeMaster);
 
-    rightShooterFalcon.config_kF(0,  0.6, 0);
-    // rightShooterFalcon.config_kP(0, 0.32, 0);
-    // rightShooterFalcon.config_kI(0, 0.00008, 0);
+    rightShooterFalcon.configVoltageCompSaturation(12.0, 0);
+    leftShooterFalcon.configVoltageCompSaturation(12.0, 0);
+
+    rightShooterFalcon.config_kF(0,  0.047698, 0);
+    rightShooterFalcon.config_kP(0, 0.35, 0);
+    rightShooterFalcon.config_kI(0, 0.001, 0);
 
     // rightShooterFalcon.set(ControlMode.PercentOutput, 0);
     rightShooterFalcon.configPeakOutputForward(1, 0);
@@ -114,6 +118,7 @@ public class Shooter extends SubsystemBase {
     motorVoltage = l1.add("motor voltage", 0.0).getEntry();
     leftMotorCurrent = l1.add("L motor current",0.0).getEntry();
     rightMotorCurrent = l1.add("R motor current",0.0).getEntry();
+    targetSpeed = l1.add("Target Speed",0.0).getEntry();
   }
 
   public void updateShuffleboard() {
@@ -122,6 +127,6 @@ public class Shooter extends SubsystemBase {
     motorVoltage.setDouble(rightShooterFalcon.getMotorOutputVoltage());
     leftMotorCurrent.setDouble(leftShooterFalcon.getSupplyCurrent());
     rightMotorCurrent.setDouble(rightShooterFalcon.getSupplyCurrent());
-
+    targetSpeed.setDouble(rightShooterFalcon.getClosedLoopTarget() * ((10.0 / 2048.0) * 60));
   }
 }
