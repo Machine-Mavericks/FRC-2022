@@ -51,8 +51,6 @@ public class RobotContainer {
   /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
-    //
-    m_shooter.setShooterSpeed(m_shooter.ChosenIdleSpeed.getDouble(2500.0));
     // Initialise gyro to be forward-facing
     gyro.setCurrentYaw(0);
     // Configure the button bindings

@@ -26,6 +26,8 @@ public class ShooterCommand extends CommandBase {
   public void execute() {
     // set shooter speed to that set on shuffleboard
     RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(5000.0));
+    
+    RobotContainer.lifter.liftBalls();
 
     // increment timer
     shootTime += 0.02;
@@ -36,12 +38,13 @@ public class ShooterCommand extends CommandBase {
   public void end(boolean interrupted) {
     // go back to idle speed and set timer to 0 until command starts again
     RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenIdleSpeed.getDouble(2500));
+    RobotContainer.lifter.stopMotor();
     shootTime = 0;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (shootTime > 4.0);
+    return (shootTime > 7.0);
   }
 }
