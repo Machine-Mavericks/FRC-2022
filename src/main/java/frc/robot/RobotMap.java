@@ -49,6 +49,12 @@ public class RobotMap {
         public static final int INTAKE_FALCON = 13;
     }
 
+    public static class VISION_TARGETING {
+    /** minimum area for finding ball */
+    public static final double MIN_BALL_DETECTION_AREA = 0.0;
+    /** minimum horizontal length of ball */
+    public static final double MIN_BALL_VERT_SIZE = 0.0;
+    }
     public static final int LIFTER_LIMIT_ID = 1;
 
     public static class PneumaticsChannel {
