@@ -10,10 +10,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Lifter;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveOdometry;
 
 /**
@@ -32,6 +35,8 @@ public class RobotContainer {
   public static final Drivetrain drivetrain = new Drivetrain();
   public static final Gyro gyro = new Gyro();
   public static final SwerveOdometry odometry = new SwerveOdometry();
+  public static final Shooter m_shooter = new Shooter();
+  public static final Lifter lifter = new Lifter();
   public static final Intake intake = new Intake();
   
   // The robot's subsystems are defined here...
@@ -41,6 +46,8 @@ public class RobotContainer {
   /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
+    //
+    m_shooter.setShooterSpeed(m_shooter.ChosenIdleSpeed.getDouble(2500.0));
     // Initialise gyro to be forward-facing
     gyro.setCurrentYaw(0);
     // Configure the button bindings
@@ -54,10 +61,13 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private static void configureButtonBindings() {
+
+    OI.shootButton.whenPressed(new ShooterCommand());
     // TODO: Disable binding for competition use
     OI.zeroButton.whenPressed(() -> gyro.setCurrentYaw(0));
     OI.intakeButton.whileHeld(new IntakeCommand());
-  }
+    }
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

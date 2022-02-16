@@ -6,7 +6,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.RobotMap;
 import frc.robot.subsystems.Intake;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class IntakeCommand extends CommandBase {
   private int m_timer = 0;
@@ -18,26 +22,44 @@ public class IntakeCommand extends CommandBase {
   public IntakeCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.intake);
+    addRequirements(RobotContainer.lifter);
 
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // turn on the intake and the lifter
     RobotContainer.intake.setMotorSpeed(Intake.MOTORSPEED);
+    RobotContainer.lifter.liftBalls();
+
+    // initialize timer at start of command
     m_timer = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // increment timer
     m_timer++;
+
+    //check if limit switch is activated
+    if (!RobotContainer.lifter.liftLimit.get()){
+      RobotContainer.lifter.stopMotor();
+    }
+    else{
+      RobotContainer.lifter.liftBalls();
+    }
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    
+    // stop the intake and lifter
     RobotContainer.intake.setMotorSpeed(0);
+    RobotContainer.lifter.stopMotor();
   }
 
   // Returns true when the command should end.
