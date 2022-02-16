@@ -9,14 +9,14 @@ import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 public class IntakeCommand extends CommandBase {
   private int m_timer = 0;
   // NOTE: Currently unsed, may be reimplemented at later date?
   // time it will take until the intake retracts, set at 5 seconds currently
   private static final int END_TIME_TICKS = 5 * 50;
-
-  public DigitalInput liftLimit = new DigitalInput(RobotMap.INTAKE_LIMIT_ID);
 
   /** Creates a new IntakeCommand. */
   public IntakeCommand() {
@@ -42,13 +42,14 @@ public class IntakeCommand extends CommandBase {
   public void execute() {
     // increment timer
     m_timer++;
-    /*
-    if (liftLimit.get()){
+
+    //check if limit switch is activated
+    if (!RobotContainer.lifter.liftLimit.get()){
       RobotContainer.lifter.stopMotor();
     }
     else{
       RobotContainer.lifter.liftBalls();
-    }*/
+    }
     
   }
 
