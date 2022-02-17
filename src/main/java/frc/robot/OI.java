@@ -19,6 +19,7 @@ public class OI {
         static final Button ZERO_GYRO = XboxController.Button.kBack;
         static final Button INTAKE_BUTTON = XboxController.Button.kX;
         static final Button BALL_TRACKING_BUTTON = XboxController.Button.kA;
+        static final Button HUB_TRACKING_BUTTON = XboxController.Button.kB;
     }
 
     /** Port for controller used by driver */
@@ -39,5 +40,7 @@ public class OI {
     public static final JoystickButton intakeButton = new JoystickButton(operatorController, Bindings.INTAKE_BUTTON.value);
     /** Ball tracking button. Mapped to {@link Bindings#BALL_TRACKING_BUTTON} */
     public static final JoystickButton ballTrackingButton = new JoystickButton(driverController, Bindings.BALL_TRACKING_BUTTON.value);
+    /** Ball tracking button. Mapped to {@link Bindings#BALL_TRACKING_BUTTON} */
+    public static final JoystickButton hubTrackingButton = new JoystickButton(driverController, Bindings.HUB_TRACKING_BUTTON.value);
 }
  

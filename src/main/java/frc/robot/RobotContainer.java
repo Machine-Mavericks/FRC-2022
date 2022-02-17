@@ -16,6 +16,7 @@ import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.HubTargeting;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Lifter;
@@ -41,8 +42,10 @@ public class RobotContainer {
   public static final Shooter m_shooter = new Shooter();
   public static final Lifter lifter = new Lifter();
   public static final Intake intake = new Intake();
-  public static final Limelight limelight = new Limelight("camera name"); //TODO: set camera name
+  public static final Limelight ballLimelight = new Limelight("camera name"); //TODO: set camera name
+  public static final Limelight hubLimelight = new Limelight("camera name");
   public static final BallTargeting ballTargeting = new BallTargeting();
+  public static final HubTargeting hubTargeting = new HubTargeting();
 
   // The robot's subsystems are defined here...
   private static final ExampleCommand autoCommand = new ExampleCommand(exampleSubsystem);

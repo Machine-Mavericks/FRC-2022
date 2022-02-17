@@ -13,10 +13,10 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Limelight;
 
-public class SteerTowardsBall extends CommandBase {
+public class SteerTowardsHub extends CommandBase {
 
   private Drivetrain m_drivetrain = RobotContainer.drivetrain;
-  private Limelight m_limelight = RobotContainer.ballLimelight;
+  private Limelight m_limelight = RobotContainer.hubLimelight;
   private Gyro m_gyro = RobotContainer.gyro;
 
   // get angle to target
@@ -30,12 +30,11 @@ public class SteerTowardsBall extends CommandBase {
   PIDController pidController = new PIDController(kp, ki, kd);
 
   /** Creates a new SteerTowardsTarget. */
-  public SteerTowardsBall() {
+  public SteerTowardsHub() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drivetrain);
     addRequirements(m_limelight);
     addRequirements(m_gyro);
-    RobotContainer.ballTargeting.setBallPipeline();
   }
 
   // Called when the command is initially scheduled.
@@ -47,13 +46,13 @@ public class SteerTowardsBall extends CommandBase {
   @Override
   public void execute() {
 
-    if ((RobotContainer.ballTargeting.IsBall())){
+    if ((RobotContainer.hubTargeting.IsTarget())){
 
-      TargetAngle = RobotContainer.ballTargeting.ballAngle();
+      TargetAngle = RobotContainer.hubTargeting.getHubAngle();
 
       double angle = pidController.calculate(TargetAngle);
 
-      // get speed to drive towards ball
+      // get speed to drive towards Hub
       double yInput = OI.driverController.getLeftY()*0.2;
       double xInput = OI.driverController.getLeftX()*0.2;
 
