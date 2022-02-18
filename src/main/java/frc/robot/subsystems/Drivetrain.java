@@ -146,7 +146,8 @@ public class Drivetrain extends SubsystemBase {
                         .withPosition(6, 0),
                 DRIVE_RATIO, RobotMap.CANID.BR_DRIVE_FALCON, RobotMap.CANID.BR_STEER_FALCON, RobotMap.CANID.BR_STEER_ENCODER, -Math.toRadians(135+180));
         /**Acceleration Limiting Slider*/
-        maxAccel = tab.add("Max Acceleration", 0.02)
+        maxAccel = tab.add("Max Acceleration", 0.03)
+        .withPosition(8, 0)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 0.5))
         .getEntry();
@@ -207,17 +208,19 @@ public class Drivetrain extends SubsystemBase {
     double prevYInput = 0.0;
     public double MaxAccelX(double maxAccel) {
         prevXInput = newXInput;
-        double newXInput = OI.driverController.getLeftX();
-        double xOutput1 = (newXInput - prevXInput) > maxAccel ? prevXInput + maxAccel : newXInput;
-        double xOutput2 = (xOutput1 - prevXInput) < -1 * maxAccel ? prevXInput - maxAccel : newXInput;
-        return xOutput2;
+        newXInput = OI.driverController.getLeftX();
+        newXInput = (newXInput - prevXInput) > maxAccel ? prevXInput + maxAccel : newXInput;
+        newXInput = (newXInput - prevXInput) < -1 * maxAccel ? prevXInput - maxAccel : newXInput;
+        // double xOutput2 = newXInput;
+        return newXInput;
     }
     public double MaxAccelY(double maxAccel) {
         prevYInput = newYInput;
-        double newYInput = OI.driverController.getLeftY();
-        double yOutput1 = (newYInput - prevYInput) > maxAccel ? prevYInput + maxAccel : newYInput;
-        double yOutput2 = (yOutput1 - prevYInput) < -1 * maxAccel ? prevYInput - maxAccel : newYInput;
-        return yOutput2;
+        newYInput = OI.driverController.getLeftY();
+        newYInput = (newYInput - prevYInput) > maxAccel ? prevYInput + maxAccel : newYInput;
+        newYInput = (newYInput - prevYInput) < -1 * maxAccel ? prevYInput - maxAccel : newYInput;
+        // double yOutput2 = newYInput;
+        return newYInput;
     }
 
 
