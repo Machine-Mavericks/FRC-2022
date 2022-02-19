@@ -46,7 +46,7 @@ public class HubTargeting extends SubsystemBase {
    */
   public double EstimateDistance() {
     double ty = m_hubCamera.getVerticalTargetOffsetAngle();
-    double distance = 0.0931 * ty * ty - 0.5042 * ty - 9.0222;
+    double distance = 0.0065655 * ty * ty - 0.2198 * ty +3.73592;
     return distance;
   }
 
