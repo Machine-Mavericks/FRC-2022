@@ -4,15 +4,21 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
+import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.RobotContainer;
 
 public class DriveCommand extends CommandBase {
 
   private Drivetrain m_drivetrain;
+
+  private PIDController m_headingPID = new PIDController(1, 0, 0);
+  // Use Double class so it can be set to null
+  private Double m_PIDTarget = null;
 
   /** Creates a new DriveCommand. */
   public DriveCommand(Drivetrain drivetrain) {
@@ -38,6 +44,21 @@ public class DriveCommand extends CommandBase {
     xInput = Math.abs(RobotContainer.drivetrain.MaxAccelX(maxAccel)) > 0.1 ? RobotContainer.drivetrain.MaxAccelX(maxAccel) : 0;
     yInput = Math.abs(RobotContainer.drivetrain.MaxAccelY(maxAccel)) > 0.1 ? RobotContainer.drivetrain.MaxAccelY(maxAccel) : 0;
     rotInput = Math.abs(rotInput) > 0.1 ? rotInput*0.25 : 0;
+
+    // If no rotational input provided, use PID to hold heading
+    if(rotInput == 0){
+      // If the target is unset, set it to current heading
+      if(m_PIDTarget == null){
+        m_PIDTarget = RobotContainer.gyro.getYaw();
+        m_headingPID.reset(); // Clear existing integral term as may accumulate while not in use
+        m_headingPID.setSetpoint(m_PIDTarget);
+      }
+      // Compute rotational command from PID controller
+      rotInput = m_headingPID.calculate(RobotContainer.gyro.getYaw());
+    } else {
+      // If there is input, set target to null so it's properly reset next time
+      m_PIDTarget = null;
+    }
 
     m_drivetrain.drive(new Translation2d(yInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND, xInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND), rotInput*Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false); //TODO: change back to true
   }
