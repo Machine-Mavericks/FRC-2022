@@ -9,10 +9,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.SteerTowardsBall;
-import frc.robot.commands.SteerTowardsHub;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -74,6 +71,7 @@ public class RobotContainer {
     OI.intakeButton.whileHeld(new IntakeCommand());
     OI.ballTrackingButton.whenHeld(new SteerTowardsBall());
     OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
+    OI.releaseBallButton.whileHeld(new ReleaseBall());
   }
 
   /**

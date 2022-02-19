@@ -16,7 +16,7 @@ public class BallTargeting extends SubsystemBase {
   }
 
   public void setBallPipeline() {
-    m_ballCamera.setPipeline(0);
+    m_ballCamera.setPipeline(3);
   }
   /**
    * Is there a ball (boolean)
