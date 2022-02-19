@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.LEDCommand;
 import frc.robot.commands.ReleaseBall;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
@@ -44,7 +43,6 @@ public class RobotContainer {
   public static final SwerveOdometry odometry = new SwerveOdometry();
   
   // The robot's commands are defined here...
-  private static final LEDCommand LEDCommand = new LEDCommand(led);   //Totally unused atm, might be handy for blinking or disco mode if we implement that?
   public static final Shooter m_shooter = new Shooter();
   public static final Lifter lifter = new Lifter();
   public static final Intake intake = new Intake();
