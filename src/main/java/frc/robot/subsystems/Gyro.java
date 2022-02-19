@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 // libraries needed for NavX
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -22,11 +23,15 @@ public class Gyro extends SubsystemBase {
   private NetworkTableEntry m_xAcceleration;
   private NetworkTableEntry m_yAcceleration;
   // make our gyro object
-  AHRS gyro;
+  private AHRS gyro;
+
+  // Offset angle to allow for starting in various orientations
+  private double m_offset = 0;
 
   /** Creates a new Gyro. */
   public Gyro() {
-    gyro = new AHRS(SPI.Port.kMXP);
+    gyro = new AHRS(Port.kUSB);
+    gyro.calibrate();
     gyro.reset();
     initializeShuffleboard();
   }
@@ -44,7 +49,7 @@ public class Gyro extends SubsystemBase {
    */
   public double getYaw() {
     // Flip angle since gyro is mounted upside down
-    double raw = 360-gyro.getYaw();
+    double raw = 360-gyro.getYaw() + m_offset;
     return raw > 180 ? raw - 360 : raw;
   }
 
@@ -62,6 +67,14 @@ public class Gyro extends SubsystemBase {
    */
   public void resetGyro() {
     gyro.reset();
+  }
+
+  /**
+   * Set the current direction to correspond to a given yaw value
+   * @param yaw Yaw value in degrees (-180 to 180)
+   */
+  public void setCurrentYaw(double yaw){
+    m_offset = yaw - getYaw() + m_offset;
   }
 
   /**

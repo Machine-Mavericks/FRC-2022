@@ -9,13 +9,21 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LEDCommand;
+import frc.robot.commands.ReleaseBall;
+import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.SteerTowardsBall;
+import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.SwerveOdometry;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.HubTargeting;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Lifter;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.SwerveOdometry;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -37,13 +45,23 @@ public class RobotContainer {
   
   // The robot's commands are defined here...
   private static final LEDCommand LEDCommand = new LEDCommand(led);
+  public static final Shooter m_shooter = new Shooter();
+  public static final Lifter lifter = new Lifter();
+  public static final Intake intake = new Intake();
+  // public static final Limelight ballLimelight = new Limelight("camera name"); //TODO: set camera name
+  // public static final Limelight hubLimelight = new Limelight("camera name");
+  public static final BallTargeting ballTargeting = new BallTargeting();
+  public static final HubTargeting hubTargeting = new HubTargeting();
+
+  // The robot's subsystems are defined here...
   private static final ExampleCommand autoCommand = new ExampleCommand(exampleSubsystem);
 
 
   /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
-
+    // Initialise gyro to be forward-facing
+    gyro.setCurrentYaw(0);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -56,6 +74,13 @@ public class RobotContainer {
    */
   private static void configureButtonBindings() {
     OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
+
+    OI.shootButton.whenPressed(new ShooterCommand());
+    // TODO: Disable binding for competition use
+    OI.zeroButton.whenPressed(() -> gyro.setCurrentYaw(0));
+    OI.intakeButton.whileHeld(new IntakeCommand());
+    OI.ballTrackingButton.whenHeld(new SteerTowardsBall());
+    OI.releaseBallButton.whileHeld(new ReleaseBall());
   }
 
   /**

@@ -1,20 +1,30 @@
 package frc.robot.subsystems;
 
+import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
-import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
+import java.util.Map;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotMap;
+import frc.robot.OI;
 
 /**
  * Subsystem representing the swerve drivetrain
@@ -93,6 +103,9 @@ public class Drivetrain extends SubsystemBase {
     // Swerve module states - contains speed(m/s) and angle for each swerve module
     SwerveModuleState[] m_states;
 
+    // value controlled on shuffleboard to stop the jerkiness of the robot by limiting its accelera``tion
+    public NetworkTableEntry maxAccel;
+
     /**
      * Create a new swerve drivetrain
      * 
@@ -132,7 +145,12 @@ public class Drivetrain extends SubsystemBase {
                         .withSize(2, 4)
                         .withPosition(6, 0),
                 DRIVE_RATIO, RobotMap.CANID.BR_DRIVE_FALCON, RobotMap.CANID.BR_STEER_FALCON, RobotMap.CANID.BR_STEER_ENCODER, -Math.toRadians(135+180));
-        
+        /**Acceleration Limiting Slider*/
+        maxAccel = tab.add("Max Acceleration", 0.03)
+        .withPosition(8, 0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min", 0, "max", 0.5))
+        .getEntry();
     }
 
     /**
@@ -146,7 +164,7 @@ public class Drivetrain extends SubsystemBase {
         rotation *= 2.0 / Math.hypot(WHEELBASE_METERS, TRACKWIDTH_METERS);
         if (fieldOriented) {
             m_chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation,
-                Rotation2d.fromDegrees(360.0 - RobotContainer.gyro.getYaw()));
+                Rotation2d.fromDegrees(-RobotContainer.gyro.getYaw()));
         } else {
             m_chassisSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
         }
@@ -184,6 +202,26 @@ public class Drivetrain extends SubsystemBase {
             return m_states;
     }
 
+    double newXInput = 0.0;
+    double newYInput = 0.0;
+    double prevXInput = 0.0;
+    double prevYInput = 0.0;
+    public double MaxAccelX(double maxAccel) {
+        prevXInput = newXInput;
+        newXInput = OI.driverController.getLeftX();
+        newXInput = (newXInput - prevXInput) > maxAccel ? prevXInput + maxAccel : newXInput;
+        newXInput = (newXInput - prevXInput) < -1 * maxAccel ? prevXInput - maxAccel : newXInput;
+        // double xOutput2 = newXInput;
+        return newXInput;
+    }
+    public double MaxAccelY(double maxAccel) {
+        prevYInput = newYInput;
+        newYInput = OI.driverController.getLeftY();
+        newYInput = (newYInput - prevYInput) > maxAccel ? prevYInput + maxAccel : newYInput;
+        newYInput = (newYInput - prevYInput) < -1 * maxAccel ? prevYInput - maxAccel : newYInput;
+        // double yOutput2 = newYInput;
+        return newYInput;
+    }
 
 
 }       // end class Drivetrain
