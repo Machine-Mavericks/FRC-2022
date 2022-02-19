@@ -64,7 +64,7 @@ public class RobotMap {
 
     public static class PWMPorts {
         /** PWM Port for led strip */
-        static final int LED_STRIP = 2;
+        static final int LED_STRIP = 0;
     }
 
     /**
