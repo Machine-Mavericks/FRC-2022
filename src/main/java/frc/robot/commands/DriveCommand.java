@@ -28,15 +28,15 @@ public class DriveCommand extends CommandBase {
   public void execute() {
     // Driver inputs, should be in range [-1,1]
     // TODO: Map to controller, using functions like OI.driverController.getLeftX()
-    double xInput = OI.driverController.getLeftX()*0.25;
-    double yInput =   OI.driverController.getLeftY()*0.25;
-    double rotInput = OI.driverController.getRightX()*0.25;
+    double xInput = OI.driverController.getLeftX();
+    double yInput =   OI.driverController.getLeftY();
+    double rotInput = OI.driverController.getRightX();
 
     xInput = Math.abs(xInput) > 0.1 ? xInput : 0;
     yInput = Math.abs(yInput) > 0.1 ? yInput : 0;
     rotInput = Math.abs(rotInput) > 0.1 ? rotInput*0.25 : 0;
 
-    m_drivetrain.drive(new Translation2d(yInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND, xInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND), rotInput*Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false); //TODO: change back to true
+    m_drivetrain.drive(new Translation2d(yInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND, xInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND), rotInput*Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, true); 
   }
 
   // Called once the command ends or is interrupted.

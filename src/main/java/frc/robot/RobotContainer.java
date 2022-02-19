@@ -42,8 +42,8 @@ public class RobotContainer {
   public static final Shooter m_shooter = new Shooter();
   public static final Lifter lifter = new Lifter();
   public static final Intake intake = new Intake();
-  public static final Limelight ballLimelight = new Limelight("camera name"); //TODO: set camera name
-  public static final Limelight hubLimelight = new Limelight("camera name");
+  // public static final Limelight ballLimelight = new Limelight("camera name"); //TODO: set camera name
+  // public static final Limelight hubLimelight = new Limelight("camera name");
   public static final BallTargeting ballTargeting = new BallTargeting();
   public static final HubTargeting hubTargeting = new HubTargeting();
 

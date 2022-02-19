@@ -11,7 +11,7 @@ public class BallTargeting extends SubsystemBase {
 
   /** Creates a new HubTargeting. */
   public BallTargeting() {
-    m_ballCamera = new Limelight("limelight");
+    m_ballCamera = new Limelight("limelight-ball");
     m_ballCamera.setPipeline(3);
   }
 

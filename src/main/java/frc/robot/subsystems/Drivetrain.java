@@ -147,7 +147,7 @@ public class Drivetrain extends SubsystemBase {
         rotation *= 2.0 / Math.hypot(WHEELBASE_METERS, TRACKWIDTH_METERS);
         if (fieldOriented) {
             m_chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation,
-                Rotation2d.fromDegrees(RobotContainer.gyro.getYaw()));
+                Rotation2d.fromDegrees(-RobotContainer.gyro.getYaw()));
         } else {
             m_chassisSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
         }

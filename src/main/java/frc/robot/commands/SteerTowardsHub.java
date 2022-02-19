@@ -11,12 +11,10 @@ import frc.robot.OI;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
-import frc.robot.subsystems.Limelight;
 
 public class SteerTowardsHub extends CommandBase {
 
   private Drivetrain m_drivetrain = RobotContainer.drivetrain;
-  private Limelight m_limelight = RobotContainer.hubLimelight;
   private Gyro m_gyro = RobotContainer.gyro;
 
   // get angle to target
@@ -33,7 +31,6 @@ public class SteerTowardsHub extends CommandBase {
   public SteerTowardsHub() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drivetrain);
-    addRequirements(m_limelight);
     addRequirements(m_gyro);
   }
 

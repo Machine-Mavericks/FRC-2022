@@ -11,7 +11,7 @@ public class HubTargeting extends SubsystemBase {
 
   /** Creates a new HubTargeting. */
   public HubTargeting() {
-    m_hubCamera = new Limelight("hub");
+    m_hubCamera = new Limelight("limelight-hub");
     m_hubCamera.setPipeline(0);
   }
 
