@@ -9,6 +9,33 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * These include components such as motor controllers and soleniods used by the subsystems.
  */
 public class OI {
+
+    static double speedLimitFactor = 1.0;
+
+    public static double getXDriveInput(){
+        double newXInput = OI.driverController.getLeftX()*speedLimitFactor;
+        newXInput = (newXInput - prevXInput) > maxAccel ? prevXInput + maxAccel : newXInput;
+        newXInput = (newXInput - prevXInput) < -1 * maxAccel ? prevXInput - maxAccel : newXInput;
+        return newXInput;
+
+
+        double xInput = Math.abs(RobotContainer.drivetrain.MaxAccelX(maxAccel)) > 0.1 ? RobotContainer.drivetrain.MaxAccelX(maxAccel) : 0;
+
+        return driverController.getLeftX()*speedLimitFactor;
+        
+    
+    }
+
+    public static double getYDriveInput(){
+        return driverController.getLeftY()*speedLimitFactor;
+        yInput = Math.abs(RobotContainer.drivetrain.MaxAccelY(maxAccel)) > 0.1 ? RobotContainer.drivetrain.MaxAccelY(maxAccel) : 0;
+    
+    }
+
+    public static double getRotDriveInput(){
+        return driverController.getRightX()*speedLimitFactor;
+        rotInput = Math.abs(rotInput) > 0.1 ? rotInput*0.25 : 0;
+    }
     /**
      * Inner class containing controller bindings
      */
