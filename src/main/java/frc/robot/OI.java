@@ -14,7 +14,7 @@ public class OI {
      */
     private static class Bindings {
         /** Example button */
-        static final Button SHOOT_BUTTON = XboxController.Button.kA;
+        static final Button SHOOT_BUTTON = XboxController.Button.kY;
         /** Button to re-zero gyro */
         static final Button ZERO_GYRO = XboxController.Button.kBack;
         static final Button INTAKE_BUTTON = XboxController.Button.kX;
