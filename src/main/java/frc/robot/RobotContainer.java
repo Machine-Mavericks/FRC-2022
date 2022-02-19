@@ -11,10 +11,11 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.SampleAutoCommand;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.SwerveOdometry;
+import frc.robot.subsystems.PowerPanel;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,12 +29,13 @@ public class RobotContainer {
   public static final ShuffleboardOI shuffleboard = new ShuffleboardOI();
 
   // The robot's subsystems are defined here...
-  public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
   public static final Gyro gyro = new Gyro();
   public static final Drivetrain drivetrain = new Drivetrain();
   public static final SwerveOdometry odometry = new SwerveOdometry();
   public static final Intake intake = new Intake();
-  
+  public static final PowerPanel panel = new PowerPanel();
+  //public static final Limelight camera = new Limelight("limelight-hub");
+
   // The robot's subsystems are defined here...
   private static final SampleAutoCommand autoCommand = new SampleAutoCommand();
 
@@ -41,8 +43,6 @@ public class RobotContainer {
   /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
-    // Initialise gyro to be forward-facing
-    gyro.setCurrentYaw(0);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -55,7 +55,7 @@ public class RobotContainer {
    */
   private static void configureButtonBindings() {
     // TODO: Disable binding for competition use
-    OI.zeroButton.whenPressed(() -> gyro.setCurrentYaw(0));
+    //OI.zeroButton.whenPressed(() -> gyro.resetGyro());
     OI.intakeButton.whileHeld(new IntakeCommand());
   }
 

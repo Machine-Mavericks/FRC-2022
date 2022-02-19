@@ -22,11 +22,9 @@ public class Gyro extends SubsystemBase {
   private NetworkTableEntry m_gyroRoll;
   private NetworkTableEntry m_xAcceleration;
   private NetworkTableEntry m_yAcceleration;
+  
   // make our gyro object
   private AHRS gyro;
-
-  // Offset angle to allow for starting in various orientations
-  private double m_offset = 0;
 
   /** Creates a new Gyro. */
   public Gyro() {
@@ -50,9 +48,7 @@ public class Gyro extends SubsystemBase {
    */
   public double getYaw() {
     // Flip angle since gyro is mounted upside down
-    return gyro.getYaw();
-    //double raw = 360-gyro.getYaw() + m_offset;
-    //return raw > 180 ? raw - 360 : raw;
+    return gyro.getYaw();  
   }
 
   /**
@@ -68,16 +64,11 @@ public class Gyro extends SubsystemBase {
    * Resets yaw to zero
    */
   public void resetGyro() {
+    
+    // reset our Gyro
     gyro.reset();
   }
 
-  /**
-   * Set the current direction to correspond to a given yaw value
-   * @param yaw Yaw value in degrees (-180 to 180)
-   */
-  public void setCurrentYaw(double yaw){
-    m_offset = yaw - getYaw() + m_offset;
-  }
 
   /**
    * Accumulated yaw

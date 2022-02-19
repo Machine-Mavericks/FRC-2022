@@ -5,8 +5,6 @@
 // Swerve odometry is used to estimate current robot x, y position and angle.
 // x and y coordinates are relative to when odometry was last reset
 
-// Jan 25/2022
-
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;

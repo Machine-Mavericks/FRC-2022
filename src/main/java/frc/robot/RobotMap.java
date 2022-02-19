@@ -61,14 +61,6 @@ public class RobotMap {
         public static final int kPDriveVel = 3;
     }
 
-    public static class AUTONOMOUS {
-        /** feed-forward gain */
-        public static final int kRamseteB = 3;
-        /** feed-forward gain */
-        public static final int kRamseteZeta = 3;
-    }
-
-
     /**
      * Function to initialise hardware
      * Should be called in {@link Robot#robotInit()}

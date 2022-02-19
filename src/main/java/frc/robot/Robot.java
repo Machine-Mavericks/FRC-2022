@@ -21,6 +21,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
+  
+  // boolean flag to indicate if robot has been initialized
+  boolean robotIsInitialized = false;
+  
   private Command autonomousCommand;
 
   /**
@@ -79,11 +83,15 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
    
+    // initialize robot subsystems    
     RobotContainer.gyro.resetGyro();
-   
-    autonomousCommand = RobotContainer.getAutonomousCommand();
     RobotContainer.odometry.InitializetoZero();
+    
+    // robot is now initialized
+    robotIsInitialized = true;
 
+    autonomousCommand = RobotContainer.getAutonomousCommand();
+    
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
@@ -97,6 +105,17 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+   
+    // if robot has not previously been initialized, then go ahead and initialize
+    //if (robotIsInitialized == false) {
+      RobotContainer.gyro.resetGyro();
+      RobotContainer.odometry.InitializetoZero();
+      
+      // robot is now initialized
+      //robotIsInitialized = true;
+    //}
+   
+   
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -105,8 +124,6 @@ public class Robot extends TimedRobot {
       autonomousCommand.cancel();
     }
 
-    RobotContainer.gyro.resetGyro();
-    RobotContainer.odometry.InitializetoZero();
   }
 
   /** This function is called periodically during operator control. */

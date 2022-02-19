@@ -21,6 +21,24 @@ public class Limelight extends SubsystemBase {
   // network table to communicate to camera with
   private NetworkTable m_table;
   
+  // subsystem shuffleboard controls
+  private NetworkTableEntry m_Pipeline;
+  private NetworkTableEntry m_TargetPresent;
+  private NetworkTableEntry m_AngleX;
+  private NetworkTableEntry m_AngleY;
+  private NetworkTableEntry m_Skew;
+  private NetworkTableEntry m_Area;
+  private NetworkTableEntry m_Short;
+  private NetworkTableEntry m_Long;
+  private NetworkTableEntry m_Hor;
+  private NetworkTableEntry m_Vert;
+  private NetworkTableEntry m_X;
+  private NetworkTableEntry m_Y;
+  private NetworkTableEntry m_Z;
+  private NetworkTableEntry m_Pitch;
+  private NetworkTableEntry m_Yaw;
+  private NetworkTableEntry m_Roll;
+
 
   /** Creates a new Limelight.
    * Input: String containing name of limelight (defined in the camera) */
@@ -48,12 +66,12 @@ public class Limelight extends SubsystemBase {
     // This method will be called once per scheduler run
     
     // update shuffleboard - update at 5Hz is sufficient for this subsystem
-    m_UpdateTimer++;
-    if (m_UpdateTimer>=10)
-    {
+    //m_UpdateTimer++;
+    //if (m_UpdateTimer>=10)
+    //{
       updateShuffleboard();
-      m_UpdateTimer=0;
-    }
+    //  m_UpdateTimer=0;
+    //}
   }
 
 
@@ -107,18 +125,18 @@ public class Limelight extends SubsystemBase {
     CamTran camtran = new CamTran();
 
     // get camera translation vector from camera
-    Number vector[] = m_table.getEntry("camtran").getNumberArray(new Number[6]);
-
+    double[] vector = m_table.getEntry("camtran").getDoubleArray(new double[]{});
+   
     // if translation vector is valid (has 6 numbers in it) go ahead and record data in structure
     if (vector.length>=6)
       {
-      camtran.x = vector[0].doubleValue();
-      camtran.y = vector[1].doubleValue();
-      camtran.z = vector[2].doubleValue();
-      camtran.pitch = vector[3].doubleValue();
-      camtran.yaw = vector[4].doubleValue();
-      camtran.roll = vector[5].doubleValue();
-    }
+      camtran.x = vector[0];
+      camtran.y = vector[1];
+      camtran.z = vector[2];
+      camtran.pitch = vector[3];
+      camtran.yaw = vector[4];
+      camtran.roll = vector[5];
+    } 
 
     // return data structure
     return camtran;
@@ -208,25 +226,6 @@ float getRawSkew2()
 
 // -------------------- Subsystem Shuffleboard Methods --------------------
 
-
-// subsystem shuffleboard controls
-private NetworkTableEntry m_Pipeline;
-private NetworkTableEntry m_TargetPresent;
-private NetworkTableEntry m_AngleX;
-private NetworkTableEntry m_AngleY;
-private NetworkTableEntry m_Skew;
-private NetworkTableEntry m_Area;
-private NetworkTableEntry m_Short;
-private NetworkTableEntry m_Long;
-private NetworkTableEntry m_Hor;
-private NetworkTableEntry m_Vert;
-private NetworkTableEntry m_X;
-private NetworkTableEntry m_Y;
-private NetworkTableEntry m_Z;
-private NetworkTableEntry m_Pitch;
-private NetworkTableEntry m_Yaw;
-private NetworkTableEntry m_Roll;
- 
 
 /** Initialize subsystem shuffleboard page and controls */
 private void initializeShuffleboard(String name) {

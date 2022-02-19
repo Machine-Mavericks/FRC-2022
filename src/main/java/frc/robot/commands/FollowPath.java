@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import java.util.ArrayList;
-
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -26,37 +25,56 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.SwerveOdometry;
 
 
-
-
+/** Command to Follow Path */
 public class FollowPath extends CommandBase {
 
     private Drivetrain m_drivetrain = RobotContainer.drivetrain;
-    private Trajectory robotRelativeTrajectory;
     private Trajectory trajectory;
-    private double temp;
 
-    private Timer timer = new Timer();
+    private Timer timer;
     private final SwerveOdometry m_odometry = RobotContainer.odometry;
 
     // TODO: Tune these
-    private double p = 7;
+    // PIDs gains for X and Y position controllers
+    private double p = 5;
     private double i = 0;
     private double d = 0;  //0.06;
 
     private Pose2d odometryPose = new Pose2d();
-    private Rotation2d desiredAngle; // = new Rotation2d(0,0);
+    private Rotation2d desiredAngle; 
     private ChassisSpeeds speeds = new ChassisSpeeds();
 
     private HolonomicDriveController driveController;
+
+    private double m_endRobotAngle;
+    private double m_RobotRotationRate;
+    private double m_RobotAngle;
 
     // Measured in m/s and m/s/s
     private final double MAX_VELOCITY = 1.0;
     private final double MAX_ACCELERATION = 0.5;
 
-    // Input the name of the generated path in PathPlanner
-    public FollowPath(double[][] points, double startAngle, double endAngle, double startVelocity,
-            double endVelocity) {
-        trajectory = calculateTrajectory(points, startAngle, endAngle, startVelocity, endVelocity);
+    /** Follow Generic Path
+     * Inputs:  points - coordinates that define path
+     *          startAngle - starting angle of path
+     *          endAngle - ending angle of path
+     *          startSpeed - starting speed of robot (m/s)
+     *          endSpeed - ending speed of robot (m/s)
+     */
+    public FollowPath(double[][] points, double startAngle, double endAngle, double startSpeed,
+            double endSpeed, double endRobotAngle, boolean reverse, boolean rotatepath) {
+        trajectory = calculateTrajectory(points,
+                                        startAngle,
+                                        endAngle,
+                                        startSpeed,
+                                        endSpeed,
+                                        reverse,
+                                        rotatepath);
+
+        // set up timer to track time in the path
+        timer = new Timer();
+
+        m_endRobotAngle = endRobotAngle;
 
         addRequirements(m_drivetrain);
     }
@@ -74,9 +92,24 @@ public class FollowPath extends CommandBase {
                 new TrapezoidProfile.Constraints(MAX_VELOCITY, MAX_ACCELERATION));
 
         // Create main holonomic drive controller
+        // Note: From drive testing Feb10/2022, y axis in path controller is reverse from odometry
+        // use negative y-axis controller gains to avoid positive feedback!
         driveController = new HolonomicDriveController(
-                new PIDController(p, i, d), new PIDController(-p, i, d), rotationController);
+                new PIDController(p, i, d), new PIDController(-p, -i, -d), rotationController);
         driveController.setEnabled(true);
+
+        // beginning angle of robot - set to urrent angle
+        m_RobotAngle = RobotContainer.gyro.continuousYaw();
+        
+        // robot rotation rate
+        double rotatetime = trajectory.getTotalTimeSeconds();
+        if (rotatetime!=0.0)
+            m_RobotRotationRate = (m_endRobotAngle-m_RobotAngle)/rotatetime;
+       else
+            m_RobotRotationRate = 0.0;
+
+       // beginning angle of robot - set to urrent angle
+            m_RobotAngle = RobotContainer.gyro.continuousYaw();
 
         // Start timer when path begins
         timer.reset();
@@ -89,58 +122,41 @@ public class FollowPath extends CommandBase {
         // Get next trajectory state from our path
         State targetPathState = trajectory.sample(timer.get());
 
+        // update our target robot rotation angle
+        m_RobotAngle += m_RobotRotationRate*0.02;
+
         // set robot's angle - for now choose same angle as the path. We can improve this after we get basic path working
-        desiredAngle = new Rotation2d(0.0); // targetPathState.poseMeters.getRotation();
+        desiredAngle = new Rotation2d(m_RobotAngle*3.1415/180.0); // targetPathState.poseMeters.getRotation();
 
         // get our current odeometry Pose
         odometryPose = m_odometry.getPose2d();
 
         // determine robot chassis speeds
         speeds = driveController.calculate(odometryPose, targetPathState, desiredAngle);
-
-        //speeds.omegaRadiansPerSecond = 1.0;
-        //speeds.vyMetersPerSecond = -0.0;
-        //speeds.vxMetersPerSecond = 0.0;
         
-        // negative of y speed
-        speeds.vyMetersPerSecond = -speeds.vyMetersPerSecond;
-        speeds.omegaRadiansPerSecond = - speeds.omegaRadiansPerSecond;
-        
-        //swap x and y
-        //temp = -speeds.vxMetersPerSecond;
-        //speeds.vxMetersPerSecond = -speeds.vyMetersPerSecond;
-        //speeds.vyMetersPerSecond = temp;
-
-        
-
         // instruct drive system to move robot
-        m_drivetrain.setChassisSpeeds(speeds);
+        //m_drivetrain.setChassisSpeeds(speeds);
+        m_drivetrain.drive(new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond),
+                            speeds.omegaRadiansPerSecond,
+                            true);
 
-       RobotContainer.shuffleboard.time.setDouble(timer.get());
+        // TODO - Temporary for Debugging Purposes - to be deleted
+        RobotContainer.shuffleboard.time.setDouble(timer.get());
         RobotContainer.shuffleboard.x.setDouble(targetPathState.poseMeters.getX());
         RobotContainer.shuffleboard.y.setDouble(targetPathState.poseMeters.getY());
         RobotContainer.shuffleboard.rot.setDouble(trajectory.getTotalTimeSeconds());
-
         RobotContainer.shuffleboard.x1.setDouble(odometryPose.getX());
         RobotContainer.shuffleboard.y1.setDouble(odometryPose.getY());
-        //RobotContainer.shuffleboard.rot1.setDouble(odometryPose.getRotation().getDegrees());
-
         RobotContainer.shuffleboard.speedX.setDouble(speeds.vxMetersPerSecond);
         RobotContainer.shuffleboard.speedY.setDouble(speeds.vyMetersPerSecond);
+        // END TEMPORARY
 
     }
 
-    /* Optional improved functionality
-    // Read the path with the given name from the PathPlanner
-    private PathPlannerTrajectory getTrajectory(String pathName) {
-        PathPlannerTrajectory currentTrajectory = PathPlanner.loadPath(pathName, MAX_VELOCITY, MAX_ACCELERATION);
 
-        return currentTrajectory;
-    } */
-
-    // Calculate trajectory manually with a clamped cubic spline
-    private Trajectory calculateTrajectory(double[][] points, double startAngle, double endAngle, double startVelocity,
-            double endVelocity) {
+    /** Calculate trajectory manually with a clamped cubic spline */
+    private Trajectory calculateTrajectory(double[][] points, double startAngle, double endAngle, double startSpeed,
+            double endSpeed, boolean reverse, boolean rotatepath) {
 
         Pose2d startPose = new Pose2d(points[0][0], points[0][1], Rotation2d.fromDegrees(startAngle));
         Pose2d endPose = new Pose2d(points[points.length - 1][0], points[points.length - 1][1],
@@ -158,23 +174,36 @@ public class FollowPath extends CommandBase {
         }
 
         TrajectoryConfig trajectoryConfig = new TrajectoryConfig(MAX_VELOCITY, MAX_ACCELERATION);
-        trajectoryConfig.setStartVelocity(startVelocity);
-        trajectoryConfig.setEndVelocity(endVelocity);
+        trajectoryConfig.setStartVelocity(startSpeed);
+        trajectoryConfig.setEndVelocity(endSpeed);
+        trajectoryConfig.setReversed(reverse);
 
-        robotRelativeTrajectory = TrajectoryGenerator.generateTrajectory(startPose, path, endPose, trajectoryConfig);
+        // create our trajectory
+        Trajectory robotRelativeTrajectory = TrajectoryGenerator.generateTrajectory(startPose, path, endPose, trajectoryConfig);
 
-        // translate/rotate path so it starts the robot's current position/angle
-        return robotRelativeTrajectory.transformBy(new Transform2d(m_odometry.getPose2d(), startPose));
+       
+        Translation2d ken = new Translation2d(m_odometry.getPose2d().getX() - startPose.getX(),
+                                               m_odometry.getPose2d().getY() - startPose.getY());
+        Rotation2d ken2 = new Rotation2d(0.0);
+        if (rotatepath)
+            ken2 = m_odometry.getPose2d().getRotation();
+
+        Transform2d ken3 = new Transform2d(ken, ken2);
+
+        // return generaed trajectory
+        return robotRelativeTrajectory.transformBy(ken3); 
+        
+        //return robotRelativeTrajectory.transformBy(new Transform2d(m_odometry.getPose2d(), startPose));
     }
 
-    // Called once the command ends or is interrupted.
+    /** Called once the command ends or is interrupted. */
     @Override
     public void end(boolean interrupted) {
         Translation2d zeroPoint = new Translation2d(0.0, 0.0);
         m_drivetrain.drive(zeroPoint, 0.0, true);
     }
 
-    // Returns true when the command should end.
+    /** Returns true when the command should end. */
     @Override
     public boolean isFinished() {
         // we are finished when the time spent in this command is >= duration of path (in seconds)
@@ -184,4 +213,4 @@ public class FollowPath extends CommandBase {
             return false;
     }
 
-}
+} // end FollowPath command
