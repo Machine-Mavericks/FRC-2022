@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.RobotContainer;
 
 public class DriveCommand extends CommandBase {
 
@@ -32,8 +33,10 @@ public class DriveCommand extends CommandBase {
     double yInput =   OI.driverController.getLeftY();
     double rotInput = OI.driverController.getRightX();
 
-    xInput = Math.abs(xInput) > 0.1 ? xInput : 0;
-    yInput = Math.abs(yInput) > 0.1 ? yInput : 0;
+    double maxAccel = RobotContainer.drivetrain.maxAccel.getDouble(0.02);
+
+    xInput = Math.abs(RobotContainer.drivetrain.MaxAccelX(maxAccel)) > 0.1 ? RobotContainer.drivetrain.MaxAccelX(maxAccel) : 0;
+    yInput = Math.abs(RobotContainer.drivetrain.MaxAccelY(maxAccel)) > 0.1 ? RobotContainer.drivetrain.MaxAccelY(maxAccel) : 0;
     rotInput = Math.abs(rotInput) > 0.1 ? rotInput*0.25 : 0;
 
     m_drivetrain.drive(new Translation2d(yInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND, xInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND), rotInput*Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, true); 
