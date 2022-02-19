@@ -142,5 +142,4 @@ public class Gyro extends SubsystemBase {
     m_xAcceleration.setDouble(getXAcceleration());
     m_yAcceleration.setDouble(getYAcceleration());
   }
-
 }
