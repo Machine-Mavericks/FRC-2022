@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
@@ -30,11 +31,14 @@ public class DriveCommand extends CommandBase {
     // Driver inputs, should be in range [-1,1]
     // TODO: Map to controller, using functions like OI.driverController.getLeftX()
     double rotInput = OI.driverController.getRightX();
+    double SlowDownButton = OI.driverController.getRightTriggerAxis();
 
     double maxAccel = RobotContainer.drivetrain.maxAccel.getDouble(0.02);
 
-    double xInput = (OI.SlowDownButton >= 0.75) ? RobotContainer.drivetrain.MaxAccelX(maxAccel) * 0.25 : RobotContainer.drivetrain.MaxAccelX(maxAccel);
-    double yInput = (OI.SlowDownButton >= 0.75) ? RobotContainer.drivetrain.MaxAccelY(maxAccel) * 0.25 : RobotContainer.drivetrain.MaxAccelY(maxAccel);
+    SmartDashboard.putNumber("SDB", SlowDownButton);
+
+    double xInput = (SlowDownButton >= 0.75) ? RobotContainer.drivetrain.MaxAccelX(maxAccel) * 0.25 : RobotContainer.drivetrain.MaxAccelX(maxAccel);
+    double yInput = (SlowDownButton >= 0.75) ? RobotContainer.drivetrain.MaxAccelY(maxAccel) * 0.25 : RobotContainer.drivetrain.MaxAccelY(maxAccel);
 
     xInput = Math.abs(xInput) > 0.1 ? xInput : 0;
     yInput = Math.abs(yInput) > 0.1 ? yInput : 0;
