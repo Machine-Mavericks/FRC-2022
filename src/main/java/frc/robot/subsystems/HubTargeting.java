@@ -30,12 +30,13 @@ public class HubTargeting extends SubsystemBase {
     boolean target = m_hubCamera.isTargetPresent();
     double distance = EstimateDistance();
     boolean yesTarget;
-    if (target == true && 1.6 <= distance && 7 >= distance) {
-      yesTarget = true;
-    } else {
-      yesTarget = false;
-    }
-    return yesTarget;
+    return true;
+    // if (target == true && 1.6 <= distance && 7 >= distance) {
+    //   yesTarget = true;
+    // } else {
+    //   yesTarget = false;
+    // }
+    // return yesTarget;
   }
 
   /**

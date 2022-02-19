@@ -51,8 +51,8 @@ public class SteerTowardsBall extends CommandBase {
       double angle = pidController.calculate(TargetAngle);
 
       // get speed to drive towards ball
-      double yInput = OI.driverController.getLeftY()*0.2;
-      double xInput = OI.driverController.getLeftX()*0.2;
+      double yInput = OI.driverController.getLeftY();
+      double xInput = OI.driverController.getLeftX();
 
       // is angle correction positive or negative?
       if (TargetAngle >= 0.0) {
