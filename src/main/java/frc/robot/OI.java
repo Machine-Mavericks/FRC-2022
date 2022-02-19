@@ -42,5 +42,7 @@ public class OI {
     public static final JoystickButton ballTrackingButton = new JoystickButton(driverController, Bindings.BALL_TRACKING_BUTTON.value);
     /** Ball tracking button. Mapped to {@link Bindings#BALL_TRACKING_BUTTON} */
     public static final JoystickButton hubTrackingButton = new JoystickButton(driverController, Bindings.HUB_TRACKING_BUTTON.value);
+    /** Button to slow down driving speed to 25% speed */
+    public static final double SlowDownButton = driverController.getRightTriggerAxis();
 }
  
