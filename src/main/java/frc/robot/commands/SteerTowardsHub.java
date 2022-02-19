@@ -50,8 +50,8 @@ public class SteerTowardsHub extends CommandBase {
       double angle = pidController.calculate(TargetAngle);
 
       // get speed to drive towards Hub
-      double yInput = OI.driverController.getLeftY();
-      double xInput = OI.driverController.getLeftX();
+      double yInput = OI.driverController.getLeftY()*0.25;
+      double xInput = OI.driverController.getLeftX()*0.25;
 
       kp = -0.003*OI.driverController.getLeftX()*2;
 

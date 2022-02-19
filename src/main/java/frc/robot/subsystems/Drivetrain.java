@@ -1,30 +1,26 @@
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
-import java.util.Map;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
-import frc.robot.RobotMap;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotMap;
 import frc.robot.OI;
+import frc.robot.RobotContainer;
+import frc.robot.RobotMap;
 
 /**
  * Subsystem representing the swerve drivetrain
@@ -208,7 +204,7 @@ public class Drivetrain extends SubsystemBase {
     double prevYInput = 0.0;
     public double MaxAccelX(double maxAccel) {
         prevXInput = newXInput;
-        newXInput = OI.driverController.getLeftX();
+        newXInput = OI.driverController.getLeftX()*0.25;
         newXInput = (newXInput - prevXInput) > maxAccel ? prevXInput + maxAccel : newXInput;
         newXInput = (newXInput - prevXInput) < -1 * maxAccel ? prevXInput - maxAccel : newXInput;
         // double xOutput2 = newXInput;
@@ -216,7 +212,7 @@ public class Drivetrain extends SubsystemBase {
     }
     public double MaxAccelY(double maxAccel) {
         prevYInput = newYInput;
-        newYInput = OI.driverController.getLeftY();
+        newYInput = OI.driverController.getLeftY()*0.25;
         newYInput = (newYInput - prevYInput) > maxAccel ? prevYInput + maxAccel : newYInput;
         newYInput = (newYInput - prevYInput) < -1 * maxAccel ? prevYInput - maxAccel : newYInput;
         // double yOutput2 = newYInput;
