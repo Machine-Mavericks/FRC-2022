@@ -204,7 +204,7 @@ public class Drivetrain extends SubsystemBase {
     double prevYInput = 0.0;
     public double MaxAccelX(double maxAccel) {
         prevXInput = newXInput;
-        newXInput = OI.driverController.getLeftX()*0.25;
+        newXInput = OI.driverController.getLeftX();
         newXInput = (newXInput - prevXInput) > maxAccel ? prevXInput + maxAccel : newXInput;
         newXInput = (newXInput - prevXInput) < -1 * maxAccel ? prevXInput - maxAccel : newXInput;
         // double xOutput2 = newXInput;
@@ -212,7 +212,7 @@ public class Drivetrain extends SubsystemBase {
     }
     public double MaxAccelY(double maxAccel) {
         prevYInput = newYInput;
-        newYInput = OI.driverController.getLeftY()*0.25;
+        newYInput = OI.driverController.getLeftY();
         newYInput = (newYInput - prevYInput) > maxAccel ? prevYInput + maxAccel : newYInput;
         newYInput = (newYInput - prevYInput) < -1 * maxAccel ? prevYInput - maxAccel : newYInput;
         // double yOutput2 = newYInput;

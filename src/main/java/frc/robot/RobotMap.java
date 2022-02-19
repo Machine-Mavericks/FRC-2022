@@ -62,6 +62,10 @@ public class RobotMap {
     public static class PneumaticsChannel {
     }
 
+    public static class PWMPorts {
+        /** PWM Port for led strip */
+        static final int LED_STRIP = 0;
+    }
 
     /**
      * Function to initialise hardware

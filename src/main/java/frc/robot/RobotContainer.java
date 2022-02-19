@@ -20,6 +20,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.HubTargeting;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LED;
 import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveOdometry;
@@ -39,7 +40,10 @@ public class RobotContainer {
   public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
   public static final Drivetrain drivetrain = new Drivetrain();
   public static final Gyro gyro = new Gyro();
+  public static final LED led = new LED(RobotMap.PWMPorts.LED_STRIP);
   public static final SwerveOdometry odometry = new SwerveOdometry();
+  
+  // The robot's commands are defined here...
   public static final Shooter m_shooter = new Shooter();
   public static final Lifter lifter = new Lifter();
   public static final Intake intake = new Intake();
@@ -68,6 +72,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private static void configureButtonBindings() {
+    //OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
 
     OI.shootButton.whenPressed(new ShooterCommand());
     // TODO: Disable binding for competition use
