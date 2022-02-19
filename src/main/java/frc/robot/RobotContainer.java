@@ -44,7 +44,7 @@ public class RobotContainer {
   public static final SwerveOdometry odometry = new SwerveOdometry();
   
   // The robot's commands are defined here...
-  private static final LEDCommand LEDCommand = new LEDCommand(led);
+  private static final LEDCommand LEDCommand = new LEDCommand(led);   //Totally unused atm, might be handy for blinking or disco mode if we implement that?
   public static final Shooter m_shooter = new Shooter();
   public static final Lifter lifter = new Lifter();
   public static final Intake intake = new Intake();
@@ -73,7 +73,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private static void configureButtonBindings() {
-    OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
+    //OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
 
     OI.shootButton.whenPressed(new ShooterCommand());
     // TODO: Disable binding for competition use
