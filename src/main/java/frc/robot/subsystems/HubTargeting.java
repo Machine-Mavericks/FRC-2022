@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class HubTargeting extends SubsystemBase {
   public Limelight m_hubCamera;
@@ -18,6 +19,8 @@ public class HubTargeting extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Range (m)", EstimateDistance());
+    
   }
 
   /**
@@ -30,13 +33,12 @@ public class HubTargeting extends SubsystemBase {
     boolean target = m_hubCamera.isTargetPresent();
     double distance = EstimateDistance();
     boolean yesTarget;
-    return true;
-    // if (target == true && 1.6 <= distance && 7 >= distance) {
-    //   yesTarget = true;
-    // } else {
-    //   yesTarget = false;
-    // }
-    // return yesTarget;
+    if (target == true && 1.6 <= distance && 7 >= distance) {
+      yesTarget = true;
+    } else {
+      yesTarget = false;
+    }
+    return yesTarget;
   }
 
   /**
