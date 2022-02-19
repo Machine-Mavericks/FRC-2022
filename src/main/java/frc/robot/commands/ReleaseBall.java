@@ -8,14 +8,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Intake;
 
-public class IntakeCommand extends CommandBase {
-  private int m_timer = 0;
-  // NOTE: Currently unsed, may be reimplemented at later date?
-  // time it will take until the intake retracts, set at 5 seconds currently
-  private static final int END_TIME_TICKS = 5 * 50;
+public class ReleaseBall extends CommandBase {
 
-  /** Creates a new IntakeCommand. */
-  public IntakeCommand() {
+  /** Creates a new ReleaseBall. */
+  public ReleaseBall() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.intake);
     addRequirements(RobotContainer.lifter);
@@ -26,27 +22,15 @@ public class IntakeCommand extends CommandBase {
   @Override
   public void initialize() {
     // turn on the intake and the lifter
-    RobotContainer.intake.setMotorSpeed(Intake.MOTORSPEED);
-    RobotContainer.lifter.liftBalls();
+    RobotContainer.intake.setMotorSpeed(-Intake.MOTORSPEED);
+    RobotContainer.lifter.releaseBalls();
 
-    // initialize timer at start of command
-    m_timer = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // increment timer
-    m_timer++;
-
-    //check if limit switch is activated
-    if (!RobotContainer.lifter.liftLimit.get()){
-      RobotContainer.lifter.stopMotor();
-    }
-    else{
-      RobotContainer.lifter.liftBalls();
-    }
-    
+      RobotContainer.lifter.releaseBalls();
   }
 
   // Called once the command ends or is interrupted.
@@ -62,10 +46,5 @@ public class IntakeCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
-    // if (m_timer >= END_TIME_TICKS) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
   }
 }

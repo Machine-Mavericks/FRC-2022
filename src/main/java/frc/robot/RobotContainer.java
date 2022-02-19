@@ -10,14 +10,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ReleaseBall;
+import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.subsystems.BallTargeting;
-import frc.robot.commands.ShooterCommand;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.HubTargeting;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveOdometry;
@@ -41,8 +42,10 @@ public class RobotContainer {
   public static final Shooter m_shooter = new Shooter();
   public static final Lifter lifter = new Lifter();
   public static final Intake intake = new Intake();
-  public static final Limelight limelight = new Limelight("camera name"); //TODO: set camera name
+  // public static final Limelight ballLimelight = new Limelight("camera name"); //TODO: set camera name
+  // public static final Limelight hubLimelight = new Limelight("camera name");
   public static final BallTargeting ballTargeting = new BallTargeting();
+  public static final HubTargeting hubTargeting = new HubTargeting();
 
   // The robot's subsystems are defined here...
   private static final ExampleCommand autoCommand = new ExampleCommand(exampleSubsystem);
@@ -70,6 +73,7 @@ public class RobotContainer {
     OI.zeroButton.whenPressed(() -> gyro.setCurrentYaw(0));
     OI.intakeButton.whileHeld(new IntakeCommand());
     OI.ballTrackingButton.whenHeld(new SteerTowardsBall());
+    OI.releaseBallButton.whileHeld(new ReleaseBall());
   }
 
   /**

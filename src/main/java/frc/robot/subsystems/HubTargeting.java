@@ -7,11 +7,11 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class HubTargeting extends SubsystemBase {
-  private Limelight m_hubCamera;
+  public Limelight m_hubCamera;
 
   /** Creates a new HubTargeting. */
   public HubTargeting() {
-    m_hubCamera = new Limelight("hub");
+    m_hubCamera = new Limelight("limelight-hub");
     m_hubCamera.setPipeline(0);
   }
 
@@ -76,6 +76,10 @@ public class HubTargeting extends SubsystemBase {
       ready = false;
     }
     return ready;
+  }
+
+  public double getHubAngle(){
+    return RotationAngle();
   }
 
   /**
