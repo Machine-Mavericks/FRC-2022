@@ -31,7 +31,7 @@ public class DriveCommand extends CommandBase {
     // TODO: Map to controller, using functions like OI.driverController.getLeftX()
     double xInput = OI.driverController.getLeftX();
     double yInput =   OI.driverController.getLeftY();
-    double rotInput = OI.driverController.getRightX();
+    double rotInput = OI.driverController.getRightX()*0.25;
 
     double maxAccel = RobotContainer.drivetrain.maxAccel.getDouble(0.02);
 
