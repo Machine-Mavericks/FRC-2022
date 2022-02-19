@@ -74,7 +74,7 @@ public class RobotContainer {
   private static void configureButtonBindings() {
     //OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
 
-    OI.shootButton.whenPressed(new ShooterCommand());
+    OI.shootButton.whileHeld(new ShooterCommand());
     // TODO: Disable binding for competition use
     OI.zeroButton.whenPressed(() -> gyro.setCurrentYaw(0));
     OI.intakeButton.whileHeld(new IntakeCommand());

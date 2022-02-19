@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 public class ShooterCommand extends CommandBase {
-  double shootTime = 0;
 
   /** Creates a new ShooterCommand. */
   public ShooterCommand() {
@@ -29,9 +28,6 @@ public class ShooterCommand extends CommandBase {
     
     RobotContainer.lifter.liftBalls();
 
-    
-    // increment timer
-    shootTime += 0.02;
   }
 
   // Called once the command ends or is interrupted.
@@ -40,12 +36,11 @@ public class ShooterCommand extends CommandBase {
     // go back to idle speed and set timer to 0 until command starts again
     RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenIdleSpeed.getDouble(2500));
     RobotContainer.lifter.stopMotor();
-    shootTime = 0;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (shootTime > 7.0);
+    return false;
   }
 }
