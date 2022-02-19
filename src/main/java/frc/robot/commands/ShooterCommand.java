@@ -29,6 +29,7 @@ public class ShooterCommand extends CommandBase {
     
     RobotContainer.lifter.liftBalls();
 
+    
     // increment timer
     shootTime += 0.02;
   }

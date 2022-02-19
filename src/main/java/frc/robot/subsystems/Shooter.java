@@ -72,6 +72,14 @@ public class Shooter extends SubsystemBase {
   public void setShooterSpeed(double shooterSpeed) {
     rightShooterFalcon.set(ControlMode.Velocity,shooterSpeed* (2048/600.0));
   }
+
+  /**
+   * This method will return motor speed
+   */
+  public double getShooterSpeed() {
+    return rightShooterFalcon.getSelectedSensorVelocity() / (2048/600.0);
+  }
+  
   /**
    * This method will raise or lower the hood on the shooter for high or low
    * shooting
