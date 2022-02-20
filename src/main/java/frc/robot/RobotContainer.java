@@ -18,7 +18,6 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.HubTargeting;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Shooter;
@@ -72,7 +71,7 @@ public class RobotContainer {
     // TODO: Disable binding for competition use
     //OI.zeroButton.whenPressed(() -> gyro.resetGyro());
     OI.intakeButton.whileHeld(new IntakeCommand());
-    OI.ballTrackingButton.whenHeld(new SteerTowardsBall());
+    OI.ballTrackingButton.whenHeld(new SteerTowardsBall(true));
     OI.releaseBallButton.whileHeld(new ReleaseBall());
   }
 
