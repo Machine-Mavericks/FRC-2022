@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.shuffleboard.*;
 import edu.wpi.first.networktables.NetworkTableEntry;
 
 
+/** Contains shuffleboard setup for generic main page not belonging to any subsubsystem
+ * Typically used to have robot-level settings and command functions */
 public class ShuffleboardOI extends SubsystemBase {
 
     // example autonomous path shuffleboard selection boxes
