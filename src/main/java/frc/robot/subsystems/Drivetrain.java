@@ -26,6 +26,11 @@ import frc.robot.RobotMap;
  */
 public class Drivetrain extends SubsystemBase {
 
+            
+    // value controlled on shuffleboard to stop the jerkiness of the robot by limiting its accelera``tion
+    public NetworkTableEntry maxAccel;
+    public NetworkTableEntry speedLimitFactor;
+
     /**
      * The left-to-right distance between the drivetrain wheels
      *
@@ -98,9 +103,6 @@ public class Drivetrain extends SubsystemBase {
 
     // Swerve module states - contains speed(m/s) and angle for each swerve module
     SwerveModuleState[] m_states;
-    
-    // value controlled on shuffleboard to stop the jerkiness of the robot by limiting its accelera``tion
-    public NetworkTableEntry maxAccel;
 
     /**
      * Create a new swerve drivetrain
@@ -152,6 +154,11 @@ public class Drivetrain extends SubsystemBase {
         .withPosition(8, 0)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 0.5))
+        .getEntry();
+        speedLimitFactor = tab.add("SpeedLimitFactor", 0.03)
+        .withPosition(8, 0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min", 0, "max", 1.0))
         .getEntry();
     }
 
