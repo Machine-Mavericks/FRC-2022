@@ -139,18 +139,6 @@ public class FollowPath extends CommandBase {
         m_drivetrain.drive(new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond),
                             speeds.omegaRadiansPerSecond,
                             true);
-
-        // TODO - Temporary for Debugging Purposes - to be deleted
-        RobotContainer.shuffleboard.time.setDouble(timer.get());
-        RobotContainer.shuffleboard.x.setDouble(targetPathState.poseMeters.getX());
-        RobotContainer.shuffleboard.y.setDouble(targetPathState.poseMeters.getY());
-        RobotContainer.shuffleboard.rot.setDouble(trajectory.getTotalTimeSeconds());
-        RobotContainer.shuffleboard.x1.setDouble(odometryPose.getX());
-        RobotContainer.shuffleboard.y1.setDouble(odometryPose.getY());
-        RobotContainer.shuffleboard.speedX.setDouble(speeds.vxMetersPerSecond);
-        RobotContainer.shuffleboard.speedY.setDouble(speeds.vyMetersPerSecond);
-        // END TEMPORARY
-
     }
 
 
