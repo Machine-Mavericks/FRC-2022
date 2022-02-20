@@ -4,10 +4,13 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 public class ShooterCommand extends CommandBase {
+
+  private static final double SPEED_TOLERANCE = 5;
 
   /** Creates a new ShooterCommand. */
   public ShooterCommand() {
@@ -25,8 +28,9 @@ public class ShooterCommand extends CommandBase {
   public void execute() {
     // set shooter speed to that set on shuffleboard
     RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(5000.0));
-    
-    RobotContainer.lifter.liftBalls();
+    if(Math.abs(RobotContainer.m_shooter.getShooterSpeed() - RobotContainer.m_shooter.ChosenSpeed.getDouble(5000.0)) < SPEED_TOLERANCE){
+      RobotContainer.lifter.liftBalls();
+    }
 
   }
 
