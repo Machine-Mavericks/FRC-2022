@@ -12,7 +12,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
 
-public class SteerTowardsBall extends CommandBase {
+public class SteerTowardsHub extends CommandBase {
 
   private Drivetrain m_drivetrain = RobotContainer.drivetrain;
   private Gyro m_gyro = RobotContainer.gyro;
@@ -21,18 +21,17 @@ public class SteerTowardsBall extends CommandBase {
   double TargetAngle = 0;
 
   // TODO: set gains
-  double kp = 0.002;
+  double kp = 0.004;
   double ki = 0.0;
-  double kd = 0.00;
+  double kd = 0.0;
 
   PIDController pidController = new PIDController(kp, ki, kd);
 
   /** Creates a new SteerTowardsTarget. */
-  public SteerTowardsBall() {
+  public SteerTowardsHub() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drivetrain);
     addRequirements(m_gyro);
-    RobotContainer.ballTargeting.setBallPipeline();
   }
 
   // Called when the command is initially scheduled.
@@ -44,15 +43,17 @@ public class SteerTowardsBall extends CommandBase {
   @Override
   public void execute() {
 
-    if ((RobotContainer.ballTargeting.IsBall())){
+    if ((RobotContainer.hubTargeting.IsTarget())){
 
-      TargetAngle = RobotContainer.ballTargeting.ballAngle();
+      TargetAngle = RobotContainer.hubTargeting.getHubAngle();
 
       double angle = pidController.calculate(TargetAngle);
 
-      // get speed to drive towards ball
-      double yInput = -OI.driverController.getLeftY()*0.25;
-      double xInput = OI.driverController.getLeftX()*0.25;
+      // get speed to drive towards Hub
+      double yInput = OI.driverController.getLeftY();
+      double xInput = -OI.driverController.getLeftX();
+
+      kp = 0.004 + 0.004*OI.driverController.getLeftX()*2;
 
       // is angle correction positive or negative?
       if (TargetAngle >= 0.0) {
@@ -60,14 +61,14 @@ public class SteerTowardsBall extends CommandBase {
         RobotContainer.drivetrain.drive(
             new Translation2d(yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
                 xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
-                angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, true);
+                angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
       } // TODO: update this to be correct
       else {
         // drive towards target
         RobotContainer.drivetrain.drive(
             new Translation2d(yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
                 xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
-                angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, true);
+                angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
       } // TODO: update this to be correct
 
     }

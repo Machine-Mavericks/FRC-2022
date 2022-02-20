@@ -21,6 +21,25 @@ public class Limelight extends SubsystemBase {
 
   // network table to communicate to camera with
   private NetworkTable m_table;
+  
+  // subsystem shuffleboard controls
+  private NetworkTableEntry m_Pipeline;
+  private NetworkTableEntry m_TargetPresent;
+  private NetworkTableEntry m_AngleX;
+  private NetworkTableEntry m_AngleY;
+  private NetworkTableEntry m_Skew;
+  private NetworkTableEntry m_Area;
+  private NetworkTableEntry m_Short;
+  private NetworkTableEntry m_Long;
+  private NetworkTableEntry m_Hor;
+  private NetworkTableEntry m_Vert;
+  private NetworkTableEntry m_X;
+  private NetworkTableEntry m_Y;
+  private NetworkTableEntry m_Z;
+  private NetworkTableEntry m_Pitch;
+  private NetworkTableEntry m_Yaw;
+  private NetworkTableEntry m_Roll;
+
 
   /**
    * Creates a new Limelight.
@@ -52,11 +71,12 @@ public class Limelight extends SubsystemBase {
     // This method will be called once per scheduler run
     updateShuffleboard();
     // update shuffleboard - update at 5Hz is sufficient for this subsystem
-    // m_UpdateTimer++;
-    // if (m_UpdateTimer >= 10) {
-    //   updateShuffleboard();
-    //   m_UpdateTimer = 0;
-    //  }
+    //m_UpdateTimer++;
+    //if (m_UpdateTimer>=10)
+    //{
+      updateShuffleboard();
+    //  m_UpdateTimer=0;
+    //}
   }
 
   // ---------- Camera Control Functions ----------
@@ -121,20 +141,18 @@ public class Limelight extends SubsystemBase {
     CamTran camtran = new CamTran();
 
     // get camera translation vector from camera
-    // Number vector[] = m_table.getEntry("camtran").getNumberArray(new Number[6]);
-
-    Number vector[] = new Number[6];
-
-    // if translation vector is valid (has 6 numbers in it) go ahead and record data
-    // in structure
-    // if (vector.length >= 6) {
-    //   camtran.x = vector[0].doubleValue();
-    //   camtran.y = vector[1].doubleValue();
-    //   camtran.z = vector[2].doubleValue();
-    //   camtran.pitch = vector[3].doubleValue();
-    //   camtran.yaw = vector[4].doubleValue();
-    //   camtran.roll = vector[5].doubleValue();
-    // }
+    double[] vector = m_table.getEntry("camtran").getDoubleArray(new double[]{});
+   
+    // if translation vector is valid (has 6 numbers in it) go ahead and record data in structure
+    if (vector.length>=6)
+      {
+      camtran.x = vector[0];
+      camtran.y = vector[1];
+      camtran.z = vector[2];
+      camtran.pitch = vector[3];
+      camtran.yaw = vector[4];
+      camtran.roll = vector[5];
+    } 
 
     // return data structure
     return camtran;
@@ -175,98 +193,71 @@ public class Limelight extends SubsystemBase {
     return m_table.getEntry("tvert").getNumber(0).intValue();
   }
 
+
   // ---------- get raw target attributes ----------
 
   /** Raw Screenspace X */
-  float getRawScreenspaceX0() {
-    return m_table.getEntry("tx0").getNumber(0.0).floatValue();
-  }
+  float getRawScreenspaceX0()
+  {  return m_table.getEntry("tx0").getNumber(0.0).floatValue(); }
 
   /** Raw Screenspace X */
-  float getRawScreenspaceX1() {
-    return m_table.getEntry("tx1").getNumber(0.0).floatValue();
-  }
+  float getRawScreenspaceX1()
+  {  return m_table.getEntry("tx1").getNumber(0.0).floatValue(); }
 
   /** Raw Screenspace X */
-  float getRawScreenspaceX2() {
-    return m_table.getEntry("tx2").getNumber(0.0).floatValue();
-  }
+  float getRawScreenspaceX2()
+  {  return m_table.getEntry("tx2").getNumber(0.0).floatValue(); }
 
   /** Raw Screenspace Y */
-  float getRawScreenspaceY0() {
-    return m_table.getEntry("ty0").getNumber(0.0).floatValue();
-  }
+  float getRawScreenspaceY0()
+  {  return m_table.getEntry("ty0").getNumber(0.0).floatValue(); }
 
   /** Raw Screenspace Y */
-  float getRawScreenspaceY1() {
-    return m_table.getEntry("ty1").getNumber(0.0).floatValue();
-  }
+  float getRawScreenspaceY1()
+  {  return m_table.getEntry("ty1").getNumber(0.0).floatValue(); }
 
   /** Raw Screenspace Y */
-  float getRawScreenspaceY2() {
-    return m_table.getEntry("ty2").getNumber(0.0).floatValue();
-  }
+  float getRawScreenspaceY2()
+  {  return m_table.getEntry("ty2").getNumber(0.0).floatValue(); }
 
   /** Area (0% of image to 100% of image) */
-  float getRawArea0() {
-    return m_table.getEntry("ta0").getNumber(0.0).floatValue();
-  }
+  float getRawArea0()
+  {  return m_table.getEntry("ta0").getNumber(0.0).floatValue(); }
 
   /** Area (0% of image to 100% of image) */
-  float getRawArea1() {
-    return m_table.getEntry("ta1").getNumber(0.0).floatValue();
-  }
+  float getRawArea1()
+  {  return m_table.getEntry("ta1").getNumber(0.0).floatValue(); }
 
   /** Area (0% of image to 100% of image) */
-  float getRawArea2() {
-    return m_table.getEntry("ta2").getNumber(0.0).floatValue();
-  }
+  float getRawArea2()
+  {  return m_table.getEntry("ta2").getNumber(0.0).floatValue(); }
 
   /** Skew or rotation (-90 degrees to 0 degrees) */
-  float getRawSkew0() {
-    return m_table.getEntry("ts0").getNumber(0.0).floatValue();
-  }
+  float getRawSkew0()
+  {  return m_table.getEntry("ts0").getNumber(0.0).floatValue(); }
 
   /** Skew or rotation (-90 degrees to 0 degrees) */
-  float getRawSkew1() {
-    return m_table.getEntry("ts1").getNumber(0.0).floatValue();
-  }
+  float getRawSkew1()
+  {  return m_table.getEntry("ts1").getNumber(0.0).floatValue(); }
 
   /** Skew or rotation (-90 degrees to 0 degrees) */
-  float getRawSkew2() {
-    return m_table.getEntry("ts2").getNumber(0.0).floatValue();
-  }
+  float getRawSkew2()
+  { return m_table.getEntry("ts2").getNumber(0.0).floatValue(); }
+
 
   // -------------------- Subsystem Shuffleboard Methods --------------------
 
-  // subsystem shuffleboard controls
-  private NetworkTableEntry m_Pipeline;
-  private NetworkTableEntry m_TargetPresent;
-  private NetworkTableEntry m_AngleX;
-  private NetworkTableEntry m_AngleY;
-  private NetworkTableEntry m_Skew;
-  private NetworkTableEntry m_Area;
-  private NetworkTableEntry m_Short;
-  private NetworkTableEntry m_Long;
-  private NetworkTableEntry m_Hor;
-  private NetworkTableEntry m_Vert;
-  private NetworkTableEntry m_X;
-  private NetworkTableEntry m_Y;
-  private NetworkTableEntry m_Z;
-  private NetworkTableEntry m_Pitch;
-  private NetworkTableEntry m_Yaw;
-  private NetworkTableEntry m_Roll;
 
   /** Initialize subsystem shuffleboard page and controls */
   private void initializeShuffleboard(String name) {
     // Create odometry page in shuffleboard
-    ShuffleboardTab Tab = Shuffleboard.getTab("Limelight: " + name);
+    ShuffleboardTab Tab = Shuffleboard.getTab("Limelight: "+name);
 
     // camera pipeline number
-    m_Pipeline = Tab.add("Pipeline", 0).withPosition(0, 0).getEntry();
+    m_Pipeline = Tab.add("Pipeline", 0).withPosition(0,0).getEntry();
 
     // does camera detect target
-    m_TargetPresent = Tab.add("Target Present", false).withPosition(1, 0).getEntry();
+    m_TargetPresent = Tab.add("Target Present", false).withPosition(1,0).getEntry();
 
     // camera target information
     ShuffleboardLayout l1 = Tab.getLayout("Target", BuiltInLayouts.kList);
@@ -274,37 +265,38 @@ public class Limelight extends SubsystemBase {
     l1.withSize(1, 4);
     m_AngleX = l1.add("AngleX", 0.0).getEntry();
     m_AngleY = l1.add("AngleY", 0.0).getEntry();
-    m_Skew = l1.add("Skew", 0.0).getEntry();
-
+    m_Skew = l1.add("Skew", 0.0).getEntry(); 
+    
     // target dimensions
     ShuffleboardLayout l2 = Tab.getLayout("Dimensions", BuiltInLayouts.kList);
-    l2.withPosition(3, 0);
-    l2.withSize(1, 5);
-    m_Area = l2.add("Area", 0.0).getEntry();
-    m_Short = l2.add("Short", 0.0).getEntry();
-    m_Long = l2.add("Long", 0.0).getEntry();
-    m_Hor = l2.add("Hor", 0.0).getEntry();
+    l2.withPosition(3,0);
+    l2.withSize(1,5);
+    m_Area = l2.add("Area", 0.0).getEntry(); 
+    m_Short = l2.add("Short", 0.0).getEntry(); 
+    m_Long = l2.add("Long", 0.0).getEntry(); 
+    m_Hor = l2.add("Hor", 0.0).getEntry(); 
     m_Vert = l2.add("Vert", 0.0).getEntry();
 
     // camera translation vector to target
     ShuffleboardLayout l3 = Tab.getLayout("CamTran", BuiltInLayouts.kList);
-    l3.withPosition(4, 0);
-    l3.withSize(1, 5);
+    l3.withPosition(4,0);
+    l3.withSize(1,5);
     m_X = l3.add("X", 0.0).getEntry();
-    m_Y = l3.add("Y", 0.0).getEntry();
-    m_Z = l3.add("Z", 0.0).getEntry();
-    m_Pitch = l3.add("Pitch", 0.0).getEntry();
-    m_Yaw = l3.add("Yaw", 0.0).getEntry();
+    m_Y = l3.add("Y", 0.0).getEntry(); 
+    m_Z = l3.add("Z", 0.0).getEntry(); 
+    m_Pitch = l3.add("Pitch", 0.0).getEntry(); 
+    m_Yaw = l3.add("Yaw", 0.0).getEntry(); 
     m_Roll = l3.add("Roll", 0.0).getEntry();
   }
 
+
   /** Update subsystem shuffle board page with current odometry values */
   private void updateShuffleboard() {
-
+    
     // update camera pipeline and target detected indicator
     m_Pipeline.setDouble(getPipeline());
     m_TargetPresent.setBoolean(isTargetPresent());
-
+    
     // update angles to center of target
     m_AngleX.setDouble(getHorizontalTargetOffsetAngle());
     m_AngleY.setDouble(getVerticalTargetOffsetAngle());

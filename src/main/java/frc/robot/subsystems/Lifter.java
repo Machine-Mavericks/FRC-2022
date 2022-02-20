@@ -47,7 +47,11 @@ public class Lifter extends SubsystemBase {
   }
 
   public void liftBalls(){
-    leaderLifterTalon.set(ControlMode.PercentOutput, -1); //TODO: change this to be set in the motors
+    leaderLifterTalon.set(ControlMode.PercentOutput, RobotMap.BALL_LIFTER_SPEED); 
+  }
+
+  public void releaseBalls(){
+    leaderLifterTalon.set(ControlMode.PercentOutput, -RobotMap.BALL_LIFTER_SPEED); 
   }
 
   public void stopMotor() {

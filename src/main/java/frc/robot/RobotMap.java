@@ -57,9 +57,33 @@ public class RobotMap {
     }
     public static final int LIFTER_LIMIT_ID = 1;
 
+    public static final double BALL_LIFTER_SPEED = -1.0;
+
     public static class PneumaticsChannel {
     }
 
+    /**
+     * Inner class containing odometry constants
+     */
+    public static class ODOMETRY {
+        /** feed-forward gain */
+        public static final int ksVolts = 3;
+        /** feed-forward gain */
+        public static final int kvVoltSecondsPerMeter = 3;
+        /** feed-forward gain */
+        public static final int kaVoltSecondsSquaredPerMeter = 3;
+        /** robot max speed */
+        public static final int kMaxSpeedMetersPerSecond = 3;
+        /** robot max acceleration */
+        public static final int kMaxAccelerationMetersPerSecondSquared = 3;
+        /** proportional gain */
+        public static final int kPDriveVel = 3;
+    }
+    
+    public static class PWMPorts {
+        /** PWM Port for led strip */
+        static final int LED_STRIP = 0;
+    }
 
     /**
      * Function to initialise hardware

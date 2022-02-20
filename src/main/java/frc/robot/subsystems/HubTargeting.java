@@ -5,19 +5,22 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class HubTargeting extends SubsystemBase {
-  private Limelight m_hubCamera;
+  public Limelight m_hubCamera;
 
   /** Creates a new HubTargeting. */
   public HubTargeting() {
-    m_hubCamera = new Limelight("hub");
+    m_hubCamera = new Limelight("limelight-hub");
     m_hubCamera.setPipeline(0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Range (m)", EstimateDistance());
+    
   }
 
   /**
@@ -46,7 +49,7 @@ public class HubTargeting extends SubsystemBase {
    */
   public double EstimateDistance() {
     double ty = m_hubCamera.getVerticalTargetOffsetAngle();
-    double distance = 0.0931 * ty * ty - 0.5042 * ty - 9.0222;
+    double distance = 0.0065655 * ty * ty - 0.2198 * ty +3.73592;
     return distance;
   }
 
@@ -76,6 +79,10 @@ public class HubTargeting extends SubsystemBase {
       ready = false;
     }
     return ready;
+  }
+
+  public double getHubAngle(){
+    return RotationAngle();
   }
 
   /**

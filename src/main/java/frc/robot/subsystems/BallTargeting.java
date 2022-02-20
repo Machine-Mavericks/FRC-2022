@@ -11,12 +11,12 @@ public class BallTargeting extends SubsystemBase {
 
   /** Creates a new HubTargeting. */
   public BallTargeting() {
-    m_ballCamera = new Limelight("limelight");
+    m_ballCamera = new Limelight("limelight-ball");
     m_ballCamera.setPipeline(3);
   }
 
   public void setBallPipeline() {
-    m_ballCamera.setPipeline(0);
+    m_ballCamera.setPipeline(3);
   }
   /**
    * Is there a ball (boolean)
