@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
@@ -29,17 +28,11 @@ public class DriveCommand extends CommandBase {
   public void execute() {
     // Driver inputs, should be in range [-1,1]
     // TODO: Map to controller, using functions like OI.driverController.getLeftX()
-    double rotInput = OI.driverController.getRightX();
-    double SlowDownButton = OI.driverController.getRightTriggerAxis();
-
-    SmartDashboard.putNumber("SDB", SlowDownButton);
+    //SmartDashboard.putNumber("SDB", SlowDownButton);
 
     double xInput = OI.getXDriveInput();
     double yInput = OI.getYDriveInput();
-
-    xInput = Math.abs(xInput) > 0.1 ? xInput : 0;
-    yInput = Math.abs(yInput) > 0.1 ? yInput : 0;
-    rotInput = Math.abs(rotInput) > 0.1 ? rotInput*0.25 : 0;
+    double rotInput = OI.getRotDriveInput();
 
     m_drivetrain.drive(new Translation2d(yInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND, xInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND), rotInput*Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, true); 
   }
