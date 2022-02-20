@@ -72,8 +72,8 @@ public class SteerTowardsBall extends CommandBase {
       // if not fully automatic, get joystick inputs
       if (!m_automated)
       {
-        yInput = OI.driverController.getLeftY()*0.2;
-        xInput = OI.driverController.getLeftX()*0.2;
+        yInput = OI.getYDriveInput();;
+        xInput = OI.getXDriveInput();
       }
       
       /*// is angle correction positive or negative?
