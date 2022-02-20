@@ -13,6 +13,7 @@ import frc.robot.commands.SampleAutoCommand;
 import frc.robot.commands.ReleaseBall;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
+import frc.robot.commands.SteerTowardsHub;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
@@ -69,9 +70,10 @@ public class RobotContainer {
 
     OI.shootButton.whenPressed(new ShooterCommand());
     // TODO: Disable binding for competition use
-    //OI.zeroButton.whenPressed(() -> gyro.resetGyro());
+    OI.zeroButton.whenPressed(() -> gyro.resetGyro());
     OI.intakeButton.whileHeld(new IntakeCommand());
     OI.ballTrackingButton.whenHeld(new SteerTowardsBall(true));
+    OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
     OI.releaseBallButton.whileHeld(new ReleaseBall());
   }
 
