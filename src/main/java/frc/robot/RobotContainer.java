@@ -71,7 +71,7 @@ public class RobotContainer {
 
     OI.shootButton.whenPressed(new ShooterCommand());
     // TODO: Disable binding for competition use
-    //OI.zeroButton.whenPressed(() -> gyro.resetGyro());
+    OI.zeroButton.whenPressed(() -> gyro.resetGyro());
     OI.intakeButton.whileHeld(new IntakeCommand());
     OI.ballTrackingButton.whenHeld(new SteerTowardsBall());
     OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
