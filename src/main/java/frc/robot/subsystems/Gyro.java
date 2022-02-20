@@ -29,7 +29,7 @@ public class Gyro extends SubsystemBase {
   /** Creates a new Gyro. */
   public Gyro() {
     //gyro = new AHRS(Port.kMXP);
-    gyro = new AHRS(Port.kUSB);
+    gyro = new AHRS(Port.kMXP);
     gyro.reset();
     gyro.calibrate();
     initializeShuffleboard();
