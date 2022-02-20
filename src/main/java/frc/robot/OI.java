@@ -12,16 +12,19 @@ public class OI {
 
     static double speedLimitFactor = 1.0;
 
+    static double newXInput = 0.0;
+    static double newYInput = 0.0;
+    static double prevXInput = 0.0;
+    static double prevYInput = 0.0;
+
     public static double getXDriveInput(){
-        double newXInput = OI.driverController.getLeftX()*speedLimitFactor;
+
+        prevXInput = newXInput;
+        newXInput = OI.driverController.getLeftX()*0.25;
+        double maxAccel = RobotContainer.drivetrain.maxAccel.getDouble(0.0);
         newXInput = (newXInput - prevXInput) > maxAccel ? prevXInput + maxAccel : newXInput;
         newXInput = (newXInput - prevXInput) < -1 * maxAccel ? prevXInput - maxAccel : newXInput;
-        return newXInput;
-
-
-        double xInput = Math.abs(RobotContainer.drivetrain.MaxAccelX(maxAccel)) > 0.1 ? RobotContainer.drivetrain.MaxAccelX(maxAccel) : 0;
-
-        return driverController.getLeftX()*speedLimitFactor;
+        return newXInput*speedLimitFactor;
         
     
     }
