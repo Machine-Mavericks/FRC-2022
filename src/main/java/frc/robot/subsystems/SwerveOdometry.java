@@ -5,8 +5,6 @@
 // Swerve odometry is used to estimate current robot x, y position and angle.
 // x and y coordinates are relative to when odometry was last reset
 
-// Jan 25/2022
-
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -88,7 +86,7 @@ public class SwerveOdometry extends SubsystemBase {
   public void periodic() {
 
     // get gyro angle (in degrees) and make rotation vector
-    Rotation2d gyroangle = new Rotation2d((RobotContainer.gyro.getYaw() + 90) * DEGtoRAD);
+    Rotation2d gyroangle = new Rotation2d(RobotContainer.gyro.getYaw() * DEGtoRAD);
 
     // get states of all swerve modules from subsystem
     SwerveModuleState[] states = RobotContainer.drivetrain.getSwerveStates();
@@ -117,12 +115,12 @@ public class SwerveOdometry extends SubsystemBase {
 
   /** Return current odometry y displacement (in m) */
   public double getY() {
-    return -m_odometry.getPoseMeters().getY();
+    return m_odometry.getPoseMeters().getY();
   }
 
   // return current odometry angle (in deg)
   public double getAngle() {
-    return m_odometry.getPoseMeters().getRotation().getDegrees() - 90;
+    return m_odometry.getPoseMeters().getRotation().getDegrees();
   }
 
 

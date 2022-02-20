@@ -21,18 +21,26 @@ public class SteerTowardsBall extends CommandBase {
   double TargetAngle = 0;
 
   // TODO: set gains
-  double kp = -0.002;
+  double kp = 0.0125;
   double ki = 0.0;
-  double kd = 0.00;
+  double kd = 0.0; //0.00015;
+
+  // is this command automated or semi-automated?
+  boolean m_automated;
 
   PIDController pidController = new PIDController(kp, ki, kd);
 
-  /** Creates a new SteerTowardsTarget. */
-  public SteerTowardsBall() {
+  /** Creates a new SteerTowardsTarget.
+   * Input: true if fully automated, false if only sem-automated
+   */
+  public SteerTowardsBall(boolean automated) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drivetrain);
     addRequirements(m_gyro);
     RobotContainer.ballTargeting.setBallPipeline();
+
+    // set automation flag
+    m_automated = automated;
   }
 
   // Called when the command is initially scheduled.
@@ -44,17 +52,31 @@ public class SteerTowardsBall extends CommandBase {
   @Override
   public void execute() {
 
+    double yInput = 0.0; //= OI.driverController.getLeftY()*0.2;
+    double xInput = 0.0; //= OI.driverController.getLeftX()*0.2;
+
+    double angle = 0.0;
+
+    // do we have a valid target?
     if ((RobotContainer.ballTargeting.IsBall())){
 
       TargetAngle = RobotContainer.ballTargeting.ballAngle();
+    
+      // determine angle correction - uses PI controller
+      angle = pidController.calculate(TargetAngle);
+      if (angle > 1.0)
+        angle = 1.0;
+      if (angle < -1.0)
+        angle = -1.0;
 
-      double angle = pidController.calculate(TargetAngle);
-
-      // get speed to drive towards ball
-      double yInput = OI.getYDriveInput();
-      double xInput = OI.getXDriveInput();
-
-      // is angle correction positive or negative?
+      // if not fully automatic, get joystick inputs
+      if (!m_automated)
+      {
+        yInput = OI.getYDriveInput();;
+        xInput = OI.getXDriveInput();
+      }
+      
+      /*// is angle correction positive or negative?
       if (TargetAngle >= 0.0) {
         // drive towards target
         RobotContainer.drivetrain.drive(
@@ -67,15 +89,27 @@ public class SteerTowardsBall extends CommandBase {
         RobotContainer.drivetrain.drive(
             new Translation2d(yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
                 xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
-                angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
+                angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, true);
       } // TODO: update this to be correct
+*/
+    
+    }   // end if we have a valid target
+    
+  yInput = 0.5;
+  RobotContainer.intake.setMotorSpeed(0.5);
 
-    }
+  RobotContainer.drivetrain.drive(
+    new Translation2d(yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
+        xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
+        angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
+
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    RobotContainer.intake.setMotorSpeed(0.0);
   }
 
   // Returns true when the command should end.
