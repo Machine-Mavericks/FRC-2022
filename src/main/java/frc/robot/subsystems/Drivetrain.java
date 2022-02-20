@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.OI;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
 
@@ -197,27 +196,4 @@ public class Drivetrain extends SubsystemBase {
     public SwerveModuleState[] getSwerveStates() {
             return m_states;
     }
-
-    double newXInput = 0.0;
-    double newYInput = 0.0;
-    double prevXInput = 0.0;
-    double prevYInput = 0.0;
-    public double MaxAccelX(double maxAccel) {
-        prevXInput = newXInput;
-        newXInput = OI.driverController.getLeftX()*0.25;
-        newXInput = (newXInput - prevXInput) > maxAccel ? prevXInput + maxAccel : newXInput;
-        newXInput = (newXInput - prevXInput) < -1 * maxAccel ? prevXInput - maxAccel : newXInput;
-        // double xOutput2 = newXInput;
-        return newXInput;
-    }
-    public double MaxAccelY(double maxAccel) {
-        prevYInput = newYInput;
-        newYInput = OI.driverController.getLeftY()*0.25;
-        newYInput = (newYInput - prevYInput) > maxAccel ? prevYInput + maxAccel : newYInput;
-        newYInput = (newYInput - prevYInput) < -1 * maxAccel ? prevYInput - maxAccel : newYInput;
-        // double yOutput2 = newYInput;
-        return newYInput;
-    }
-
-
 }       // end class Drivetrain

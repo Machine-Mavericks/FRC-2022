@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.RobotContainer;
 
 public class DriveCommand extends CommandBase {
 
@@ -33,12 +32,10 @@ public class DriveCommand extends CommandBase {
     double rotInput = OI.driverController.getRightX();
     double SlowDownButton = OI.driverController.getRightTriggerAxis();
 
-    double maxAccel = RobotContainer.drivetrain.maxAccel.getDouble(0.02);
-
     SmartDashboard.putNumber("SDB", SlowDownButton);
 
-    double xInput = (SlowDownButton >= 0.75) ? RobotContainer.drivetrain.MaxAccelX(maxAccel) * 0.25 : RobotContainer.drivetrain.MaxAccelX(maxAccel);
-    double yInput = (SlowDownButton >= 0.75) ? RobotContainer.drivetrain.MaxAccelY(maxAccel) * 0.25 : RobotContainer.drivetrain.MaxAccelY(maxAccel);
+    double xInput = OI.getXDriveInput();
+    double yInput = OI.getYDriveInput();
 
     xInput = Math.abs(xInput) > 0.1 ? xInput : 0;
     yInput = Math.abs(yInput) > 0.1 ? yInput : 0;

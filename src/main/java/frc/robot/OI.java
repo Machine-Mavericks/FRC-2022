@@ -18,26 +18,42 @@ public class OI {
     static double prevYInput = 0.0;
 
     public static double getXDriveInput(){
-
+        // read new input from controller
         prevXInput = newXInput;
-        newXInput = OI.driverController.getLeftX()*0.25;
-        double maxAccel = RobotContainer.drivetrain.maxAccel.getDouble(0.0);
+        // read new input from controller
+        newXInput = OI.driverController.getLeftX();
+        // read max accel from shuffleboard
+        double maxAccel = RobotContainer.drivetrain.maxAccel.getDouble(0.02);
+        // limit the acceleration
         newXInput = (newXInput - prevXInput) > maxAccel ? prevXInput + maxAccel : newXInput;
         newXInput = (newXInput - prevXInput) < -1 * maxAccel ? prevXInput - maxAccel : newXInput;
-        return newXInput*speedLimitFactor;
+        // implement deadzoning
+        double xInput = Math.abs(newXInput) > 0.1 ? newXInput : 0;
+        return xInput*speedLimitFactor;
         
     
     }
 
     public static double getYDriveInput(){
-        return driverController.getLeftY()*speedLimitFactor;
-        yInput = Math.abs(RobotContainer.drivetrain.MaxAccelY(maxAccel)) > 0.1 ? RobotContainer.drivetrain.MaxAccelY(maxAccel) : 0;
+        // read new input from controller
+        prevYInput = newYInput;
+        // read new input from controller
+        newYInput = OI.driverController.getLeftY();
+        // read max accel from shuffleboard
+        double maxAccel = RobotContainer.drivetrain.maxAccel.getDouble(0.02);
+        // limit the acceleration
+        newYInput = (newYInput - prevYInput) > maxAccel ? prevYInput + maxAccel : newYInput;
+        newYInput = (newYInput - prevYInput) < -1 * maxAccel ? prevYInput - maxAccel : newYInput;
+        // implement deadzoning
+        double yInput = Math.abs(newYInput) > 0.1 ? newYInput : 0;
+        return yInput*speedLimitFactor;
     
     }
 
     public static double getRotDriveInput(){
-        return driverController.getRightX()*speedLimitFactor;
+        double rotInput = driverController.getRightX()*speedLimitFactor;
         rotInput = Math.abs(rotInput) > 0.1 ? rotInput*0.25 : 0;
+        return rotInput;
     }
     /**
      * Inner class containing controller bindings
