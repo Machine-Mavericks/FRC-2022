@@ -21,7 +21,7 @@ public class SteerTowardsBall extends CommandBase {
   double TargetAngle = 0;
 
   // TODO: set gains
-  double kp = -0.002;
+  double kp = 0.002;
   double ki = 0.0;
   double kd = 0.00;
 
@@ -51,8 +51,8 @@ public class SteerTowardsBall extends CommandBase {
       double angle = pidController.calculate(TargetAngle);
 
       // get speed to drive towards ball
-      double yInput = OI.driverController.getLeftY()*0.2;
-      double xInput = OI.driverController.getLeftX()*0.2;
+      double yInput = -OI.driverController.getLeftY()*0.25;
+      double xInput = OI.driverController.getLeftX()*0.25;
 
       // is angle correction positive or negative?
       if (TargetAngle >= 0.0) {
@@ -60,14 +60,14 @@ public class SteerTowardsBall extends CommandBase {
         RobotContainer.drivetrain.drive(
             new Translation2d(yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
                 xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
-                angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
+                angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, true);
       } // TODO: update this to be correct
       else {
         // drive towards target
         RobotContainer.drivetrain.drive(
             new Translation2d(yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
                 xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
-                angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
+                angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, true);
       } // TODO: update this to be correct
 
     }
