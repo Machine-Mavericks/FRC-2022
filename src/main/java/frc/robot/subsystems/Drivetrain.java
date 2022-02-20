@@ -26,6 +26,7 @@ import frc.robot.RobotMap;
  * Subsystem representing the swerve drivetrain
  */
 public class Drivetrain extends SubsystemBase {
+
     /**
      * The left-to-right distance between the drivetrain wheels
      *
@@ -98,50 +99,56 @@ public class Drivetrain extends SubsystemBase {
 
     // Swerve module states - contains speed(m/s) and angle for each swerve module
     SwerveModuleState[] m_states;
-
+    
     // value controlled on shuffleboard to stop the jerkiness of the robot by limiting its accelera``tion
     public NetworkTableEntry maxAccel;
 
     /**
      * Create a new swerve drivetrain
      * 
-     * @param frontLeftModule Front-left swerve module
+     * @param frontLeftModule  Front-left swerve module
      * @param frontRightModule Front-right swerve module
-     * @param backLeftModule Back-left swerve module
-     * @param backRightModule Back-right swerve module
-     * @param navx Pigeon IMU
+     * @param backLeftModule   Back-left swerve module
+     * @param backRightModule  Back-right swerve module
+     * @param navx             Pigeon IMU
      */
     public Drivetrain() {
-     
+
+        // SmartDashboard.putData("Field", m_field);
+
         final Mk4SwerveModuleHelper.GearRatio DRIVE_RATIO = Mk4SwerveModuleHelper.GearRatio.L1;
 
         ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
-    
-        /** Front-left swerve module */
+
         m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
                 tab.getLayout("Front Left Module", BuiltInLayouts.kList)
                         .withSize(2, 4)
                         .withPosition(0, 0),
-                DRIVE_RATIO, RobotMap.CANID.FL_DRIVE_FALCON, RobotMap.CANID.FL_STEER_FALCON, RobotMap.CANID.FL_STEER_ENCODER, -Math.toRadians(155+180));
-        /** Front-left swerve module */
+                DRIVE_RATIO, RobotMap.CANID.FL_DRIVE_FALCON, RobotMap.CANID.FL_STEER_FALCON,
+                RobotMap.CANID.FL_STEER_ENCODER, -Math.toRadians(155 + 180));
+
         m_frontRightModule = Mk4SwerveModuleHelper.createFalcon500(
                 tab.getLayout("Front right Module", BuiltInLayouts.kList)
                         .withSize(2, 4)
                         .withPosition(2, 0),
-                DRIVE_RATIO, RobotMap.CANID.FR_DRIVE_FALCON, RobotMap.CANID.FR_STEER_FALCON, RobotMap.CANID.FR_STEER_ENCODER, -Math.toRadians(94+180));
-        /** Front-left swerve module */
+                DRIVE_RATIO, RobotMap.CANID.FR_DRIVE_FALCON, RobotMap.CANID.FR_STEER_FALCON,
+                RobotMap.CANID.FR_STEER_ENCODER, -Math.toRadians(94 + 180));
+
         m_backLeftModule = Mk4SwerveModuleHelper.createFalcon500(
                 tab.getLayout("Back Left Module", BuiltInLayouts.kList)
                         .withSize(2, 4)
                         .withPosition(4, 0),
-                DRIVE_RATIO, RobotMap.CANID.BL_DRIVE_FALCON, RobotMap.CANID.BL_STEER_FALCON, RobotMap.CANID.BL_STEER_ENCODER, -Math.toRadians(200+180));
-        /** Front-left swerve module */
+                DRIVE_RATIO, RobotMap.CANID.BL_DRIVE_FALCON, RobotMap.CANID.BL_STEER_FALCON,
+                RobotMap.CANID.BL_STEER_ENCODER, -Math.toRadians(200 + 180));
+
         m_backRightModule = Mk4SwerveModuleHelper.createFalcon500(
                 tab.getLayout("Back Right Module", BuiltInLayouts.kList)
                         .withSize(2, 4)
                         .withPosition(6, 0),
-                DRIVE_RATIO, RobotMap.CANID.BR_DRIVE_FALCON, RobotMap.CANID.BR_STEER_FALCON, RobotMap.CANID.BR_STEER_ENCODER, -Math.toRadians(135+180));
-        /**Acceleration Limiting Slider*/
+                DRIVE_RATIO, RobotMap.CANID.BR_DRIVE_FALCON, RobotMap.CANID.BR_STEER_FALCON,
+                RobotMap.CANID.BR_STEER_ENCODER, -Math.toRadians(135 + 180));
+        
+                /**Acceleration Limiting Slider*/
         maxAccel = tab.add("Max Acceleration", 0.03)
         .withPosition(8, 0)
         .withWidget(BuiltInWidgets.kNumberSlider)
@@ -152,22 +159,53 @@ public class Drivetrain extends SubsystemBase {
     /**
      * Control the drivetrain
      * 
-     * @param translation X/Y translation, in meters per second
-     * @param rotation Rotation, in radians per second
-     * @param fieldOriented Boolean indicating if directions are field- or robot-oriented
+     * @param translation   X/Y translation, in meters per second
+     * @param rotation      Rotation, in radians per second
+     * @param fieldOriented Boolean indicating if directions are field- or
+     *                      robot-oriented
      */
     public void drive(Translation2d translation, double rotation, boolean fieldOriented) {
-        rotation *= 2.0 / Math.hypot(WHEELBASE_METERS, TRACKWIDTH_METERS);
+
+        // correct axes of drive - determined from field testing
+        // Feb 10 2022
+        // flip sign of y axis speed
+        // flip sign of rotation speed
+        Translation2d newtranslation = new Translation2d(translation.getX(),
+                -translation.getY());
+        Double newrotation = -rotation;
+
+        // not sure what this line was intended to do. KN Feb 11/2022
+        // rotation *= 2.0 / Math.hypot(WHEELBASE_METERS, TRACKWIDTH_METERS);
+
+        // determine chassis speeds
         if (fieldOriented) {
-            m_chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation,
-                Rotation2d.fromDegrees(-RobotContainer.gyro.getYaw()));
+            m_chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(newtranslation.getX(),
+                    newtranslation.getY(),
+                    newrotation,
+                    Rotation2d.fromDegrees(RobotContainer.gyro.getYaw()));
         } else {
-            m_chassisSpeeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+            m_chassisSpeeds = new ChassisSpeeds(newtranslation.getX(),
+                    newtranslation.getY(),
+                    newrotation);
         }
     }
 
+    // TODO SetChassisSpeeds To be Deleted - No longer needed
+    /**
+     * manually set drivetrain speed
+     * 
+     * @param translation   X/Y translation, in meters per second
+     * @param rotation      Rotation, in radians per second
+     * @param fieldOriented Boolean indicating if directions are field- or
+     *                      robot-oriented
+     */
+    // public void setChassisSpeeds(ChassisSpeeds speeds) {
+    // m_chassisSpeeds = speeds;
+    // }
+
     @Override
     public void periodic() {
+
         m_states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(m_states, MAX_VELOCITY_METERS_PER_SECOND);
         SmartDashboard.putString("Speeds", m_chassisSpeeds.toString());
@@ -182,26 +220,19 @@ public class Drivetrain extends SubsystemBase {
                 m_states[3].angle.getRadians());
     }
 
-
-    // -------------------- Kinematics and Swerve Module Status Public Access Methods --------------------
-
+    // -------------------- Kinematics and Swerve Module Status Public Access
+    // Methods --------------------
 
     /** Returns kinematics of drive system */
     public SwerveDriveKinematics getKinematics() {
-            return m_kinematics;
-    }
-
-
-    /** Returns speed and angle status of all swerve modules
-     * Returns array of length of of SwerveModuleStates */
-    public SwerveModuleState[] getSwerveStates() {
-            return m_states;
+        return m_kinematics;
     }
 
     double newXInput = 0.0;
     double newYInput = 0.0;
     double prevXInput = 0.0;
     double prevYInput = 0.0;
+
     public double MaxAccelX(double maxAccel) {
         prevXInput = newXInput;
         newXInput = OI.driverController.getLeftX();
@@ -210,6 +241,7 @@ public class Drivetrain extends SubsystemBase {
         // double xOutput2 = newXInput;
         return newXInput;
     }
+
     public double MaxAccelY(double maxAccel) {
         prevYInput = newYInput;
         newYInput = OI.driverController.getLeftY();
@@ -219,5 +251,32 @@ public class Drivetrain extends SubsystemBase {
         return newYInput;
     }
 
+    /**
+     * Returns speed and angle status of all swerve modules
+     * Returns array of length of of SwerveModuleStates
+     */
+    public SwerveModuleState[] getSwerveStates() {
 
-}       // end class Drivetrain
+        // create array of module states to return
+        SwerveModuleState[] states = new SwerveModuleState[4];
+        
+        states[0] = new SwerveModuleState();
+        states[0].speedMetersPerSecond = m_frontLeftModule.getDriveVelocity();
+        states[0].angle = new Rotation2d(m_frontLeftModule.getSteerAngle());
+
+        states[1] = new SwerveModuleState();
+        states[1].speedMetersPerSecond = m_frontRightModule.getDriveVelocity();
+        states[1].angle = new Rotation2d(m_frontRightModule.getSteerAngle());
+
+        states[2] = new SwerveModuleState();
+        states[2].speedMetersPerSecond = m_backLeftModule.getDriveVelocity();
+        states[2].angle = new Rotation2d(m_backLeftModule.getSteerAngle());
+
+        states[3] = new SwerveModuleState();
+        states[3].speedMetersPerSecond = m_backRightModule.getDriveVelocity();
+        states[3].angle = new Rotation2d(m_backRightModule.getSteerAngle());
+
+        return states;
+    }
+
+} // end class Drivetrain
