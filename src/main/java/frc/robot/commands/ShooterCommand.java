@@ -28,7 +28,7 @@ public class ShooterCommand extends CommandBase {
   public void execute() {
     // set shooter speed to that set on shuffleboard
     RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(5000.0));
-    if(Math.abs(RobotContainer.m_shooter.getShooterSpeed() - RobotContainer.m_shooter.ChosenSpeed.getDouble(5000.0)) < SPEED_TOLERANCE){
+    if(Math.abs(RobotContainer.m_shooter.getShooterSpeed() - RobotContainer.m_shooter.ChosenSpeed.getDouble(5000.0)) < RobotContainer.m_shooter.speedTolerance.getDouble(5)){
       RobotContainer.lifter.liftBalls();
     }
 

@@ -31,6 +31,7 @@ public class Shooter extends SubsystemBase {
 
   public NetworkTableEntry ChosenSpeed;
   public NetworkTableEntry ChosenIdleSpeed;
+  public NetworkTableEntry speedTolerance;
   private NetworkTableEntry motorSpeed;
   private NetworkTableEntry motorVoltage;
   private NetworkTableEntry rightMotorCurrent;
@@ -116,6 +117,12 @@ public class Shooter extends SubsystemBase {
         .add("shooter Speed (RPM)", 1.0)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 5000))
+        .getEntry();
+    
+    speedTolerance = Shuffleboard.getTab("Shooter")
+        .add("Feed Tolerance (RPM)", 5.0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min", 0, "max", 10))
         .getEntry();
 
     // add RPM
