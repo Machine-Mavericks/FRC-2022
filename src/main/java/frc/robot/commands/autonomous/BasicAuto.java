@@ -19,7 +19,7 @@ public class BasicAuto extends SequentialCommandGroup {
       // Intake the ball
       new SteerTowardsBall(true),
       // Turn left until hub is in view
-      new TurnToHubCommand(0.5),
+      new TurnToHubCommand(0.5, 1),  
       // Shoot first ball
       new ParallelCommandGroup(
         new SteerTowardsHub(),
