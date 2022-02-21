@@ -11,51 +11,72 @@ import frc.robot.OI;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.Intake;
 
 public class SteerTowardsBall extends CommandBase {
 
+  // subsystems we are interfacing with
   private Drivetrain m_drivetrain = RobotContainer.drivetrain;
   private Gyro m_gyro = RobotContainer.gyro;
+  private Intake m_intake = RobotContainer.intake;
 
-  // get angle to target
+  // angle to target
   double TargetAngle = 0;
 
-  // TODO: set gains
+  // PID gains for rotating robot towards ball target
   double kp = 0.0125;
   double ki = 0.0;
-  double kd = 0.0; //0.00015;
+  double kd = 0.0;
+  PIDController pidController = new PIDController(kp, ki, kd);
 
   // is this command automated or semi-automated?
   boolean m_automated;
 
-  PIDController pidController = new PIDController(kp, ki, kd);
+  // command timeout time
+  double m_timeoutlimit;
+  double m_time;
 
   /** Creates a new SteerTowardsTarget.
    * Input: true if fully automated, false if only sem-automated
    */
-  public SteerTowardsBall(boolean automated) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public SteerTowardsBall(boolean automated, double timeout) {
+    
+    // this command requires use of drivetrain and gyro
     addRequirements(m_drivetrain);
     addRequirements(m_gyro);
-    RobotContainer.ballTargeting.setBallPipeline();
 
+    // run intake command, when this command finishes, intake will also be interrupted
+    this.raceWith(new IntakeCommand());
+    
     // set automation flag
     m_automated = automated;
+
+    // set timeout time
+    m_timeoutlimit = timeout;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+  
+    // set initial time
+    m_time = 0.0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    double yInput = 0.0; //= OI.driverController.getLeftY()*0.2;
-    double xInput = 0.0; //= OI.driverController.getLeftX()*0.2;
+    // assume forward speed of 50% unless determined otherwise
+    double xInput = 0.5;
+    // assume sideway speed of 0% unless determined otherwise
+    double yInput = 0.0;
+    
+    // assume rotation not needed unless proven otherwise
+    double rotate = 0.0;
 
-    double angle = 0.0;
+    // increase out time in command
+    m_time += 0.02;
 
     // do we have a valid target?
     if ((RobotContainer.ballTargeting.IsBall())){
@@ -63,58 +84,48 @@ public class SteerTowardsBall extends CommandBase {
       TargetAngle = RobotContainer.ballTargeting.ballAngle();
     
       // determine angle correction - uses PI controller
-      angle = pidController.calculate(TargetAngle);
-      if (angle > 1.0)
-        angle = 1.0;
-      if (angle < -1.0)
-        angle = -1.0;
+      // limit rotation to +/- 100% of available speed
+      rotate = pidController.calculate(TargetAngle);
+      if (rotate > 1.0)
+        rotate = 1.0;
+      if (rotate < -1.0)
+        rotate = -1.0;
 
       // if not fully automatic, get joystick inputs
-      if (!m_automated)
+      if (m_automated)
       {
-        yInput = OI.driverController.getLeftY()*0.2;
-        xInput = OI.driverController.getLeftX()*0.2;
+        // slow down forward speed if large angle to allow robot to turn
+        // at 25deg,  speed = 0.5 - 0.004(25)) = 0.5 - 0.1) = 0.4
+        xInput = 0.5 - 0.004* Math.min(25.0, Math.abs(TargetAngle));
+      }
+      else
+      {
+        xInput = OI.driverController.getLeftY();
+        yInput = OI.driverController.getLeftX();
       }
       
-      /*// is angle correction positive or negative?
-      if (TargetAngle >= 0.0) {
-        // drive towards target
-        RobotContainer.drivetrain.drive(
-            new Translation2d(yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
-                xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
-                angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, true);
-      } // TODO: update this to be correct
-      else {
-        // drive towards target
-        RobotContainer.drivetrain.drive(
-            new Translation2d(yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
-                xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
-                angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, true);
-      } // TODO: update this to be correct
-*/
-    
+
     }   // end if we have a valid target
     
-  yInput = 0.5;
-  RobotContainer.intake.setMotorSpeed(0.5);
-
+  // command robot to drive - using robot-relative coordinates
   RobotContainer.drivetrain.drive(
-    new Translation2d(yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
-        xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
-        angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
-
+    new Translation2d(xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
+        yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
+        rotate * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.intake.setMotorSpeed(0.0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    // we are finished if max time in our command expires
+    return (m_intake.GetIntakeLimitSwitchStatus() ||
+          (m_time >= m_timeoutlimit));
+
   }
 }
