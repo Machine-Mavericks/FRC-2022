@@ -67,7 +67,7 @@ public class Intake extends SubsystemBase {
    */
   public boolean GetIntakeLimitSwitchStatus()
   {
-    return ballInputSwitch.get();
+    return !ballInputSwitch.get();
   }
 
     // -------------------- Subsystem Shuffleboard Methods --------------------

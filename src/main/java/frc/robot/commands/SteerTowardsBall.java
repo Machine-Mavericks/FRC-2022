@@ -46,7 +46,7 @@ public class SteerTowardsBall extends CommandBase {
     addRequirements(m_gyro);
 
     // run intake command, when this command finishes, intake will also be interrupted
-    this.raceWith(new IntakeCommand());
+    // this.raceWith(new IntakeCommand());
     
     // set automation flag
     m_automated = automated;
@@ -59,6 +59,7 @@ public class SteerTowardsBall extends CommandBase {
   @Override
   public void initialize() {
   
+    RobotContainer.intake.setMotorSpeed(0.5);
     // set initial time
     m_time = 0.0;
   }
@@ -67,8 +68,13 @@ public class SteerTowardsBall extends CommandBase {
   @Override
   public void execute() {
 
-    // assume forward speed of 50% unless determined otherwise
-    double xInput = 0.5;
+    // if automated, assume 50% speed, in manual get speed from joystick
+    double xInput;
+    if (m_automated)
+      xInput = 0.5;
+    else
+      xInput = OI.driverController.getLeftY();;
+    
     // assume sideway speed of 0% unless determined otherwise
     double yInput = 0.0;
     
@@ -97,11 +103,9 @@ public class SteerTowardsBall extends CommandBase {
         // slow down forward speed if large angle to allow robot to turn
         // at 25deg,  speed = 0.5 - 0.004(25)) = 0.5 - 0.1) = 0.4
         xInput = 0.5 - 0.004* Math.min(25.0, Math.abs(TargetAngle));
-      }
-      else
-      {
-        xInput = OI.driverController.getLeftY();
-        yInput = OI.driverController.getLeftX();
+        //xInput = OI.driverController.getLeftY();
+        //if (xInput<0.0)
+        //  xInput=0.0;
       }
       
 
@@ -118,14 +122,16 @@ public class SteerTowardsBall extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    RobotContainer.intake.setMotorSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     // we are finished if max time in our command expires
-    return (m_intake.GetIntakeLimitSwitchStatus() ||
-          (m_time >= m_timeoutlimit));
+    return (m_automated &&
+          (m_intake.GetIntakeLimitSwitchStatus() || (m_time >= m_timeoutlimit))
+          );
 
   }
 }

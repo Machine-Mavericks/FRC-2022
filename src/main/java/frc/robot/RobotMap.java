@@ -64,6 +64,12 @@ public class RobotMap {
     public static class PneumaticsChannel {
     }
 
+    public static class PWMPorts {
+        /** PWM Port for led strip */
+        static final int LED_STRIP1 = 1;
+        static final int LED_STRIP2 = 2;
+    }  
+
     /**
      * Inner class containing odometry constants
      */
@@ -82,10 +88,6 @@ public class RobotMap {
         public static final int kPDriveVel = 3;
     }
     
-    public static class PWMPorts {
-        /** PWM Port for led strip */
-        static final int LED_STRIP = 0;
-    }
 
     /**
      * Function to initialise hardware
