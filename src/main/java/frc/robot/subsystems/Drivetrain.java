@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.OI;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
 
@@ -26,6 +25,11 @@ import frc.robot.RobotMap;
  * Subsystem representing the swerve drivetrain
  */
 public class Drivetrain extends SubsystemBase {
+
+            
+    // value controlled on shuffleboard to stop the jerkiness of the robot by limiting its accelera``tion
+    public NetworkTableEntry maxAccel;
+    public NetworkTableEntry speedLimitFactor;
 
     /**
      * The left-to-right distance between the drivetrain wheels
@@ -99,9 +103,6 @@ public class Drivetrain extends SubsystemBase {
 
     // Swerve module states - contains speed(m/s) and angle for each swerve module
     SwerveModuleState[] m_states;
-    
-    // value controlled on shuffleboard to stop the jerkiness of the robot by limiting its accelera``tion
-    public NetworkTableEntry maxAccel;
 
     /**
      * Create a new swerve drivetrain
@@ -154,6 +155,11 @@ public class Drivetrain extends SubsystemBase {
         .withPosition(8, 0)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 0.5))
+        .getEntry();
+        speedLimitFactor = tab.add("SpeedLimitFactor", 0.03)
+        .withPosition(8, 0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min", 0, "max", 1.0))
         .getEntry();
     }
 
@@ -227,29 +233,6 @@ public class Drivetrain extends SubsystemBase {
     /** Returns kinematics of drive system */
     public SwerveDriveKinematics getKinematics() {
         return m_kinematics;
-    }
-
-    double newXInput = 0.0;
-    double newYInput = 0.0;
-    double prevXInput = 0.0;
-    double prevYInput = 0.0;
-
-    public double MaxAccelX(double maxAccel) {
-        prevXInput = newXInput;
-        newXInput = OI.driverController.getLeftX();
-        newXInput = (newXInput - prevXInput) > maxAccel ? prevXInput + maxAccel : newXInput;
-        newXInput = (newXInput - prevXInput) < -1 * maxAccel ? prevXInput - maxAccel : newXInput;
-        // double xOutput2 = newXInput;
-        return newXInput;
-    }
-
-    public double MaxAccelY(double maxAccel) {
-        prevYInput = newYInput;
-        newYInput = OI.driverController.getLeftY();
-        newYInput = (newYInput - prevYInput) > maxAccel ? prevYInput + maxAccel : newYInput;
-        newYInput = (newYInput - prevYInput) < -1 * maxAccel ? prevYInput - maxAccel : newYInput;
-        // double yOutput2 = newYInput;
-        return newYInput;
     }
 
     /**

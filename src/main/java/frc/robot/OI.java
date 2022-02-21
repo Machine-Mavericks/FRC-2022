@@ -9,6 +9,53 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * These include components such as motor controllers and soleniods used by the subsystems.
  */
 public class OI {
+
+    static double newXInput = 0.0;
+    static double newYInput = 0.0;
+    static double prevXInput = 0.0;
+    static double prevYInput = 0.0;
+
+    public static double getXDriveInput(){
+        
+        double speedLimitFactor = RobotContainer.drivetrain.speedLimitFactor.getDouble(1.0);
+        // read new input from controller
+        prevXInput = newXInput;
+        // read new input from controller
+        newXInput = OI.driverController.getLeftX();
+        // implement deadzoning
+        newXInput = Math.abs(newXInput) > 0.1 ? newXInput : 0;
+        // read max accel from shuffleboard
+        double maxAccel = RobotContainer.drivetrain.maxAccel.getDouble(0.02);
+        // limit the acceleration
+        newXInput = (newXInput - prevXInput) > maxAccel ? prevXInput + maxAccel : newXInput;
+        newXInput = (newXInput - prevXInput) < -1 * maxAccel ? prevXInput - maxAccel : newXInput;
+        return ((driverController.getRightTriggerAxis() >= 0.75) ? newXInput * 0.25 : newXInput)*speedLimitFactor;
+    }
+
+    public static double getYDriveInput(){
+        
+        double speedLimitFactor = RobotContainer.drivetrain.speedLimitFactor.getDouble(1.0);
+        // read new input from controller
+        prevYInput = newYInput;
+        // read new input from controller
+        newYInput = OI.driverController.getLeftY();
+        // implement deadzoning
+        newYInput = Math.abs(newYInput) > 0.1 ? newYInput : 0;
+        // read max accel from shuffleboard
+        double maxAccel = RobotContainer.drivetrain.maxAccel.getDouble(0.02);
+        // limit the acceleration
+        newYInput = (newYInput - prevYInput) > maxAccel ? prevYInput + maxAccel : newYInput;
+        newYInput = (newYInput - prevYInput) < -1 * maxAccel ? prevYInput - maxAccel : newYInput;
+        return ((driverController.getRightTriggerAxis() >= 0.75) ? newYInput * 0.25 : newYInput)*speedLimitFactor;
+    }
+
+    public static double getRotDriveInput(){
+        
+        double speedLimitFactor = RobotContainer.drivetrain.speedLimitFactor.getDouble(1.0);
+        double rotInput = driverController.getRightX()*speedLimitFactor;
+        rotInput = Math.abs(rotInput) > 0.1 ? rotInput*0.25 : 0;
+        return rotInput;
+    }
     /**
      * Inner class containing controller bindings
      */
