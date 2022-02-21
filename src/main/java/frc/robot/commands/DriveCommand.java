@@ -29,9 +29,9 @@ public class DriveCommand extends CommandBase {
   public void execute() {
     // Driver inputs, should be in range [-1,1]
     // TODO: Map to controller, using functions like OI.driverController.getLeftX()
-    double xInput = OI.driverController.getLeftX();
-    double yInput =   OI.driverController.getLeftY();
-    double rotInput = OI.driverController.getRightX();
+    double xInput = OI.driverController.getLeftX() *0.2;
+    double yInput =   OI.driverController.getLeftY() *0.2;
+    double rotInput = OI.driverController.getRightX() *0.2;
 
     double maxAccel = RobotContainer.drivetrain.maxAccel.getDouble(0.02);
 
