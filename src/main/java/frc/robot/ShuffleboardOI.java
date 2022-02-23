@@ -6,9 +6,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.*;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.networktables.NetworkTableEntry;
 
 
@@ -23,6 +25,9 @@ public class ShuffleboardOI extends SubsystemBase {
     private NetworkTableEntry m_toggleOffCenter;
     private NetworkTableEntry m_toggleSimpleLeft;
     private NetworkTableEntry m_toggleSimpleRight;
+    private SendableChooser m_autonomousPath;
+    private SendableChooser m_autonomousPathS;
+    private SendableChooser m_delayTime;
 
     // other controls on main page
     private NetworkTableEntry m_timeLeft;
@@ -55,6 +60,14 @@ public class ShuffleboardOI extends SubsystemBase {
 
         // Create Main Tab in Shuffleboard
         ShuffleboardTab tab = Shuffleboard.getTab("Auto");
+        SendableChooser chooser = new SendableChooser();
+        Object PathA;
+        Object PathB;
+        Object PathC;
+        Object PathD;
+        Object PathE;
+        Object PathF;
+        // Private PathA = AutonomousPath.PathA
 
         // add autonomous commands to page - example adds toggle switches
         m_toggleCenter = tab.add("Center", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(0, 0)
@@ -65,7 +78,14 @@ public class ShuffleboardOI extends SubsystemBase {
                 .withSize(1, 1).getEntry();
         m_toggleSimpleRight = tab.add("SimpleRight", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(3, 0)
                 .withSize(1, 1).getEntry();
-
+        m_autonomousPath.addOption("PathA",PathA);
+        m_autonomousPath.addOption("PathB",PathB);
+        m_autonomousPath.addOption("PathC",PathC);
+        m_autonomousPath.addOption("PathD",PathD);
+        m_autonomousPath.addOption("PathE",PathE);
+        m_autonomousPath.addOption("PathF",PathF);
+        m_autonomousPath = tab.add("Preround Paths", PathA).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(4, 0).withSize(1,1);
+              
         // add match time remaining in autonomous/teleop part of match (seconds)
         ShuffleboardLayout l1 = tab.getLayout("Timer", BuiltInLayouts.kList);
         l1.withPosition(0, 2);
