@@ -78,6 +78,7 @@ public class Shooter extends SubsystemBase {
     // works.  not sure if better than previous, but appears semi-ok
     // P=0.45
     // D=0.1
+
     rightShooterFalcon.config_kF(0,  0.0477, 0);  //0.047698 (works ok)
     rightShooterFalcon.config_kP(0, 0.38, 0);      //0.35  // 0.6  //0.75 (works ok)
     rightShooterFalcon.config_kI(0, 0.00010, 0);     //kI=0.001

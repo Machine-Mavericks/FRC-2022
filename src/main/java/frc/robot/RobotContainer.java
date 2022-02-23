@@ -48,7 +48,6 @@ public class RobotContainer {
   public static final Intake intake = new Intake();
   public static final BallTargeting ballTargeting = new BallTargeting();
   public static final HubTargeting hubTargeting = new HubTargeting();
-  
 
   // The robot's commands are defined here...
   public static final SampleAutoCommand autoCommand = new SampleAutoCommand();
