@@ -16,7 +16,7 @@ public class AutoShootCommand extends CommandBase {
    * 
    */
   public static final DoubleSupplier LOW_SPEED = () -> 1750;
-  public static final DoubleSupplier HIGH_SPEED = () -> 3000;
+  public static final DoubleSupplier HIGH_SPEED = () -> 4200;
   
   private DoubleSupplier flywheelSpeed;
   private boolean ballDetected = false;
@@ -47,8 +47,10 @@ public class AutoShootCommand extends CommandBase {
   public void execute() {
     // set shooter speed based on supplied value
     RobotContainer.m_shooter.setShooterSpeed(flywheelSpeed.getAsDouble());
-    RobotContainer.lifter.liftBalls();
-    
+    if(RobotContainer.m_shooter.getShooterSpeed() >= flywheelSpeed.getAsDouble()*0.95){
+      RobotContainer.lifter.liftBalls();
+    }
+
     // Update the limit switch filter
     limPressed = liftLimitFiltered.calculate(!RobotContainer.lifter.liftLimit.get() ? 1 : 0) > 0.5;
     // Set flag when ball detected at limit switch

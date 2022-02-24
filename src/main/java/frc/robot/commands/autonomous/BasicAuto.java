@@ -17,21 +17,15 @@ public class BasicAuto extends SequentialCommandGroup {
   public BasicAuto() {
     addCommands(
       // Intake the ball
-      new SteerTowardsBall(true),
+      new SteerTowardsBall(true, 2),
       // Turn left until hub is in view
       new TurnToHubCommand(0.5, 1),  
       // Shoot first ball
-      new ParallelCommandGroup(
-        new SteerTowardsHub(),
-        new AutoShootCommand(AutoShootCommand.HIGH_SPEED)
-      ),
+      new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
       // Shoot second ball
-      new ParallelCommandGroup(
-        new SteerTowardsHub(),
-        new AutoShootCommand(AutoShootCommand.HIGH_SPEED)
-      ),
+      new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub())
       // Make a dash for ball near station
-      new SteerTowardsBall(true)
+      // new SteerTowardsBall(true, 1)
     );
   }
 }
