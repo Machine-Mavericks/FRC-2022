@@ -10,8 +10,6 @@ import frc.robot.RobotContainer;
 
 public class ShooterCommand extends CommandBase {
 
-  private static final double SPEED_TOLERANCE = 5;
-
   /** Creates a new ShooterCommand. */
   public ShooterCommand() {
     // Use addRequirements() here to declare subsystem dependencies.

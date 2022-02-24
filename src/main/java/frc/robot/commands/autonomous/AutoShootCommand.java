@@ -47,13 +47,8 @@ public class AutoShootCommand extends CommandBase {
   public void execute() {
     // set shooter speed based on supplied value
     RobotContainer.m_shooter.setShooterSpeed(flywheelSpeed.getAsDouble());
-    // Drive lifter when wheels at speed or ball hasn't reached limit yet
-    if(Math.abs(RobotContainer.m_shooter.getShooterSpeed() - flywheelSpeed.getAsDouble()) < RobotContainer.m_shooter.speedTolerance.getDouble(5)
-        || !ballDetected){
-      RobotContainer.lifter.liftBalls();
-    } else {
-      RobotContainer.lifter.stopMotor();
-    }
+    RobotContainer.lifter.liftBalls();
+    
     // Update the limit switch filter
     limPressed = liftLimitFiltered.calculate(!RobotContainer.lifter.liftLimit.get() ? 1 : 0) > 0.5;
     // Set flag when ball detected at limit switch
