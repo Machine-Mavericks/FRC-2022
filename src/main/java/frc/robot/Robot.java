@@ -6,11 +6,13 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -40,6 +42,12 @@ public class Robot extends TimedRobot {
     // put our
     // autonomous chooser on the dashboard.
     RobotContainer.init();
+
+    // set ball pickup pipeline
+    if (DriverStation.getAlliance() == Alliance.Red)
+      RobotContainer.ballTargeting.setBallPipeline(1);
+    else
+      RobotContainer.ballTargeting.setBallPipeline(2);
   }
 
   /**
@@ -88,6 +96,12 @@ public class Robot extends TimedRobot {
     RobotContainer.gyro.resetGyro();
     RobotContainer.odometry.InitializetoZero();
     
+    // set ball pickup pipeline
+    if (DriverStation.getAlliance() == Alliance.Red)
+      RobotContainer.ballTargeting.setBallPipeline(1);
+    else
+      RobotContainer.ballTargeting.setBallPipeline(2);
+
     // robot is now initialized
     robotIsInitialized = true;
     autonomousCommand = RobotContainer.getAutonomousCommand();
@@ -127,6 +141,13 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+
+    // TODO remove from teleop init
+    // set ball pickup pipeline
+    if (DriverStation.getAlliance() == Alliance.Red)
+    RobotContainer.ballTargeting.setBallPipeline(1);
+    else
+    RobotContainer.ballTargeting.setBallPipeline(2);
 
   }
 
