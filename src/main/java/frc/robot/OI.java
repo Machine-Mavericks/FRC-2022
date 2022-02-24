@@ -9,15 +9,68 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * These include components such as motor controllers and soleniods used by the subsystems.
  */
 public class OI {
+
+    static double newXInput = 0.0;
+    static double newYInput = 0.0;
+    static double prevXInput = 0.0;
+    static double prevYInput = 0.0;
+
+    public static double getXDriveInput(){
+        
+        double speedLimitFactor = RobotContainer.drivetrain.speedLimitFactor.getDouble(1.0);
+        // read new input from controller
+        prevXInput = newXInput;
+        // read new input from controller
+        newXInput = OI.driverController.getLeftX();
+        // implement deadzoning
+        newXInput = Math.abs(newXInput) > 0.1 ? newXInput : 0;
+        // read max accel from shuffleboard
+        double maxAccel = RobotContainer.drivetrain.maxAccel.getDouble(0.02);
+        // limit the acceleration
+        newXInput = (newXInput - prevXInput) > maxAccel ? prevXInput + maxAccel : newXInput;
+        newXInput = (newXInput - prevXInput) < -1 * maxAccel ? prevXInput - maxAccel : newXInput;
+        return ((driverController.getRightTriggerAxis() >= 0.75) ? newXInput * 0.25 : newXInput)*speedLimitFactor;
+    }
+
+    public static double getYDriveInput(){
+        
+        double speedLimitFactor = RobotContainer.drivetrain.speedLimitFactor.getDouble(1.0);
+        // read new input from controller
+        prevYInput = newYInput;
+        // read new input from controller
+        newYInput = OI.driverController.getLeftY();
+        // implement deadzoning
+        newYInput = Math.abs(newYInput) > 0.1 ? newYInput : 0;
+        // read max accel from shuffleboard
+        double maxAccel = RobotContainer.drivetrain.maxAccel.getDouble(0.02);
+        // limit the acceleration
+        newYInput = (newYInput - prevYInput) > maxAccel ? prevYInput + maxAccel : newYInput;
+        newYInput = (newYInput - prevYInput) < -1 * maxAccel ? prevYInput - maxAccel : newYInput;
+        return ((driverController.getRightTriggerAxis() >= 0.75) ? newYInput * 0.25 : newYInput)*speedLimitFactor;
+    }
+
+    public static double getRotDriveInput(){
+        
+        double speedLimitFactor = RobotContainer.drivetrain.speedLimitFactor.getDouble(1.0);
+        double rotInput = driverController.getRightX()*speedLimitFactor;
+        rotInput = Math.abs(rotInput) > 0.1 ? rotInput*0.25 : 0;
+        return rotInput;
+    }
     /**
      * Inner class containing controller bindings
      */
     private static class Bindings {
-        /** Example button */
-        static final Button EXAMPLE_BUTTON = XboxController.Button.kA;
+        static final Button SHOOT_BUTTON = XboxController.Button.kY;
         /** Button to re-zero gyro */
         static final Button ZERO_GYRO = XboxController.Button.kBack;
+        /** Button to intake ball */
         static final Button INTAKE_BUTTON = XboxController.Button.kX;
+        /** Button to track balls */
+        static final Button BALL_TRACKING_BUTTON = XboxController.Button.kA;
+        /** Button to track hub */
+        static final Button HUB_TRACKING_BUTTON = XboxController.Button.kB;
+        /** Button to spit out balls */
+        static final Button BALL_RELEASE_BUTTON = XboxController.Button.kBack;
     }
 
     /** Port for controller used by driver */
@@ -30,10 +83,16 @@ public class OI {
     /** Controller used by driver, mapped to {@link #OPERATOR_CONTROLLER_PORT} */
     public static final XboxController operatorController = new XboxController(OPERATOR_CONTROLLER_PORT);
 
-    /** Example button. Mapped to {@link Bindings#EXAMPLE_BUTTON} */
-    public static final JoystickButton exampleButton = new JoystickButton(driverController, Bindings.EXAMPLE_BUTTON.value);
+    public static final JoystickButton shootButton = new JoystickButton(operatorController, Bindings.SHOOT_BUTTON.value);
     /** Example button. Mapped to {@link Bindings#ZERO_GYRO} */
     public static final JoystickButton zeroButton = new JoystickButton(driverController, Bindings.ZERO_GYRO.value);
     /** Button to deploy intake for 5 seconds. Mapped to {@link Bindings#INTAKE_BUTTON} */
     public static final JoystickButton intakeButton = new JoystickButton(operatorController, Bindings.INTAKE_BUTTON.value);
+    /** Ball tracking button. Mapped to {@link Bindings#BALL_TRACKING_BUTTON} */
+    public static final JoystickButton ballTrackingButton = new JoystickButton(driverController, Bindings.BALL_TRACKING_BUTTON.value);
+    /** Ball tracking button. Mapped to {@link Bindings#BALL_TRACKING_BUTTON} */
+    public static final JoystickButton hubTrackingButton = new JoystickButton(driverController, Bindings.HUB_TRACKING_BUTTON.value);
+    /** Ball tracking button. Mapped to {@link Bindings#BALL_TRACKING_BUTTON} */
+    public static final JoystickButton releaseBallButton = new JoystickButton(operatorController, Bindings.BALL_RELEASE_BUTTON.value);
 }
+ 

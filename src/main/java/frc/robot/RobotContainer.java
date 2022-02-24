@@ -8,13 +8,22 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.SampleAutoCommand;
+import frc.robot.commands.ReleaseBall;
+import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.SteerTowardsBall;
+import frc.robot.commands.SteerTowardsHub;
+import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Gyro;
+import frc.robot.subsystems.HubTargeting;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LED;
+import frc.robot.subsystems.Lifter;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveOdometry;
+import frc.robot.subsystems.PowerPanel;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -28,21 +37,24 @@ public class RobotContainer {
   public static final ShuffleboardOI shuffleboard = new ShuffleboardOI();
 
   // The robot's subsystems are defined here...
-  public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-  public static final Drivetrain drivetrain = new Drivetrain();
   public static final Gyro gyro = new Gyro();
+  public static final Drivetrain drivetrain = new Drivetrain();
   public static final SwerveOdometry odometry = new SwerveOdometry();
+  public static final PowerPanel panel = new PowerPanel();
+  public static final LED led = new LED(RobotMap.PWMPorts.LED_STRIP);
+  public static final Shooter m_shooter = new Shooter();
+  public static final Lifter lifter = new Lifter();
   public static final Intake intake = new Intake();
-  
-  // The robot's subsystems are defined here...
-  private static final ExampleCommand autoCommand = new ExampleCommand(exampleSubsystem);
+  public static final BallTargeting ballTargeting = new BallTargeting();
+  public static final HubTargeting hubTargeting = new HubTargeting();
+
+  // The robot's commands are defined here...
+  private static final SampleAutoCommand autoCommand = new SampleAutoCommand();
 
 
   /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
-    // Initialise gyro to be forward-facing
-    gyro.setCurrentYaw(0);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -54,9 +66,15 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private static void configureButtonBindings() {
+    //OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
+
+    OI.shootButton.whenPressed(new ShooterCommand());
     // TODO: Disable binding for competition use
-    OI.zeroButton.whenPressed(() -> gyro.setCurrentYaw(0));
+    OI.zeroButton.whenPressed(() -> gyro.resetGyro());
     OI.intakeButton.whileHeld(new IntakeCommand());
+    OI.ballTrackingButton.whenHeld(new SteerTowardsBall(true));
+    OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
+    OI.releaseBallButton.whileHeld(new ReleaseBall());
   }
 
   /**
