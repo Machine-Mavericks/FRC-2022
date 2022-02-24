@@ -43,16 +43,50 @@ public class Shooter extends SubsystemBase {
     leftShooterFalcon.follow(rightShooterFalcon);
     leftShooterFalcon.setInverted(InvertType.OpposeMaster);
 
-    rightShooterFalcon.configVoltageCompSaturation(12.0, 0);
-    leftShooterFalcon.configVoltageCompSaturation(12.0, 0);
+    rightShooterFalcon.configVoltageCompSaturation(11.0, 0);
+    leftShooterFalcon.configVoltageCompSaturation(11.0, 0);
+    // enable 
 
-    rightShooterFalcon.config_kF(0,  0.047698, 0);
-    rightShooterFalcon.config_kP(0, 0.35, 0);
-    rightShooterFalcon.config_kI(0, 0.001, 0);
+    // 19:42
+    // F=0.0477
+    // P=0.7
+    // I=0.001
+    // Ilimit = 80,000
+
+    // 19:51      // near perfect if we get voltage compenstaiton working
+    // F=0.0477
+    // P=0.7
+    // I=0.001
+    // D=0.05
+    // Ilimit = 120,000
+
+    // 20:41  // reduced back down due to new battery (higher voltage)
+    // if possible, get 
+    // F=0.0477
+    // P=0.4
+    // I=0.001
+    // D=0.05
+    // Ilimit = 120,000
+
+    //21:03   // appears ok.  maybe add ~100ms before first ball shoots to allow settling
+    //F=0.0477
+    // P=0.38
+    // I=0.0001
+    // D=0.05
+    // Ilimit = 120,000
+
+    // works.  not sure if better than previous, but appears semi-ok
+    // P=0.45
+    // D=0.1
+    rightShooterFalcon.config_kF(0,  0.0477, 0);  //0.047698 (works ok)
+    rightShooterFalcon.config_kP(0, 0.38, 0);      //0.35  // 0.6  //0.75 (works ok)
+    rightShooterFalcon.config_kI(0, 0.00010, 0);     //kI=0.001
+    rightShooterFalcon.config_kD(0, 0.05, 0);
+    rightShooterFalcon.configMaxIntegralAccumulator(0, 120000.0, 0);
 
     // rightShooterFalcon.set(ControlMode.PercentOutput, 0);
     rightShooterFalcon.configPeakOutputForward(1, 0);
-    rightShooterFalcon.configPeakOutputReverse(0, 0);
+    rightShooterFalcon.configPeakOutputReverse(0.1, 0);
     initializeShuffleboard();
     // rightShooterFalcon.configOpenLoopRamp(0.1);
   }
