@@ -23,14 +23,7 @@ public class BasicAuto extends SequentialCommandGroup {
       // Turn left until hub is in view
       new TurnToHubCommand(0.5, 1), 
       //get within shooting range
-      new FollowPath(TrajectoryConstants.DriveStraightForward.points,
-                    TrajectoryConstants.DriveStraightForward.startAngle,
-                    TrajectoryConstants.DriveStraightForward.endAngle,
-                    TrajectoryConstants.DriveStraightForward.startVelocity,
-                    TrajectoryConstants.DriveStraightForward.endVelocity,
-                    TrajectoryConstants.DriveStraightForward.endRobotAngle,
-                    TrajectoryConstants.DriveStraightForward.reverse,
-                    TrajectoryConstants.DriveStraightForward.rotatePath),
+      new AutoHubDistanceCommand(3, 0.15),
       // Shoot first ball
       new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
       // Shoot second ball
