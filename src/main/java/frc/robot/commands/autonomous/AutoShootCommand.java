@@ -16,7 +16,7 @@ public class AutoShootCommand extends CommandBase {
    * 
    */
   public static final DoubleSupplier LOW_SPEED = () -> 1750;
-  public static final DoubleSupplier HIGH_SPEED = () -> 4200;
+  public static final DoubleSupplier HIGH_SPEED = () -> 3300;
   
   private DoubleSupplier flywheelSpeed;
   private boolean ballDetected = false;
