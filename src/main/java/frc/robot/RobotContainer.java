@@ -14,6 +14,7 @@ import frc.robot.commands.ReleaseBall;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
+import frc.robot.commands.autonomous.BasicAuto;
 import frc.robot.commands.LEDCommand;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.Drivetrain;
@@ -48,9 +49,6 @@ public class RobotContainer {
   public static final Intake intake = new Intake();
   public static final BallTargeting ballTargeting = new BallTargeting();
   public static final HubTargeting hubTargeting = new HubTargeting();
-
-  // The robot's commands are defined here...
-  public static final SampleAutoCommand autoCommand = new SampleAutoCommand();
 
   /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
   public static void init() {
@@ -87,6 +85,6 @@ public class RobotContainer {
    */
   public static Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return autoCommand;
+    return new BasicAuto();
   }
 }
