@@ -66,11 +66,14 @@ public class OI {
         /** Button to intake ball */
         static final Button INTAKE_BUTTON = XboxController.Button.kX;
         /** Button to track balls */
-        static final Button BALL_TRACKING_BUTTON = XboxController.Button.kA;
+        static final Button BALL_TRACKING_BUTTON = XboxController.Button.kLeftBumper;
         /** Button to track hub */
         static final Button HUB_TRACKING_BUTTON = XboxController.Button.kB;
         /** Button to spit out balls */
         static final Button BALL_RELEASE_BUTTON = XboxController.Button.kBack;
+
+        //TODO: get rid of this after testing
+        static final Button TEST_BUTTON = XboxController.Button.kY;
     }
 
     /** Port for controller used by driver */
@@ -94,5 +97,10 @@ public class OI {
     public static final JoystickButton hubTrackingButton = new JoystickButton(driverController, Bindings.HUB_TRACKING_BUTTON.value);
     /** Ball tracking button. Mapped to {@link Bindings#BALL_TRACKING_BUTTON} */
     public static final JoystickButton releaseBallButton = new JoystickButton(operatorController, Bindings.BALL_RELEASE_BUTTON.value);
+
+//TODO: get rid of this button after testing
+public static final JoystickButton testRobotRelativePath = new JoystickButton(driverController, Bindings.TEST_BUTTON.value);
+
+
 }
  

@@ -14,6 +14,7 @@ import frc.robot.commands.ReleaseBall;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
+import frc.robot.commands.LEDCommand;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
@@ -41,7 +42,7 @@ public class RobotContainer {
   public static final Drivetrain drivetrain = new Drivetrain();
   public static final SwerveOdometry odometry = new SwerveOdometry();
   public static final PowerPanel panel = new PowerPanel();
-  public static final LED led = new LED(RobotMap.PWMPorts.LED_STRIP);
+  public static final LED LEDStrip = new LED(RobotMap.PWMPorts.LED_STRIP1);
   public static final Shooter m_shooter = new Shooter();
   public static final Lifter lifter = new Lifter();
   public static final Intake intake = new Intake();
@@ -49,12 +50,12 @@ public class RobotContainer {
   public static final HubTargeting hubTargeting = new HubTargeting();
 
   // The robot's commands are defined here...
-  private static final SampleAutoCommand autoCommand = new SampleAutoCommand();
-
+  public static final SampleAutoCommand autoCommand = new SampleAutoCommand();
 
   /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
+    LEDStrip.setDefaultCommand(new LEDCommand());
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -72,9 +73,11 @@ public class RobotContainer {
     // TODO: Disable binding for competition use
     OI.zeroButton.whenPressed(() -> gyro.resetGyro());
     OI.intakeButton.whileHeld(new IntakeCommand());
-    OI.ballTrackingButton.whenHeld(new SteerTowardsBall(true));
+    OI.ballTrackingButton.whenHeld(new SteerTowardsBall(false, 20.0));
     OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
     OI.releaseBallButton.whileHeld(new ReleaseBall());
+  
+    OI.testRobotRelativePath.whileHeld(new SampleAutoCommand());
   }
 
   /**

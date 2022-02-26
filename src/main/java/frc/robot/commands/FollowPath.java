@@ -34,25 +34,33 @@ public class FollowPath extends CommandBase {
     private Timer timer;
     private final SwerveOdometry m_odometry = RobotContainer.odometry;
 
-    // TODO: Tune these
     // PIDs gains for X and Y position controllers
     private double p = 5;
     private double i = 0;
-    private double d = 0;  //0.06;
+    private double d = 0; 
 
-    private Pose2d odometryPose = new Pose2d();
-    private Rotation2d desiredAngle; 
-    private ChassisSpeeds speeds = new ChassisSpeeds();
+    
+    private ChassisSpeeds speeds;
 
     private HolonomicDriveController driveController;
 
-    private double m_endRobotAngle;
+    //private double m_endRobotAngle;
     private double m_RobotRotationRate;
     private double m_RobotAngle;
 
     // Measured in m/s and m/s/s
     private final double MAX_VELOCITY = 1.0;
     private final double MAX_ACCELERATION = 0.5;
+
+    // Path parameters passed to us
+    double [][] m_PathPoints;
+    double m_PathStartAngle;
+    double m_PathEndAngle;
+    double m_PathStartSpeed;
+    double m_PathEndSpeed;
+    double m_PathEndRobotAngle;
+    boolean m_PathReverse;
+    boolean m_PathRotate;
 
     /** Follow Generic Path
      * Inputs:  points - coordinates that define path
@@ -63,18 +71,19 @@ public class FollowPath extends CommandBase {
      */
     public FollowPath(double[][] points, double startAngle, double endAngle, double startSpeed,
             double endSpeed, double endRobotAngle, boolean reverse, boolean rotatepath) {
-        trajectory = calculateTrajectory(points,
-                                        startAngle,
-                                        endAngle,
-                                        startSpeed,
-                                        endSpeed,
-                                        reverse,
-                                        rotatepath);
+        
+        // store the path paremters provided to us
+        m_PathPoints = points;
+        m_PathStartAngle = startAngle;
+        m_PathEndAngle = endAngle;
+        m_PathStartSpeed = startSpeed;
+        m_PathEndSpeed = endSpeed;
+        m_PathEndRobotAngle = endRobotAngle;
+        m_PathReverse = reverse;
+        m_PathRotate = rotatepath;
 
         // set up timer to track time in the path
         timer = new Timer();
-
-        m_endRobotAngle = endRobotAngle;
 
         addRequirements(m_drivetrain);
     }
@@ -98,18 +107,33 @@ public class FollowPath extends CommandBase {
                 new PIDController(p, i, d), new PIDController(-p, -i, -d), rotationController);
         driveController.setEnabled(true);
 
-        // beginning angle of robot - set to urrent angle
-        m_RobotAngle = RobotContainer.gyro.continuousYaw();
+        // go ahead and calculate our trajectory
+        trajectory = calculateTrajectory(m_PathPoints,
+                                        m_PathStartAngle,
+                                        m_PathEndAngle,
+                                        m_PathStartSpeed,
+                                        m_PathEndSpeed,
+                                        m_PathReverse,
+                                        m_PathRotate);
+
+
+        // beginning angle of robot - set to current angle
+        m_RobotAngle = RobotContainer.gyro.getYaw();
         
-        // robot rotation rate
+        // determine determined robot rotation rate
         double rotatetime = trajectory.getTotalTimeSeconds();
         if (rotatetime!=0.0)
-            m_RobotRotationRate = (m_endRobotAngle-m_RobotAngle)/rotatetime;
-       else
+        {
+            // if we are rotating path, then robot already 0deg relative to path start
+            // otherwise, need to account for initial robot angle to determine how much additional to rotate
+            if (!m_PathRotate)
+                m_RobotRotationRate = (m_PathEndRobotAngle-m_RobotAngle)/rotatetime;
+            else
+                m_RobotRotationRate = m_PathEndRobotAngle/rotatetime;
+        }
+        else
             m_RobotRotationRate = 0.0;
 
-       // beginning angle of robot - set to urrent angle
-            m_RobotAngle = RobotContainer.gyro.continuousYaw();
 
         // Start timer when path begins
         timer.reset();
@@ -125,17 +149,16 @@ public class FollowPath extends CommandBase {
         // update our target robot rotation angle
         m_RobotAngle += m_RobotRotationRate*0.02;
 
-        // set robot's angle - for now choose same angle as the path. We can improve this after we get basic path working
-        desiredAngle = new Rotation2d(m_RobotAngle*3.1415/180.0); // targetPathState.poseMeters.getRotation();
+        // set robot's angle
+        Rotation2d desiredAngle = new Rotation2d(m_RobotAngle*3.1415/180.0);
 
         // get our current odeometry Pose
-        odometryPose = m_odometry.getPose2d();
+        Pose2d odometryPose = m_odometry.getPose2d();
 
         // determine robot chassis speeds
         speeds = driveController.calculate(odometryPose, targetPathState, desiredAngle);
         
         // instruct drive system to move robot
-        //m_drivetrain.setChassisSpeeds(speeds);
         m_drivetrain.drive(new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond),
                             speeds.omegaRadiansPerSecond,
                             true);
@@ -169,19 +192,38 @@ public class FollowPath extends CommandBase {
         // create our trajectory
         Trajectory robotRelativeTrajectory = TrajectoryGenerator.generateTrajectory(startPose, path, endPose, trajectoryConfig);
 
-       
-        Translation2d ken = new Translation2d(m_odometry.getPose2d().getX() - startPose.getX(),
-                                               m_odometry.getPose2d().getY() - startPose.getY());
-        Rotation2d ken2 = new Rotation2d(0.0);
+        // if rotating, then get transformation from current robot odometry to the path's initialpoint
         if (rotatepath)
-            ken2 = m_odometry.getPose2d().getRotation();
+        {
+            Transform2d transform = m_odometry.getPose2d().minus(robotRelativeTrajectory.getInitialPose());
+            robotRelativeTrajectory = robotRelativeTrajectory.transformBy(transform);
+        }
+        // we are not rotating. Only determine translation from current robot position to start position of path
+        else
+        {
+            Translation2d translate = m_odometry.getPose2d().getTranslation().minus(robotRelativeTrajectory.getInitialPose().getTranslation());
+            Rotation2d rotate = new Rotation2d(0.0);
+            robotRelativeTrajectory = robotRelativeTrajectory.transformBy(new Transform2d(translate, rotate)); 
+        }
 
-        Transform2d ken3 = new Transform2d(ken, ken2);
 
-        // return generaed trajectory
-        return robotRelativeTrajectory.transformBy(ken3); 
+        return robotRelativeTrajectory;
+        // // do path rotation first (if any)
+        // if (rotatepath)
+        // {
+        //     Translation2d temptranslate = new Translation2d(0.0,0.0);
+        //     Rotation2d temprotate = m_odometry.getPose2d().getRotation();
+
+        //     // go ahead and perform rotation
+        //     robotRelativeTrajectory = robotRelativeTrajectory.transformBy(new Transform2d(temptranslate, temprotate));
+        // }
         
-        //return robotRelativeTrajectory.transformBy(new Transform2d(m_odometry.getPose2d(), startPose));
+        // // do translation next
+        // Translation2d translate = new Translation2d(m_odometry.getPose2d().getX() - robotRelativeTrajectory.getInitialPose().getX(),//startPose.getX(),
+        //                                        m_odometry.getPose2d().getY() - robotRelativeTrajectory.getInitialPose().getY()); //startPose.getY());
+        // Rotation2d rotate = new Rotation2d(0.0);
+    
+        // return robotRelativeTrajectory.transformBy(new Transform2d(translate, rotate)); 
     }
 
     /** Called once the command ends or is interrupted. */
