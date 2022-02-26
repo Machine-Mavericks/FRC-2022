@@ -36,7 +36,7 @@ public class LEDCommand extends CommandBase {
     {
       if (RobotContainer.hubTargeting.isTargetPresent()){
         if (RobotContainer.hubTargeting.IsTarget() && RobotContainer.hubTargeting.ReadyToShoot()){RobotContainer.LEDStrip.SetEntireStripColorRGB(0, 255, 0);} // Distance and rotation are right, ready to shoot!
-        else{RobotContainer.LEDStrip.SetEntireStripColorRGB(255, 255, 0);} // Hub in sight, but not ready to shoot.
+        else{RobotContainer.LEDStrip.SetEntireStripColorRGB(255, 0, 255);} // Hub in sight, but not ready to shoot.
       }
       else{RobotContainer.LEDStrip.SetEntireStripColorRGB(0, 0, 0);} // LEDs are blank if hub cannot be found.
     }
