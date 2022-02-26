@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.OI;
 import frc.robot.RobotContainer;
 
 public class ShooterCommand extends CommandBase {
@@ -24,8 +25,16 @@ public class ShooterCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // set shooter speed to that set on shuffleboard
-    RobotContainer.lifter.liftBalls();
+    // If the fire button is held
+    if(OI.shooterFireButton.get()){
+      // And the shooter has reached 95% power, feed balls
+      if(RobotContainer.m_shooter.getShooterSpeed() >= RobotContainer.hubTargeting.DistanceRPM()*0.95){
+        RobotContainer.lifter.liftBalls();
+      }
+    } else {
+      // If the fire button isn't held don't feed
+      RobotContainer.lifter.stopMotor();
+    }
   }
 
   // Called once the command ends or is interrupted.
