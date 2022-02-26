@@ -25,9 +25,9 @@ public class ShuffleboardOI extends SubsystemBase {
     private NetworkTableEntry m_toggleOffCenter;
     private NetworkTableEntry m_toggleSimpleLeft;
     private NetworkTableEntry m_toggleSimpleRight;
+    private NetworkTableEntry m_delayTime;
+    private NetworkTableEntry m_reverseBool;
     private SendableChooser m_autonomousPath;
-    private SendableChooser m_autonomousPathS;
-    private SendableChooser m_delayTime;
 
     // other controls on main page
     private NetworkTableEntry m_timeLeft;
@@ -60,13 +60,7 @@ public class ShuffleboardOI extends SubsystemBase {
 
         // Create Main Tab in Shuffleboard
         ShuffleboardTab tab = Shuffleboard.getTab("Auto");
-        SendableChooser chooser = new SendableChooser();
-        Object PathA;
-        Object PathB;
-        Object PathC;
-        Object PathD;
-        Object PathE;
-        Object PathF;
+        m_autonomousPath = new SendableChooser();
         // Private PathA = AutonomousPath.PathA
 
         // add autonomous commands to page - example adds toggle switches
@@ -78,13 +72,15 @@ public class ShuffleboardOI extends SubsystemBase {
                 .withSize(1, 1).getEntry();
         m_toggleSimpleRight = tab.add("SimpleRight", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(3, 0)
                 .withSize(1, 1).getEntry();
-        m_autonomousPath.addOption("PathA",PathA);
-        m_autonomousPath.addOption("PathB",PathB);
-        m_autonomousPath.addOption("PathC",PathC);
-        m_autonomousPath.addOption("PathD",PathD);
-        m_autonomousPath.addOption("PathE",PathE);
-        m_autonomousPath.addOption("PathF",PathF);
-        m_autonomousPath = tab.add("Preround Paths", PathA).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(4, 0).withSize(1,1);
+        m_autonomousPath.addOption("Path A","Path A");
+        m_autonomousPath.addOption("Path B","Path B");
+        m_autonomousPath.addOption("Path C","Path C");
+        m_autonomousPath.addOption("Path D","Path D");
+        m_autonomousPath.addOption("Path E","Path E");
+        m_autonomousPath.addOption("Path F","Path F");
+        m_autonomousPath.setDefaultOption("Path A", "Path A");
+        tab.add("Preround Paths", m_autonomousPath).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(4, 0).withSize(1,1);
+
               
         // add match time remaining in autonomous/teleop part of match (seconds)
         ShuffleboardLayout l1 = tab.getLayout("Timer", BuiltInLayouts.kList);
