@@ -53,7 +53,7 @@ public class OI {
         
         double speedLimitFactor = RobotContainer.drivetrain.speedLimitFactor.getDouble(1.0);
         double rotInput = driverController.getRightX()*speedLimitFactor;
-        rotInput = Math.abs(rotInput) > 0.1 ? rotInput*0.25 : 0;
+        rotInput = Math.abs(rotInput) > 0.1 ? rotInput*0.5 : 0;
         return rotInput;
     }
     /**
