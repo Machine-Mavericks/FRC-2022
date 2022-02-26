@@ -88,7 +88,7 @@ public class Intake extends SubsystemBase {
                                                 .withProperties(Map.of("min", 0, "max", 1))
                                                 .getEntry();
 
-                                                // does camera detect target
+    // does camera detect target
     m_limitSwitch = Tab.add("SwitchActivated", false).withPosition(3,0).getEntry();
   }
 
