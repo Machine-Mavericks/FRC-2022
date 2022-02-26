@@ -13,6 +13,7 @@ public class LED extends SubsystemBase {
   private AddressableLED m_led;
   private AddressableLEDBuffer m_ledBuffer;
 
+
   /** Creates a new LED. */
   public LED(int PWMPort) {
     // Set PWM port for AddressableLED
@@ -35,7 +36,7 @@ public class LED extends SubsystemBase {
 
     m_led.setData(m_ledBuffer);
   }
-
+ 
   public void SetEntireStripColorRGB(int r, int g, int b)
   {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
@@ -65,6 +66,7 @@ public class LED extends SubsystemBase {
     int offset = 0;
     if(part == 1){
       offset = (strip_length / 2) - 1;
+      offset = (strip_length / 2) - 1;
     }
     for (var i = 0; i < (strip_length / 2); i++) {
       m_ledBuffer.setRGB(i + offset, r, g, b);
@@ -76,7 +78,5 @@ public class LED extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    
   }
-
 }

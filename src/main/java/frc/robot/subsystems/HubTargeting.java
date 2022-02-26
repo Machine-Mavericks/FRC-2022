@@ -39,7 +39,15 @@ public class HubTargeting extends SubsystemBase {
   }
 
   /**
-   * Decides if a target is present an in range
+   * Function to tell if target is visible in limelight.
+   * @return boolean (true if target is in sight)
+   */
+  public boolean isTargetPresent(){
+    return m_hubCamera.isTargetPresent();
+  }
+
+  /**
+   * Decides if a target is present and in range
    * Note: Range can (and will) be adjusted post testing
    * 
    * @return boolean (true if target, false if not)
