@@ -60,7 +60,7 @@ public class ShuffleboardOI extends SubsystemBase {
 
         // Create Main Tab in Shuffleboard
         ShuffleboardTab tab = Shuffleboard.getTab("Auto");
-        m_autonomousPath = new SendableChooser();
+        m_autonomousPath = new SendableChooser<Integer>();
         // Private PathA = AutonomousPath.PathA
 
         // add autonomous commands to page - example adds toggle switches
@@ -72,13 +72,13 @@ public class ShuffleboardOI extends SubsystemBase {
                 .withSize(1, 1).getEntry();
         m_toggleSimpleRight = tab.add("SimpleRight", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(3, 0)
                 .withSize(1, 1).getEntry();
-        m_autonomousPath.addOption("Path A","Path A");
-        m_autonomousPath.addOption("Path B","Path B");
-        m_autonomousPath.addOption("Path C","Path C");
-        m_autonomousPath.addOption("Path D","Path D");
-        m_autonomousPath.addOption("Path E","Path E");
-        m_autonomousPath.addOption("Path F","Path F");
-        m_autonomousPath.setDefaultOption("Path A", "Path A");
+        m_autonomousPath.addOption("Path A",0);
+        m_autonomousPath.addOption("Path B",1);
+        m_autonomousPath.addOption("Path C",2);
+        m_autonomousPath.addOption("Path D",3);
+        m_autonomousPath.addOption("Path E",4);
+        m_autonomousPath.addOption("Path F",5);
+        m_autonomousPath.setDefaultOption("Path A", 0);
         tab.add("Preround Paths", m_autonomousPath).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(4, 0).withSize(1,1);
 
               
