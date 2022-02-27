@@ -10,13 +10,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.Utils;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveCommand extends CommandBase {
 
   private Drivetrain m_drivetrain;
 
-  private PIDController m_headingPID = new PIDController(1, 0, 0);
+  private PIDController m_headingPID = new PIDController(0.01, 0, 0);
   // Use Double class so it can be set to null
   private Double m_PIDTarget = null;
 
@@ -47,10 +48,14 @@ public class DriveCommand extends CommandBase {
       if(m_PIDTarget == null){
         m_PIDTarget = RobotContainer.gyro.getYaw();
         m_headingPID.reset(); // Clear existing integral term as may accumulate while not in use
-        m_headingPID.setSetpoint(m_PIDTarget);
+        //m_headingPID.setSetpoint(m_PIDTarget);
       }
       // Compute rotational command from PID controller
-      rotInput = m_headingPID.calculate(RobotContainer.gyro.getYaw());
+      rotInput = m_headingPID.calculate(Utils.AngleDifference(RobotContainer.gyro.getYaw(),
+                                                              m_PIDTarget));
+      
+      
+
     } else {
       // If there is input, set target to null so it's properly reset next time
       m_PIDTarget = null;
