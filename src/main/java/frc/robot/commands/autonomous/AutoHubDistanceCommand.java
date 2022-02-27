@@ -4,6 +4,7 @@
 
 package frc.robot.commands.autonomous;
 
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
@@ -20,6 +21,9 @@ public class AutoHubDistanceCommand extends CommandBase {
   double targetDistance;
   double tolerance;
 
+  LinearFilter targetPresentFilter = LinearFilter.movingAverage(10);
+  boolean targetPresent = false;
+
   /** Creates a new AutoHubDistanceCommand. */
   public AutoHubDistanceCommand(double targetDistance, double tolerance) {
     addRequirements(RobotContainer.drivetrain);
@@ -34,8 +38,8 @@ public class AutoHubDistanceCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
-    if ((RobotContainer.hubTargeting.IsTarget())){
+    targetPresent = targetPresentFilter.calculate(RobotContainer.hubTargeting.isTargetPresent() ? 0 : 1) <= 0.5;
+    if (targetPresent){
       double angleErr = RobotContainer.hubTargeting.getHubAngle();
       double distErr = RobotContainer.hubTargeting.EstimateDistance() - targetDistance;
       RobotContainer.drivetrain.drive(new Translation2d(distErr * kPDist, 0), angleErr*kPAngle, false);
@@ -52,6 +56,6 @@ public class AutoHubDistanceCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     // Return when target not found or distance within tolerance
-    return !RobotContainer.hubTargeting.IsTarget() || Math.abs(RobotContainer.hubTargeting.EstimateDistance() - targetDistance) < 0.25;
+    return !targetPresent || Math.abs(RobotContainer.hubTargeting.EstimateDistance() - targetDistance) < tolerance;
   }
 }

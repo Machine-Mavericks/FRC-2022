@@ -26,13 +26,13 @@ public class BasicAuto extends SequentialCommandGroup {
       // Reduce force on wheels
       new DelayCommand(0.5),
       //get within shooting range
-      new AutoHubDistanceCommand(3, 0.15),
+      new AutoHubDistanceCommand(3, 0.2),
       // Shoot first ball
       new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
       // Shoot second ball
-      new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
+      new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub())
       // Make a dash for ball near station
-      new SteerTowardsBall(true, 4)
+      // new SteerTowardsBall(true, 4)
     );
   }
 }

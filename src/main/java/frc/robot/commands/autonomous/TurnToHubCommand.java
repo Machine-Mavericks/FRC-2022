@@ -69,6 +69,6 @@ public class TurnToHubCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     // End when the hub has been detected
-    return RobotContainer.hubTargeting.IsTarget() || System.currentTimeMillis() > timeout;
+    return RobotContainer.hubTargeting.isTargetPresent() || System.currentTimeMillis() > timeout;
   }
 }
