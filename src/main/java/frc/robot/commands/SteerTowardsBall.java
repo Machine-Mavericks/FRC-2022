@@ -62,6 +62,9 @@ public class SteerTowardsBall extends CommandBase {
     RobotContainer.intake.setMotorSpeed(0.5);
     // set initial time
     m_time = 0.0;
+
+    // reset pid controller
+    pidController.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
