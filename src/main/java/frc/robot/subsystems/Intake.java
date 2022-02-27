@@ -8,23 +8,24 @@ import java.util.Map;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
-
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
+import edu.wpi.first.wpilibj.DigitalInput;
 
 public class Intake extends SubsystemBase {
   private NetworkTableEntry m_speed;
   private NetworkTableEntry m_speedslider;
+  public NetworkTableEntry m_limitSwitch;
 
   private TalonFX intakeFalcon = new TalonFX(RobotMap.CANID.INTAKE_FALCON);
+  
+  private DigitalInput ballInputSwitch = new DigitalInput(RobotMap.INTAKE_LIMIT_ID);
   
   public static double MOTORSPEED = 0.8;
 
@@ -59,6 +60,16 @@ public class Intake extends SubsystemBase {
     return intakeFalcon.getSelectedSensorVelocity() * MOTORSPEEDCONVERSION;
   }
 
+
+  /** Get Ball Input Limit Switch Status
+   * Returns true if limit switch actuated
+   * False otherwise
+   */
+  public boolean GetIntakeLimitSwitchStatus()
+  {
+    return !ballInputSwitch.get();
+  }
+
     // -------------------- Subsystem Shuffleboard Methods --------------------
 
   /** Initialize subsystem shuffleboard page and controls */
@@ -68,16 +79,17 @@ public class Intake extends SubsystemBase {
 
     // create controls to display robot position, angle, and gyro angle
     ShuffleboardLayout l1 = Tab.getLayout("Intake", BuiltInLayouts.kList);
-    
     l1.withPosition(0, 0);
     l1.withSize(1, 4);
-
     m_speed = l1.add("Speed", 0.0).getEntry();
     m_speedslider = Tab.add("Speed", MOTORSPEED).withWidget(BuiltInWidgets.kNumberSlider)
                                                 .withPosition(2, 0)
                                                 .withSize(4, 1)
                                                 .withProperties(Map.of("min", 0, "max", 1))
                                                 .getEntry();
+
+    // does camera detect target
+    m_limitSwitch = Tab.add("SwitchActivated", false).withPosition(3,0).getEntry();
   }
 
   /** Update subsystem shuffle board page with current Intake values */
@@ -85,5 +97,6 @@ public class Intake extends SubsystemBase {
     // write current intake data
     m_speed.setDouble(getMotorSpeed());
     MOTORSPEED = m_speedslider.getDouble(0.0);
+    m_limitSwitch.setBoolean (GetIntakeLimitSwitchStatus());
   }
 }

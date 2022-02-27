@@ -21,7 +21,7 @@ public class SteerTowardsHub extends CommandBase {
   double TargetAngle = 0;
 
   // TODO: set gains
-  double kp = 0.004;
+  double kp = 0.02;
   double ki = 0.0;
   double kd = 0.0;
 
@@ -50,10 +50,10 @@ public class SteerTowardsHub extends CommandBase {
       double angle = pidController.calculate(TargetAngle);
 
       // get speed to drive towards Hub
-      double yInput = OI.driverController.getLeftY();
-      double xInput = -OI.driverController.getLeftX();
+      double yInput = OI.getYDriveInput();
+      double xInput = -OI.getXDriveInput();
 
-      kp = 0.004 + 0.004*OI.driverController.getLeftX()*2;
+      kp = 0.004 + 0.004*OI.getXDriveInput()*2;
 
       // is angle correction positive or negative?
       if (TargetAngle >= 0.0) {

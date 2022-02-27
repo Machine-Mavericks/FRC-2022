@@ -25,12 +25,15 @@ public class PowerPanel extends SubsystemBase {
   private NetworkTableEntry m_Power;
   private NetworkTableEntry m_Energy;
 
+  private double m_TotalEnergy;
+  
   /** Creates a new PowerPanel. */
   public PowerPanel() {
     
     // create power distribution object
     m_Panel = new PowerDistribution(1, ModuleType.kRev);
-
+    
+    m_TotalEnergy = 0.0;
     // set up shuffleboard page
     initializeShuffleboard();
   }
@@ -43,6 +46,9 @@ public class PowerPanel extends SubsystemBase {
 
     // update the shuffleboard
     updateShuffleboard();
+
+    // calcualte total energy
+    m_TotalEnergy += 0.02*m_Panel.getTotalCurrent() * m_Panel.getVoltage();
   }
 
 
@@ -60,7 +66,7 @@ public class PowerPanel extends SubsystemBase {
     m_Voltage = l1.add("Voltage(V)", 0.0).getEntry();
     m_Current = l1.add("Total Current(A)", 0.0).getEntry();
     m_Power = l1.add("Total Power(W)", 0.0).getEntry();
-    m_Energy = l1.add("Total Energy(Wh)", 0.0).getEntry();
+    m_Energy = l1.add("Total Energy(J)", 0.0).getEntry();
   }
 
 
@@ -70,7 +76,7 @@ public class PowerPanel extends SubsystemBase {
     m_Voltage.setDouble(m_Panel.getVoltage());
     m_Current.setDouble(m_Panel.getTotalCurrent());
     m_Power.setDouble(m_Panel.getTotalPower());
-    m_Energy.setDouble(m_Panel.getTotalEnergy()*0.00027778);
+    m_Energy.setDouble(m_TotalEnergy);
   }
 
 

@@ -9,8 +9,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.subsystems.Drivetrain;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Drivetrain;
 
 public class DriveCommand extends CommandBase {
 
@@ -35,15 +35,11 @@ public class DriveCommand extends CommandBase {
   public void execute() {
     // Driver inputs, should be in range [-1,1]
     // TODO: Map to controller, using functions like OI.driverController.getLeftX()
-    double xInput = OI.driverController.getLeftX();
-    double yInput =   OI.driverController.getLeftY();
-    double rotInput = OI.driverController.getRightX();
+    //SmartDashboard.putNumber("SDB", SlowDownButton);
 
-    double maxAccel = RobotContainer.drivetrain.maxAccel.getDouble(0.02);
-
-    xInput = Math.abs(RobotContainer.drivetrain.MaxAccelX(maxAccel)) > 0.1 ? RobotContainer.drivetrain.MaxAccelX(maxAccel) : 0;
-    yInput = Math.abs(RobotContainer.drivetrain.MaxAccelY(maxAccel)) > 0.1 ? RobotContainer.drivetrain.MaxAccelY(maxAccel) : 0;
-    rotInput = Math.abs(rotInput) > 0.1 ? rotInput : 0;
+    double xInput = OI.getXDriveInput();
+    double yInput = OI.getYDriveInput();
+    double rotInput = -OI.getRotDriveInput();
 
     // If no rotational input provided, use PID to hold heading
     if(rotInput == 0){

@@ -55,12 +55,20 @@ public class RobotMap {
     /** minimum horizontal length of ball */
     public static final double MIN_BALL_VERT_SIZE = 0.0;
     }
+    
     public static final int LIFTER_LIMIT_ID = 1;
+    public static final int INTAKE_LIMIT_ID = 2;
 
-    public static final double BALL_LIFTER_SPEED = -1.0;
+    public static final double BALL_LIFTER_SPEED = -0.7;
 
     public static class PneumaticsChannel {
     }
+
+    public static class PWMPorts {
+        /** PWM Port for led strip */
+        static final int LED_STRIP1 = 0;
+        static final int LED_STRIP2 = 2;
+    }  
 
     /**
      * Inner class containing odometry constants
@@ -80,10 +88,6 @@ public class RobotMap {
         public static final int kPDriveVel = 3;
     }
     
-    public static class PWMPorts {
-        /** PWM Port for led strip */
-        static final int LED_STRIP = 0;
-    }
 
     /**
      * Function to initialise hardware

@@ -14,12 +14,13 @@ import frc.robot.commands.ReleaseBall;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
+import frc.robot.commands.autonomous.BasicAuto;
+import frc.robot.commands.LEDCommand;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.HubTargeting;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Shooter;
@@ -42,20 +43,17 @@ public class RobotContainer {
   public static final Drivetrain drivetrain = new Drivetrain();
   public static final SwerveOdometry odometry = new SwerveOdometry();
   public static final PowerPanel panel = new PowerPanel();
-  public static final LED led = new LED(RobotMap.PWMPorts.LED_STRIP);
+  public static final LED LEDStrip = new LED(RobotMap.PWMPorts.LED_STRIP1);
   public static final Shooter m_shooter = new Shooter();
   public static final Lifter lifter = new Lifter();
   public static final Intake intake = new Intake();
   public static final BallTargeting ballTargeting = new BallTargeting();
   public static final HubTargeting hubTargeting = new HubTargeting();
 
-  // The robot's commands are defined here...
-  private static final SampleAutoCommand autoCommand = new SampleAutoCommand();
-
-
   /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
+    LEDStrip.setDefaultCommand(new LEDCommand());
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -69,13 +67,15 @@ public class RobotContainer {
   private static void configureButtonBindings() {
     //OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
 
-    OI.shootButton.whenPressed(new ShooterCommand());
+    OI.highSpeedButton.whileHeld(new ShooterCommand());
     // TODO: Disable binding for competition use
     OI.zeroButton.whenPressed(() -> gyro.resetGyro());
     OI.intakeButton.whileHeld(new IntakeCommand());
-    OI.ballTrackingButton.whenHeld(new SteerTowardsBall());
+    OI.ballTrackingButton.whenHeld(new SteerTowardsBall(false, 20.0));
     OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
     OI.releaseBallButton.whileHeld(new ReleaseBall());
+  
+    OI.testRobotRelativePath.whileHeld(new SampleAutoCommand());
   }
 
   /**
@@ -85,6 +85,6 @@ public class RobotContainer {
    */
   public static Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return autoCommand;
+    return new BasicAuto();
   }
 }
