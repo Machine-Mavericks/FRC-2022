@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.autonomous.BasicAuto;
 
 
 /**
@@ -93,7 +94,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
    
     // initialize robot subsystems    
-    RobotContainer.gyro.resetGyro();
+    // RobotContainer.gyro.resetGyro(); // Todo: Removed as auto may start at variying angles
     RobotContainer.odometry.InitializetoZero();
     
     // set ball pickup pipeline
@@ -104,7 +105,7 @@ public class Robot extends TimedRobot {
 
     // robot is now initialized
     robotIsInitialized = true;
-    autonomousCommand = RobotContainer.getAutonomousCommand();
+    autonomousCommand = new BasicAuto();//RobotContainer.getAutonomousCommand();
     
     // public static DriverStation.Alliance getAlliance() TODO: does not work
     

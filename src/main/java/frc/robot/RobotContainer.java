@@ -14,6 +14,7 @@ import frc.robot.commands.ReleaseBall;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
+import frc.robot.commands.autonomous.BasicAuto;
 import frc.robot.commands.LEDCommand;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.Drivetrain;
@@ -49,9 +50,6 @@ public class RobotContainer {
   public static final BallTargeting ballTargeting = new BallTargeting();
   public static final HubTargeting hubTargeting = new HubTargeting();
 
-  // The robot's commands are defined here...
-  public static final SampleAutoCommand autoCommand = new SampleAutoCommand();
-
   /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
@@ -69,7 +67,7 @@ public class RobotContainer {
   private static void configureButtonBindings() {
     //OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
 
-    OI.shootButton.whenPressed(new ShooterCommand());
+    OI.highSpeedButton.whileHeld(new ShooterCommand());
     // TODO: Disable binding for competition use
     OI.zeroButton.whenPressed(() -> gyro.resetGyro());
     OI.intakeButton.whileHeld(new IntakeCommand());
@@ -87,6 +85,6 @@ public class RobotContainer {
    */
   public static Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return autoCommand;
+    return new BasicAuto();
   }
 }
