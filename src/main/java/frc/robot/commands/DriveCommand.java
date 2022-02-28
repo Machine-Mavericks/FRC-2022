@@ -20,6 +20,7 @@ public class DriveCommand extends CommandBase {
   private PIDController m_headingPID = new PIDController(0.01, 0, 0);
   // Use Double class so it can be set to null
   private Double m_PIDTarget = null;
+  private long m_pidDelay = -1;
 
   /** Creates a new DriveCommand. */
   public DriveCommand(Drivetrain drivetrain) {
@@ -44,21 +45,21 @@ public class DriveCommand extends CommandBase {
 
     // If no rotational input provided, use PID to hold heading
     if(rotInput == 0){
-      // If the target is unset, set it to current heading
-      if(m_PIDTarget == null){
-        m_PIDTarget = RobotContainer.gyro.getYaw();
-        m_headingPID.reset(); // Clear existing integral term as may accumulate while not in use
-        //m_headingPID.setSetpoint(m_PIDTarget);
+      if(m_pidDelay > 0) m_pidDelay --;
+      else {
+        // If the target is unset, set it to current heading
+        if(m_PIDTarget == null){
+          m_PIDTarget = RobotContainer.gyro.getYaw();
+          m_headingPID.reset(); // Clear existing integral term as may accumulate while not in use
+          //m_headingPID.setSetpoint(m_PIDTarget);
+        }
+        // Compute rotational command from PID controller
+        rotInput = m_headingPID.calculate(Utils.AngleDifference(m_PIDTarget, RobotContainer.gyro.getYaw()));
       }
-      // Compute rotational command from PID controller
-      rotInput = m_headingPID.calculate(Utils.AngleDifference(RobotContainer.gyro.getYaw(),
-                                                              m_PIDTarget));
-      
-      
-
     } else {
       // If there is input, set target to null so it's properly reset next time
       m_PIDTarget = null;
+      m_pidDelay = 10; 
     }
 
     m_drivetrain.drive(new Translation2d(-yInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND, xInput*Drivetrain.MAX_VELOCITY_METERS_PER_SECOND), rotInput*Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, true); 
