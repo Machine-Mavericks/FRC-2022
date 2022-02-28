@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
    
     // initialize robot subsystems    
     // RobotContainer.gyro.resetGyro(); // Todo: Removed as auto may start at variying angles
-    RobotContainer.odometry.InitializetoZero();
+    RobotContainer.odometry.InitializefromShuffleboard();
     
     // set ball pickup pipeline
     if (DriverStation.getAlliance() == Alliance.Red)

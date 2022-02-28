@@ -22,7 +22,7 @@ public class AutoDriveToPose extends CommandBase {
   private double m_time;
 
   // final position tolerance (m) / angle tolerance (deg) to consider we have arrived at destination
-  private final double m_positiontolerance = 0.10;
+  private final double m_positiontolerance = 0.20;
   private final double m_angletolerance = 2.0;
 
   // x, y, rotation PID controllers
