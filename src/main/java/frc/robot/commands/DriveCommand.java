@@ -30,7 +30,10 @@ public class DriveCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_PIDTarget = null;
+    m_pidDelay = 10; 
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
