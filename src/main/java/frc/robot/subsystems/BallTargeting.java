@@ -47,6 +47,11 @@ public class BallTargeting extends SubsystemBase {
     return Angle;
   }
 
+  /** Returns vertical angle to ball (deg)*/
+  public double getBallVertAngle() {
+    return m_ballCamera.getVerticalTargetOffsetAngle();
+  }
+
   /**
    * Allows user input to set pipeline
    * 

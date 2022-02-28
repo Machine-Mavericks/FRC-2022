@@ -6,11 +6,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
-/** A bit unsure what to make the command do */
+/** Command controls LEDs to display required information to driver */
 public class LEDCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   
@@ -29,9 +28,13 @@ public class LEDCommand extends CommandBase {
   int counter = 0;
   @Override
   public void execute() {
-    counter++;
-    if (counter>=20){counter=0;}
     
+    // counter used to create blink rate of ~2.5Hz
+    counter++;
+    if (counter>=20)
+      counter=0;
+    
+    // use counter to interleave blinks of LEDs as req'd
     if (counter==0)
     {
       if (RobotContainer.hubTargeting.isTargetPresent()){
