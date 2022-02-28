@@ -44,7 +44,8 @@ public class DriveCommand extends CommandBase {
     double rotInput = -OI.getRotDriveInput();
 
     // If no rotational input provided, use PID to hold heading
-    if(rotInput == 0){
+    // When the zero button is pressed force reset to prevent jumping
+    if(rotInput == 0 && !OI.zeroButton.get()){
       if(m_pidDelay > 0) m_pidDelay --;
       else {
         // If the target is unset, set it to current heading
