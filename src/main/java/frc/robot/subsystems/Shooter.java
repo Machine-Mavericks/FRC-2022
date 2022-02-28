@@ -107,6 +107,14 @@ public class Shooter extends SubsystemBase {
   public void setShooterSpeed(double shooterSpeed) {
     rightShooterFalcon.set(ControlMode.Velocity,shooterSpeed* (2048/600.0));
   }
+
+  /**
+   * This method will return motor speed
+   */
+  public double getShooterSpeed() {
+    return rightShooterFalcon.getSelectedSensorVelocity() / (2048/600.0);
+  }
+  
   /**
    * This method will raise or lower the hood on the shooter for high or low
    * shooting
@@ -144,7 +152,7 @@ public class Shooter extends SubsystemBase {
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 5000))
         .getEntry();
-
+    
     // add RPM
     ShuffleboardLayout l1 = Tab.getLayout("Shooter", BuiltInLayouts.kList);
     l1.withPosition(3, 0);

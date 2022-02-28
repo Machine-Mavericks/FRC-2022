@@ -5,11 +5,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
+import frc.robot.OI;
 import frc.robot.RobotContainer;
 
 public class ShooterCommand extends CommandBase {
-  double shootTime = 0;
 
   /** Creates a new ShooterCommand. */
   public ShooterCommand() {
@@ -26,13 +25,16 @@ public class ShooterCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // set shooter speed to that set on shuffleboard
-    //RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(5000.0));
-    //RobotContainer.intake.setMotorSpeed(0.25);
-    RobotContainer.lifter.liftBalls();
-
-    // increment timer
-    shootTime += 0.02;
+    // If the fire button is held
+    if(OI.shooterFireButton.get()){
+      // And the shooter has reached 95% power, feed balls
+      if(RobotContainer.m_shooter.getShooterSpeed() >= RobotContainer.hubTargeting.DistanceRPM()*0.95){
+        RobotContainer.lifter.liftBalls();
+      }
+    } else {
+      // If the fire button isn't held don't feed
+      RobotContainer.lifter.stopMotor();
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -41,13 +43,11 @@ public class ShooterCommand extends CommandBase {
     // go back to idle speed and set timer to 0 until command starts again
     //RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenIdleSpeed.getDouble(2500));
     RobotContainer.lifter.stopMotor();
-    //RobotContainer.intake.setMotorSpeed(0.0);
-    shootTime = 0;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (shootTime > 7.0);
+    return false;
   }
 }

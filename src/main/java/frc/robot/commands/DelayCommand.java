@@ -18,6 +18,7 @@ public class DelayCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        m_Timer = new Timer();
         m_Timer.reset();
         m_Timer.start();
     }
