@@ -22,6 +22,8 @@ import frc.robot.commands.RecordCurrentPose2d;
 import frc.robot.commands.TurnRobot;
 import frc.robot.commands.BallCameraAutoTilt;
 import frc.robot.commands.AutoDriveToPose;
+import frc.robot.commands.RetractClimber;
+import frc.robot.commands.ExtendClimber;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.CameraTilt;
 import frc.robot.subsystems.Drivetrain;
@@ -33,6 +35,7 @@ import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveOdometry;
 import frc.robot.subsystems.PowerPanel;
+import frc.robot.subsystems.Climber;
 
 
 /**
@@ -58,6 +61,7 @@ public class RobotContainer {
   public static final BallTargeting ballTargeting = new BallTargeting();
   public static final HubTargeting hubTargeting = new HubTargeting();
   public static final CameraTilt cameraTilt = new CameraTilt();
+  public static final Climber climber = new Climber();
 
   /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
   public static void init() {
@@ -87,7 +91,11 @@ public class RobotContainer {
     OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
     OI.releaseBallButton.whileHeld(new ReleaseBall());
   
-    OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(0.5, 0.20));
+   // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(0.5, 0.20));
+    
+    //OI.extendClimberButton.whenPressed(new ExtendClimber());
+    //OI.retractClimberButton.whenPressed(new RetractClimber());
+    
     //OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new Rotation2d(0)), 0.35, 0.15, 20.0)); 
     //new TurnRobot(45.0,false,2.0));//new SampleAutoCommand());
   }

@@ -44,6 +44,10 @@ public class RobotMap {
         public static final int RIGHT_SHOOTER_FALCON = 16;
         /** CAN ID for left shooter motor */
         public static final int LEFT_SHOOTER_FALCON = 17;
+        /** CAN ID for left climber motor */
+        public static final int LEFT_CLIMBER_FALCON = 18;
+        /** CAN ID for right climber motor */
+        public static final int RIGHT_CLIMBER_FALCON = 19;
 
         // TODO: Set CANIDs
         public static final int INTAKE_FALCON = 13;

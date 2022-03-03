@@ -77,6 +77,10 @@ public class OI {
 
         //TODO: get rid of this after testing
         static final Button TEST_BUTTON = XboxController.Button.kY;
+
+        static final Button CLIMBER_RETRACT_BUTTON = XboxController.Button.kA;
+        static final Button CLIMBER_EXTEND_BUTTON = XboxController.Button.kB;
+    
     }
 
     /** Port for controller used by driver */
@@ -102,6 +106,10 @@ public class OI {
     public static final JoystickButton hubTrackingButton = new JoystickButton(driverController, Bindings.HUB_TRACKING_BUTTON.value);
     /** Ball tracking button. Mapped to {@link Bindings#BALL_TRACKING_BUTTON} */
     public static final JoystickButton releaseBallButton = new JoystickButton(operatorController, Bindings.BALL_RELEASE_BUTTON.value);
+
+    public static final JoystickButton extendClimberButton = new JoystickButton(operatorController, Bindings.CLIMBER_EXTEND_BUTTON.value);
+    public static final JoystickButton retractClimberButton = new JoystickButton(operatorController, Bindings.CLIMBER_RETRACT_BUTTON.value);
+
 
 //TODO: get rid of this button after testing
 public static final JoystickButton testRobotRelativePath = new JoystickButton(driverController, Bindings.TEST_BUTTON.value);
