@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.DelayCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -91,11 +92,11 @@ public class Robot extends TimedRobot {
     // robot is now initialized
     robotIsInitialized = true;
     autonomousCommand = RobotContainer.getAutonomousCommand();
-    
-    // public static DriverStation.Alliance getAlliance() TODO: does not work
+
+    new DelayCommand(RobotContainer.shuffleboard.m_delayTime.getDouble(0.0));
     
     // schedule the autonomous command (example)
-    if (autonomousCommand != null) {
+    if (RobotContainer.shuffleboard.m_selectedPath == 0) {
       autonomousCommand.schedule();
     }
   }
