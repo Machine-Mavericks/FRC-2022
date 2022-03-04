@@ -22,11 +22,12 @@ public class ShuffleboardOI extends SubsystemBase {
     // example autonomous path shuffleboard selection boxes
     // true if selected, false if not
     // <add any other controls here that go on main shufflebard page
-    private NetworkTableEntry m_delayTime;
-    private SendableChooser m_autonomousPath;
+    public NetworkTableEntry m_delayTime;
+    private SendableChooser<Integer> m_autonomousPath;
 
     // other controls on main page
     private NetworkTableEntry m_timeLeft;
+    public Integer m_selectedPath;
 
     /** Initializes the Shuffleboard
      * Creates the subsystem pages */
@@ -60,16 +61,14 @@ public class ShuffleboardOI extends SubsystemBase {
 
 
         // add autonomous commands to page -
-        m_autonomousPath.addOption("Path A",0);
-        m_autonomousPath.addOption("Path B",1);
-        m_autonomousPath.addOption("Path C",2);
-        m_autonomousPath.addOption("Path D",3);
-        m_autonomousPath.addOption("Path E",4);
-        m_autonomousPath.addOption("Path F",5);
-        m_autonomousPath.setDefaultOption("Path A", 0);
+        m_autonomousPath.addOption("Two-ball auto",0);
+        m_autonomousPath.addOption("Three-ball auto",1);
+        m_autonomousPath.addOption("One-ball auto",2);
+        m_autonomousPath.setDefaultOption("Two-ball auto", 0);
         tab.add("Preround Paths", m_autonomousPath).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(1,1);
         m_delayTime = tab.add("Auto Delay Time", 0).withWidget(BuiltInWidgets.kNumberSlider).withPosition(0, 1).withSize(1, 1).withProperties(Map.of("min", 0, "max", 1)).getEntry();
 
+        m_selectedPath = (Integer)m_autonomousPath.getSelected();
               
         // add match time remaining in autonomous/teleop part of match (seconds)
         ShuffleboardLayout l1 = tab.getLayout("Timer", BuiltInLayouts.kList);

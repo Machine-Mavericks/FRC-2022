@@ -4,24 +4,19 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.AutoDriveToPose;
+import frc.robot.commands.BallCameraAutoTilt;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.SampleAutoCommand;
+import frc.robot.commands.LEDCommand;
 import frc.robot.commands.ReleaseBall;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
 import frc.robot.commands.autonomous.BasicAuto;
-import frc.robot.commands.LEDCommand;
-import frc.robot.commands.RecordCurrentPose2d;
-import frc.robot.commands.TurnRobot;
-import frc.robot.commands.BallCameraAutoTilt;
-import frc.robot.commands.AutoDriveToPose;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.CameraTilt;
 import frc.robot.subsystems.Drivetrain;
@@ -30,9 +25,9 @@ import frc.robot.subsystems.HubTargeting;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.Lifter;
+import frc.robot.subsystems.PowerPanel;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveOdometry;
-import frc.robot.subsystems.PowerPanel;
 
 
 /**
@@ -99,6 +94,13 @@ public class RobotContainer {
    */
   public static Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new BasicAuto();
+    if (RobotContainer.shuffleboard.m_selectedPath ==0){
+      return new BasicAuto(); //TODO: change to one ball auto
+    }
+    else if (RobotContainer.shuffleboard.m_selectedPath ==1){
+    return new BasicAuto(); //TODO: change to two ball auto
   }
-}
+  else{
+    return new BasicAuto(); //TODO: change to three ball auto
+  }
+}}
