@@ -53,24 +53,30 @@ public class OI {
         
         double speedLimitFactor = RobotContainer.drivetrain.speedLimitFactor.getDouble(1.0);
         double rotInput = driverController.getRightX()*speedLimitFactor;
-        rotInput = Math.abs(rotInput) > 0.1 ? rotInput*0.25 : 0;
+        rotInput = Math.abs(rotInput) > 0.1 ? rotInput*0.5 : 0;
         return rotInput;
     }
     /**
      * Inner class containing controller bindings
      */
     private static class Bindings {
-        static final Button SHOOT_BUTTON = XboxController.Button.kY;
+        /** Button to run shooter at high goal speed */
+        static final Button HIGH_SPEED_BUTTON = XboxController.Button.kY;
+        /** Button to fire ball from shooter */
+        static final Button SHOOTER_FIRE_BUTTON = XboxController.Button.kLeftBumper;
         /** Button to re-zero gyro */
         static final Button ZERO_GYRO = XboxController.Button.kBack;
         /** Button to intake ball */
         static final Button INTAKE_BUTTON = XboxController.Button.kX;
         /** Button to track balls */
-        static final Button BALL_TRACKING_BUTTON = XboxController.Button.kA;
+        static final Button BALL_TRACKING_BUTTON = XboxController.Button.kLeftBumper;
         /** Button to track hub */
         static final Button HUB_TRACKING_BUTTON = XboxController.Button.kB;
         /** Button to spit out balls */
         static final Button BALL_RELEASE_BUTTON = XboxController.Button.kBack;
+
+        //TODO: get rid of this after testing
+        static final Button TEST_BUTTON = XboxController.Button.kY;
     }
 
     /** Port for controller used by driver */
@@ -83,7 +89,9 @@ public class OI {
     /** Controller used by driver, mapped to {@link #OPERATOR_CONTROLLER_PORT} */
     public static final XboxController operatorController = new XboxController(OPERATOR_CONTROLLER_PORT);
 
-    public static final JoystickButton shootButton = new JoystickButton(operatorController, Bindings.SHOOT_BUTTON.value);
+    public static final JoystickButton highSpeedButton = new JoystickButton(operatorController, Bindings.HIGH_SPEED_BUTTON.value);
+    /** Fire ball button. Mapped to {@link Bindings#SHOOTER_FIRE_BUTTON} */
+    public static final JoystickButton shooterFireButton = new JoystickButton(operatorController, Bindings.SHOOTER_FIRE_BUTTON.value);
     /** Example button. Mapped to {@link Bindings#ZERO_GYRO} */
     public static final JoystickButton zeroButton = new JoystickButton(driverController, Bindings.ZERO_GYRO.value);
     /** Button to deploy intake for 5 seconds. Mapped to {@link Bindings#INTAKE_BUTTON} */
@@ -94,5 +102,10 @@ public class OI {
     public static final JoystickButton hubTrackingButton = new JoystickButton(driverController, Bindings.HUB_TRACKING_BUTTON.value);
     /** Ball tracking button. Mapped to {@link Bindings#BALL_TRACKING_BUTTON} */
     public static final JoystickButton releaseBallButton = new JoystickButton(operatorController, Bindings.BALL_RELEASE_BUTTON.value);
+
+//TODO: get rid of this button after testing
+public static final JoystickButton testRobotRelativePath = new JoystickButton(driverController, Bindings.TEST_BUTTON.value);
+
+
 }
  

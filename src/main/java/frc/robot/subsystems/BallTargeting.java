@@ -9,15 +9,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class BallTargeting extends SubsystemBase {
   private Limelight m_ballCamera;
 
-  /** Creates a new HubTargeting. */
+  /** Creates a new BallTargeting. */
   public BallTargeting() {
     m_ballCamera = new Limelight("limelight-ball");
     m_ballCamera.setPipeline(3);
   }
 
-  public void setBallPipeline() {
-    m_ballCamera.setPipeline(3);
+  /** Sets's camera pipeline */
+  public void setBallPipeline(int number) {
+    m_ballCamera.setPipeline(number);
   }
+
   /**
    * Is there a ball (boolean)
    * Decides whether there is a ball based on area
@@ -43,6 +45,11 @@ public class BallTargeting extends SubsystemBase {
   public double ballAngle() {
     double Angle = m_ballCamera.getHorizontalTargetOffsetAngle();
     return Angle;
+  }
+
+  /** Returns vertical angle to ball (deg)*/
+  public double getBallVertAngle() {
+    return m_ballCamera.getVerticalTargetOffsetAngle();
   }
 
   /**

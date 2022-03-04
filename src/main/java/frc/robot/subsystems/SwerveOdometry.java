@@ -124,6 +124,33 @@ public class SwerveOdometry extends SubsystemBase {
   }
 
 
+  // ----------------- FUnctions to record/recall Pos2d
+
+  Pose2d m_MemPoints[] = {new Pose2d(0,0,new Rotation2d(0.0)),
+                            new Pose2d(0,0,new Rotation2d(0.0)),
+                            new Pose2d(0,0,new Rotation2d(0.0)) };
+
+  /** saves Pose2D coordinate for later recall
+   * num = 0 to 2 (three memories available) */
+  public void RecordPose2d(Pose2d point, int num)
+  {
+      if (num<m_MemPoints.length)
+        m_MemPoints[num] = point;
+  }
+
+  /** recalls Pose2D coordinate previously saved 
+   * num = 0 to 2 (three memories available) */
+  public Pose2d RecallPoint(int num)
+  {
+    // return saved point.  If not in range, simply return 0,0,0 point
+    if (num<m_MemPoints.length)
+      return m_MemPoints[num];
+    else
+      return new Pose2d(0,0,new Rotation2d(0.0));
+  }
+
+
+
   // -------------------- Subsystem Shuffleboard Methods --------------------
 
   /** Initialize subsystem shuffleboard page and controls */
