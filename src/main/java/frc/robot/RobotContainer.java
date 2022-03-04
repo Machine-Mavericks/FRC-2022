@@ -93,8 +93,8 @@ public class RobotContainer {
   
    // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(0.5, 0.20));
     
-    //OI.extendClimberButton.whenPressed(new ExtendClimber());
-    //OI.retractClimberButton.whenPressed(new RetractClimber());
+    //OI.extendClimberButton.whileHeld(new ExtendClimber());
+    //OI.retractClimberButton.whileHeld(new RetractClimber());
     
     //OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new Rotation2d(0)), 0.35, 0.15, 20.0)); 
     //new TurnRobot(45.0,false,2.0));//new SampleAutoCommand());

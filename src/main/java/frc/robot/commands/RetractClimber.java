@@ -9,6 +9,9 @@ import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
 
 public class RetractClimber extends CommandBase {
+  int m_righttargetpos;
+  int m_lefttargetpos;
+  
   /** Creates a new RetractClimber. */
   public RetractClimber() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -16,13 +19,48 @@ public class RetractClimber extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    // get starting position
+    m_righttargetpos = RobotContainer.climber.getRightMotorPosition();
+    m_lefttargetpos = RobotContainer.climber.getLeftMotorPosition();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.climber.setLeftMotorPosition(0);
-    RobotContainer.climber.setRightMotorPosition(0);
+    
+    // decrement calculation
+    // 7 turns * 48 ratio * 2048 counts/turn / 10 seconds / 50 Hz
+    // = 1,376 counts/interation
+    
+    // decrement our target
+    // if arms currently at same target
+    // if (m_righttargetpos == m_lefttargetpos)
+    // {
+      m_righttargetpos -= 1600; //1376;
+      m_lefttargetpos -= 1600; //1376;
+    // }
+    // else
+    // {
+    //   // we are not in unison - even up the arms
+    //   if (m_lefttargetpos > m_righttargetpos)
+    //     m_lefttargetpos -= Math.min(m_lefttargetpos-m_righttargetpos, 1376);
+    //   else if (m_lefttargetpos < m_righttargetpos)
+    //     m_righttargetpos -= Math.min(m_righttargetpos - m_lefttargetpos, 1376);
+    // }
+    
+    // limit target to end of position
+    if (m_righttargetpos <=0)
+      m_righttargetpos = 0;
+    if (m_lefttargetpos <= 0)
+      m_lefttargetpos = 0;
+    
+    // command climbers to move
+    RobotContainer.climber.setLeftMotorPosition(m_lefttargetpos);
+    RobotContainer.climber.setRightMotorPosition(m_righttargetpos);
+
+    //RobotContainer.climber.setLeftMotorPosition(0);
+    //RobotContainer.climber.setRightMotorPosition(0);
   }
 
   // Called once the command ends or is interrupted.
@@ -32,6 +70,6 @@ public class RetractClimber extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return (m_righttargetpos <=0);
   }
 }

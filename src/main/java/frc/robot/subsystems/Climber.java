@@ -62,9 +62,9 @@ public class Climber extends SubsystemBase {
 
     // set up forward direction soft (software) limit - set to maximum allowed encoder pulse counts at elevator top
     m_leftClimberFalcon.configForwardSoftLimitEnable(true,0);
-    m_leftClimberFalcon.configForwardSoftLimitThreshold(7*48*2048);
+    m_leftClimberFalcon.configForwardSoftLimitThreshold(8.80*48*2048.0);
     m_rightClimberFalcon.configForwardSoftLimitEnable(true,0);
-    m_rightClimberFalcon.configForwardSoftLimitThreshold(7*48*2048);
+    m_rightClimberFalcon.configForwardSoftLimitThreshold(8.80*48*2048.0);
 
     // set up reverse direction soft limit - assumes encoder pulse at bottom is 0
     m_leftClimberFalcon.configReverseSoftLimitEnable(true, 0);
@@ -73,15 +73,19 @@ public class Climber extends SubsystemBase {
     m_rightClimberFalcon.configReverseSoftLimitThreshold(0);
 
     // configure motor drive limit switches
-    m_leftClimberFalcon.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
-    m_rightClimberFalcon.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
-    m_leftClimberFalcon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
-    m_rightClimberFalcon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
+    // m_leftClimberFalcon.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
+    // m_rightClimberFalcon.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
+    // m_leftClimberFalcon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
+    // m_rightClimberFalcon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
 
     // right motor spins in opposite direction
-    m_leftClimberFalcon.setInverted(InvertType.InvertMotorOutput);
-    //m_rightClimberFalcon.setInverted(InvertType.InvertMotorOutput);
+    //m_leftClimberFalcon.setInverted(InvertType.InvertMotorOutput);
+    m_rightClimberFalcon.setInverted(InvertType.InvertMotorOutput);
   
+    // set allowable closed loop error
+    //m_leftClimberFalcon.configAllowableClosedloopError(0, 4096.0);
+    //m_leftClimberFalcon.configAllowableClosedloopError(0, 4096.0);
+    
     // set PID gains
     m_leftClimberFalcon.config_kP(0, 0.10, 0);
     m_leftClimberFalcon.config_kI(0, 0.0, 0);
@@ -97,8 +101,6 @@ public class Climber extends SubsystemBase {
     // initialize shuffleboard
     initializeShuffleboard();
   
-    //setLeftMotorPosition(48*1024);
-    //setRightMotorPosition(-48*1024);
   }
 
   @Override
