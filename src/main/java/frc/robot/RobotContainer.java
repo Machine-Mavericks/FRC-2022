@@ -29,7 +29,6 @@ import frc.robot.subsystems.PowerPanel;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveOdometry;
 
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -83,8 +82,6 @@ public class RobotContainer {
     OI.releaseBallButton.whileHeld(new ReleaseBall());
   
     OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(0.5, 0.20));
-    //OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new Rotation2d(0)), 0.35, 0.15, 20.0)); 
-    //new TurnRobot(45.0,false,2.0));//new SampleAutoCommand());
   }
 
   /**
@@ -103,4 +100,5 @@ public class RobotContainer {
   else{
     return new BasicAuto(); //TODO: change to three ball auto
   }
-}}
+}
+}
