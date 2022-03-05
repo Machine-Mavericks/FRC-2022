@@ -19,11 +19,11 @@ public class TwoBallAuto extends SequentialCommandGroup {
     addCommands(
       new InstantCommand(()-> RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenIdleSpeed.getDouble(3000))),
       // Intake the ball
-      new SteerTowardsBall(true, 2),
+      new SteerTowardsBall(true, 2.0),
       // // Turn left until hub is in view
       new TurnToHubCommand(0.2, 1),
       // //get within shooting range
-      new AutoHubDistanceCommand(3, 0.2),//,
+      new AutoHubDistanceCommand(2.5, 0.2),//,
       // // Shoot first ball
       new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
       // // Shoot second ball
