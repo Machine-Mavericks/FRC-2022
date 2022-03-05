@@ -23,7 +23,7 @@ public class SteerTowardsHub extends CommandBase {
   // TODO: set gains
   double kp = 0.02;
   double ki = 0.0;
-  double kd = 0.0;
+  double kd = 0.002;
 
   PIDController pidController = new PIDController(kp, ki, kd);
 

@@ -25,6 +25,7 @@ public class ShooterCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.DistanceRPM());
     // If the fire button is held
     if(OI.shooterFireButton.get()){
       // And the shooter has reached 95% power, feed balls
