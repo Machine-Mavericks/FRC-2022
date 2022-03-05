@@ -18,6 +18,7 @@ import frc.robot.subsystems.Drivetrain;
 public class TurnToHubCommand extends CommandBase {
   double turnSpeed;
   long timeout;
+  double err;
   /** 
    * Creates a new TurnToHubCommand. 
    * @param turnSpeed Speed to make turn, in %{@link Drivetrain#MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND}
@@ -39,7 +40,7 @@ public class TurnToHubCommand extends CommandBase {
     
     double targetAngle = Math.toDegrees(Math.atan2(hubDir.getY(), hubDir.getX()));
 
-    double err = (-pose.getRotation().getDegrees() + targetAngle) % 360;
+    err = (-pose.getRotation().getDegrees() + targetAngle) % 360;
     if(Math.abs(err) > 180) err += 360;
     err %= 360;
     if(err > 180) err = err-360;
@@ -68,7 +69,7 @@ public class TurnToHubCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // End when the hub has been detected
-    return RobotContainer.hubTargeting.isTargetPresent() || System.currentTimeMillis() > timeout;
+    // End when within 5 degrees of facing the hub
+    return Math.abs(err) < 5;//RobotContainer.hubTargeting.isTargetPresent() || System.currentTimeMillis() > timeout;
   }
 }
