@@ -21,7 +21,7 @@ public class SteerTowardsHub extends CommandBase {
   double TargetAngle = 0;
 
   // TODO: set gains
-  double kp = 0.02;
+  double kp = 0.016;
   double ki = 0.0;
   double kd = 0.0;
 

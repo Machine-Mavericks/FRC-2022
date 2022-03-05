@@ -31,6 +31,7 @@ import frc.robot.subsystems.Gyro;
 import frc.robot.subsystems.HubTargeting;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
+import frc.robot.subsystems.LEDBlinkin;
 import frc.robot.subsystems.Lifter;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveOdometry;
@@ -54,7 +55,8 @@ public class RobotContainer {
   public static final Drivetrain drivetrain = new Drivetrain();
   public static final SwerveOdometry odometry = new SwerveOdometry();
   public static final PowerPanel panel = new PowerPanel();
-  public static final LED LEDStrip = new LED(RobotMap.PWMPorts.LED_STRIP1);
+  //public static final LED LEDStrip = new LED(RobotMap.PWMPorts.LED_STRIP1);
+  public static final LEDBlinkin LEDStrip = new LEDBlinkin();
   public static final Shooter m_shooter = new Shooter();
   public static final Lifter lifter = new Lifter();
   public static final Intake intake = new Intake();
@@ -93,8 +95,8 @@ public class RobotContainer {
   
    // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(0.5, 0.20));
     
-    //OI.extendClimberButton.whileHeld(new ExtendClimber());
-    //OI.retractClimberButton.whileHeld(new RetractClimber());
+    OI.extendClimberButton.whileHeld(new ExtendClimber());
+    OI.retractClimberButton.whileHeld(new RetractClimber());
     
     //OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new Rotation2d(0)), 0.35, 0.15, 20.0)); 
     //new TurnRobot(45.0,false,2.0));//new SampleAutoCommand());

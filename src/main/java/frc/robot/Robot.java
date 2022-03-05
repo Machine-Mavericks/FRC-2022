@@ -105,14 +105,14 @@ public class Robot extends TimedRobot {
 
     // robot is now initialized
     robotIsInitialized = true;
-    autonomousCommand = new BasicAuto();//RobotContainer.getAutonomousCommand();
+    //autonomousCommand = new BasicAuto();//RobotContainer.getAutonomousCommand();
     
     // public static DriverStation.Alliance getAlliance() TODO: does not work
     
     // schedule the autonomous command (example)
-    if (autonomousCommand != null) {
-      autonomousCommand.schedule();
-    }
+    //if (autonomousCommand != null) {
+    // autonomousCommand.schedule();
+    //}
   }
 
   /** This function is called periodically during autonomous. */

@@ -29,7 +29,7 @@ public class OI {
         // limit the acceleration
         newXInput = (newXInput - prevXInput) > maxAccel ? prevXInput + maxAccel : newXInput;
         newXInput = (newXInput - prevXInput) < -1 * maxAccel ? prevXInput - maxAccel : newXInput;
-        return ((driverController.getRightTriggerAxis() >= 0.75) ? newXInput * 0.25 : newXInput)*speedLimitFactor;
+        return ((driverController.getRightTriggerAxis() >= 0.75) ? newXInput * 0.20 : newXInput)*speedLimitFactor;
     }
 
     public static double getYDriveInput(){
@@ -46,7 +46,7 @@ public class OI {
         // limit the acceleration
         newYInput = (newYInput - prevYInput) > maxAccel ? prevYInput + maxAccel : newYInput;
         newYInput = (newYInput - prevYInput) < -1 * maxAccel ? prevYInput - maxAccel : newYInput;
-        return ((driverController.getRightTriggerAxis() >= 0.75) ? newYInput * 0.25 : newYInput)*speedLimitFactor;
+        return ((driverController.getRightTriggerAxis() >= 0.75) ? newYInput * 0.20 : newYInput)*speedLimitFactor;
     }
 
     public static double getRotDriveInput(){

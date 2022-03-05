@@ -73,24 +73,24 @@ public class Climber extends SubsystemBase {
     m_rightClimberFalcon.configReverseSoftLimitThreshold(0);
 
     // configure motor drive limit switches
-    // m_leftClimberFalcon.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
-    // m_rightClimberFalcon.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
+    m_leftClimberFalcon.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
+    m_rightClimberFalcon.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
     // m_leftClimberFalcon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
     // m_rightClimberFalcon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
 
     // right motor spins in opposite direction
-    //m_leftClimberFalcon.setInverted(InvertType.InvertMotorOutput);
-    m_rightClimberFalcon.setInverted(InvertType.InvertMotorOutput);
+    m_leftClimberFalcon.setInverted(InvertType.InvertMotorOutput);
+    //m_rightClimberFalcon.setInverted(InvertType.InvertMotorOutput);
   
     // set allowable closed loop error
     //m_leftClimberFalcon.configAllowableClosedloopError(0, 4096.0);
     //m_leftClimberFalcon.configAllowableClosedloopError(0, 4096.0);
     
     // set PID gains
-    m_leftClimberFalcon.config_kP(0, 0.10, 0);
+    m_leftClimberFalcon.config_kP(0, 0.25, 0);
     m_leftClimberFalcon.config_kI(0, 0.0, 0);
     m_leftClimberFalcon.config_kD(0, 0.0, 0);
-    m_rightClimberFalcon.config_kP(0, 0.10, 0);
+    m_rightClimberFalcon.config_kP(0, 0.25, 0);
     m_rightClimberFalcon.config_kI(0, 0.0, 0);
     m_rightClimberFalcon.config_kD(0, 0.0, 0);
 

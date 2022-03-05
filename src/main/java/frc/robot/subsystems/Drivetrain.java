@@ -166,12 +166,12 @@ public class Drivetrain extends SubsystemBase {
         temp4.setNeutralMode(NeutralMode.Coast);
 
                 /**Acceleration Limiting Slider*/
-        maxAccel = tab.add("Max Acceleration", 0.03)
+        maxAccel = tab.addPersistent("Max Acceleration", 0.05)
         .withPosition(8, 0)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 0.5))
         .getEntry();
-        speedLimitFactor = tab.add("SpeedLimitFactor", 1.0)
+        speedLimitFactor = tab.addPersistent("SpeedLimitFactor", 0.75)
         .withPosition(8, 0)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 1.0))

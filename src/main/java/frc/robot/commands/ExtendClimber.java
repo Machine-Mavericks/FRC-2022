@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import java.lang.module.ModuleDescriptor.Requires;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
@@ -39,8 +38,8 @@ public class ExtendClimber extends CommandBase {
     // if arms currently at same target
     // if (m_righttargetpos == m_lefttargetpos)
     // {
-      m_righttargetpos += 1600; //1376;
-      m_lefttargetpos += 1600; //1376;
+      m_righttargetpos += 5000; //1376;
+      m_lefttargetpos += 5000; //1376;
     // }
     // else
     // {

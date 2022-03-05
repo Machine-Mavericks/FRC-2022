@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.RobotMap;
 
 public class RetractClimber extends CommandBase {
   int m_righttargetpos;
@@ -37,8 +36,8 @@ public class RetractClimber extends CommandBase {
     // if arms currently at same target
     // if (m_righttargetpos == m_lefttargetpos)
     // {
-      m_righttargetpos -= 1600; //1376;
-      m_lefttargetpos -= 1600; //1376;
+      m_righttargetpos -= 4000; //1376;
+      m_lefttargetpos -= 4000; //1376;
     // }
     // else
     // {
