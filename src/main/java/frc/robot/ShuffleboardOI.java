@@ -44,6 +44,7 @@ public class ShuffleboardOI extends SubsystemBase {
 
         // update main page
         // update remaining time in match (rounded to nearest second)
+        m_selectedPath = (Integer)m_autonomousPath.getSelected();
         m_timeLeft.setDouble(Math.round(Timer.getMatchTime()));
     }
 
@@ -63,12 +64,11 @@ public class ShuffleboardOI extends SubsystemBase {
         // add autonomous commands to page -
         m_autonomousPath.addOption("Two-ball auto",0);
         m_autonomousPath.addOption("Three-ball auto",1);
-        m_autonomousPath.addOption("One-ball auto",2);
+        m_autonomousPath.addOption("Low-ball auto",2);
         m_autonomousPath.setDefaultOption("Two-ball auto", 0);
         tab.add("Preround Paths", m_autonomousPath).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(1,1);
         m_delayTime = tab.add("Auto Delay Time", 0).withWidget(BuiltInWidgets.kNumberSlider).withPosition(0, 1).withSize(1, 1).withProperties(Map.of("min", 0, "max", 1)).getEntry();
 
-        m_selectedPath = (Integer)m_autonomousPath.getSelected();
               
         // add match time remaining in autonomous/teleop part of match (seconds)
         ShuffleboardLayout l1 = tab.getLayout("Timer", BuiltInLayouts.kList);

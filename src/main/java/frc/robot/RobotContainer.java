@@ -16,7 +16,9 @@ import frc.robot.commands.ReleaseBall;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
-import frc.robot.commands.autonomous.BasicAuto;
+import frc.robot.commands.autonomous.LowBallAuto;
+import frc.robot.commands.autonomous.ThreeBallAuto;
+import frc.robot.commands.autonomous.TwoBallAuto;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.CameraTilt;
 import frc.robot.subsystems.Drivetrain;
@@ -92,13 +94,13 @@ public class RobotContainer {
   public static Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     if (RobotContainer.shuffleboard.m_selectedPath ==0){
-      return new BasicAuto(); //TODO: change to one ball auto
+      return new LowBallAuto();
     }
     else if (RobotContainer.shuffleboard.m_selectedPath ==1){
-    return new BasicAuto(); //TODO: change to two ball auto
+    return new TwoBallAuto();
   }
   else{
-    return new BasicAuto(); //TODO: change to three ball auto
+    return new ThreeBallAuto();
   }
 }
 }

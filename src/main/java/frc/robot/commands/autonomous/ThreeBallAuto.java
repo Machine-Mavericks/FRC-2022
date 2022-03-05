@@ -7,23 +7,20 @@ package frc.robot.commands.autonomous;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
-import frc.robot.TrajectoryConstants;
 import frc.robot.commands.AutoDriveToPose;
 import frc.robot.commands.DelayCommand;
-import frc.robot.commands.FollowPath;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
 
 /**
  * Basic auto which starts on right tarmac, grabs nearest ball, and shoots both
  */
-public class BasicAuto extends SequentialCommandGroup {
+public class ThreeBallAuto extends SequentialCommandGroup {
   /** Creates a new BasicAuto. */
-  public BasicAuto() {
+  public ThreeBallAuto() {
     addCommands(
       new InstantCommand(()-> RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenIdleSpeed.getDouble(3000))),
       // Intake the ball
