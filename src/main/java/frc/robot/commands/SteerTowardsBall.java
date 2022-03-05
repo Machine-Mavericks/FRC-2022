@@ -32,27 +32,39 @@ public class SteerTowardsBall extends CommandBase {
   // is this command automated or semi-automated?
   boolean m_automated;
 
+  // speed limit when automated (0<speed<1.0)
+  double m_speedLimitAuto;
+
   // command timeout time
   double m_timeoutlimit;
   double m_time;
 
-  /** Creates a new SteerTowardsTarget.
-   * Input: true if fully automated, false if only sem-automated
-   */
+  /** Steers robot towards ball
+   * Input: true if fully automated, false if only sem-automated */
   public SteerTowardsBall(boolean automated, double timeout) {
     
     // this command requires use of drivetrain and gyro
     addRequirements(m_drivetrain);
     addRequirements(m_gyro);
-
-    // run intake command, when this command finishes, intake will also be interrupted
-    // this.raceWith(new IntakeCommand());
     
-    // set automation flag
     m_automated = automated;
-
-    // set timeout time
     m_timeoutlimit = timeout;
+
+    // assume speed limit of 0.5
+    m_speedLimitAuto= 0.5;
+  }
+  
+  /** Steers robot towards ball
+   * Input: true if fully automated, false if only sem-automated,
+   *        speed limit (0 to 1.0) if automated */
+  public SteerTowardsBall(boolean automated, double timeout, double speedlimit) {
+    // this command requires use of drivetrain and gyro
+    addRequirements(m_drivetrain);
+    addRequirements(m_gyro);
+
+    m_automated = automated;
+    m_timeoutlimit = timeout;
+    m_speedLimitAuto= speedlimit;
   }
 
   // Called when the command is initially scheduled.
@@ -74,7 +86,7 @@ public class SteerTowardsBall extends CommandBase {
     // if automated, assume 50% speed, in manual get speed from joystick
     double xInput;
     if (m_automated)
-      xInput = 0.5;
+      xInput = m_speedLimitAuto;
     else
       xInput = Math.sqrt(Math.pow(OI.driverController.getLeftY(), 2) + Math.pow(OI.driverController.getLeftX(), 2));
     
@@ -105,7 +117,7 @@ public class SteerTowardsBall extends CommandBase {
       {
         // slow down forward speed if large angle to allow robot to turn
         // at 25deg,  speed = 0.5 - 0.004(25)) = 0.5 - 0.1) = 0.4
-        xInput = 0.5 - 0.004* Math.min(25.0, Math.abs(TargetAngle));
+        xInput = m_speedLimitAuto - 0.2*m_speedLimitAuto* Math.min(25.0, Math.abs(TargetAngle));
         //xInput = OI.driverController.getLeftY();
         //if (xInput<0.0)
         //  xInput=0.0;
