@@ -25,9 +25,9 @@ public class TwoBallAuto extends SequentialCommandGroup {
       // //get within shooting range
       new AutoHubDistanceCommand(3, 0.2),//,
       // // Shoot first ball
-      new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub())
+      new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
       // // Shoot second ball
-      // new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub())
+      new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub())
     );
   }
 }
