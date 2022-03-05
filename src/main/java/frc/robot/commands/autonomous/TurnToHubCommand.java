@@ -7,7 +7,6 @@ package frc.robot.commands.autonomous;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
@@ -71,6 +70,8 @@ public class TurnToHubCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     // End when within 5 degrees of facing the hub
-    return RobotContainer.hubTargeting.isTargetPresent() || System.currentTimeMillis() > timeout;
+    return ((RobotContainer.hubTargeting.isTargetPresent() &&(Math.abs(RobotContainer.hubTargeting.getHubAngle()) <4.0))
+    || System.currentTimeMillis() > timeout);
+
   }
 }

@@ -60,14 +60,13 @@ public class ShuffleboardOI extends SubsystemBase {
         ShuffleboardTab tab = Shuffleboard.getTab("Auto");
         m_autonomousPath = new SendableChooser<Integer>();
 
-
         // add autonomous commands to page -
         m_autonomousPath.addOption("Two-ball auto",0);
         m_autonomousPath.addOption("Three-ball auto",1);
         m_autonomousPath.addOption("Low-ball auto",2);
         m_autonomousPath.setDefaultOption("Two-ball auto", 0);
         tab.add("Preround Paths", m_autonomousPath).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(1,1);
-        m_delayTime = tab.add("Auto Delay Time", 0).withWidget(BuiltInWidgets.kNumberSlider).withPosition(0, 1).withSize(1, 1).withProperties(Map.of("min", 0, "max", 1)).getEntry();
+        m_delayTime = tab.add("Auto Delay Time", 0).withWidget(BuiltInWidgets.kNumberSlider).withPosition(0, 1).withSize(1, 1).withProperties(Map.of("min", 0, "max", 10)).getEntry();
 
               
         // add match time remaining in autonomous/teleop part of match (seconds)

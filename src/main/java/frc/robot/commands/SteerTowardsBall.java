@@ -117,7 +117,7 @@ public class SteerTowardsBall extends CommandBase {
       {
         // slow down forward speed if large angle to allow robot to turn
         // at 25deg,  speed = 0.5 - 0.004(25)) = 0.5 - 0.1) = 0.4
-        xInput = m_speedLimitAuto - 0.2*m_speedLimitAuto* Math.min(25.0, Math.abs(TargetAngle));
+        xInput = m_speedLimitAuto; //- 0.004*m_speedLimitAuto* Math.min(25.0, Math.abs(TargetAngle));
         //xInput = OI.driverController.getLeftY();
         //if (xInput<0.0)
         //  xInput=0.0;

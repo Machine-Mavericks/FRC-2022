@@ -106,11 +106,10 @@ public class Robot extends TimedRobot {
     // robot is now initialized
     robotIsInitialized = true;
     autonomousCommand = RobotContainer.getAutonomousCommand();
-
-    new DelayCommand(RobotContainer.shuffleboard.m_delayTime.getDouble(0.0)).schedule();
     
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
+      new DelayCommand(RobotContainer.shuffleboard.m_delayTime.getDouble(0.0)).schedule();
       autonomousCommand.schedule();
     }
   }
