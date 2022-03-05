@@ -19,7 +19,6 @@ import frc.robot.commands.SteerTowardsHub;
 import frc.robot.commands.autonomous.LowBallAuto;
 import frc.robot.commands.autonomous.ThreeBallAuto;
 import frc.robot.commands.autonomous.TwoBallAuto;
-import frc.robot.commands.autonomous.BasicAuto;
 import frc.robot.commands.LEDCommand;
 import frc.robot.commands.RecordCurrentPose2d;
 import frc.robot.commands.TurnRobot;

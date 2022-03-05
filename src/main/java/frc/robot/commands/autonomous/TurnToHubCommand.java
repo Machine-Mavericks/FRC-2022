@@ -33,6 +33,14 @@ public class TurnToHubCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // Initialise timeout
+    this.timeout += System.currentTimeMillis();
+  }
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    
     // Determine direction from odometry
     Pose2d pose = RobotContainer.odometry.getPose2d();
     Pose2d hub = new Pose2d(6.25, 3.125, new Rotation2d(0));
@@ -51,14 +59,7 @@ public class TurnToHubCommand extends CommandBase {
     }
     // Start driving desired direction
     RobotContainer.drivetrain.drive(new Translation2d(0,0), turnSpeed*Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false); 
-
-    // Initialise timeout
-    this.timeout += System.currentTimeMillis();
   }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
@@ -70,6 +71,6 @@ public class TurnToHubCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     // End when within 5 degrees of facing the hub
-    return Math.abs(err) < 5;//RobotContainer.hubTargeting.isTargetPresent() || System.currentTimeMillis() > timeout;
+    return RobotContainer.hubTargeting.isTargetPresent() || System.currentTimeMillis() > timeout;
   }
 }
