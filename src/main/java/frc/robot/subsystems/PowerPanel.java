@@ -51,6 +51,12 @@ public class PowerPanel extends SubsystemBase {
     m_TotalEnergy += 0.02*m_Panel.getTotalCurrent() * m_Panel.getVoltage();
   }
 
+  // returns battery voltage
+  public double getVoltage()
+  {
+    return m_Panel.getVoltage();
+  }
+
 
   // -------------------- Subsystem Shuffleboard Methods --------------------
 

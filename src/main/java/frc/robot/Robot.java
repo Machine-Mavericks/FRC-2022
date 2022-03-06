@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.autonomous.BasicAuto;
+import frc.robot.commands.DelayCommand;
 
 
 /**
@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
    
     // initialize robot subsystems    
     // RobotContainer.gyro.resetGyro(); // Todo: Removed as auto may start at variying angles
-    RobotContainer.odometry.InitializetoZero();
+    RobotContainer.odometry.InitializefromShuffleboard();
     
     // set ball pickup pipeline
     if (DriverStation.getAlliance() == Alliance.Red)
@@ -105,12 +105,11 @@ public class Robot extends TimedRobot {
 
     // robot is now initialized
     robotIsInitialized = true;
-    autonomousCommand = new BasicAuto();//RobotContainer.getAutonomousCommand();
-    
-    // public static DriverStation.Alliance getAlliance() TODO: does not work
+    autonomousCommand = RobotContainer.getAutonomousCommand();
     
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
+      new DelayCommand(RobotContainer.shuffleboard.m_delayTime.getDouble(0.0)).schedule();
       autonomousCommand.schedule();
     }
   }

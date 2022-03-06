@@ -160,18 +160,18 @@ public class Drivetrain extends SubsystemBase {
                 RobotMap.CANID.BR_STEER_ENCODER, -Math.toRadians(135 + 180));
         
 
-        temp1.setNeutralMode(NeutralMode.Coast);
-        temp2.setNeutralMode(NeutralMode.Coast);
-        temp3.setNeutralMode(NeutralMode.Coast);
-        temp4.setNeutralMode(NeutralMode.Coast);
+        temp1.setNeutralMode(NeutralMode.Brake);
+        temp2.setNeutralMode(NeutralMode.Brake);
+        temp3.setNeutralMode(NeutralMode.Brake);
+        temp4.setNeutralMode(NeutralMode.Brake);
 
                 /**Acceleration Limiting Slider*/
-        maxAccel = tab.add("Max Acceleration", 0.03)
+        maxAccel = tab.addPersistent("Max Acceleration", 0.05)
         .withPosition(8, 0)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 0.5))
         .getEntry();
-        speedLimitFactor = tab.add("SpeedLimitFactor", 1.0)
+        speedLimitFactor = tab.addPersistent("SpeedLimitFactor", 0.75)
         .withPosition(8, 0)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 1.0))

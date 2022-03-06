@@ -57,8 +57,12 @@ public class DriveCommand extends CommandBase {
           m_headingPID.reset(); // Clear existing integral term as may accumulate while not in use
           //m_headingPID.setSetpoint(m_PIDTarget);
         }
-        // Compute rotational command from PID controller
-        rotInput = m_headingPID.calculate(Utils.AngleDifference(m_PIDTarget, RobotContainer.gyro.getYaw()));
+        
+        // if we are not moving robot, then apply 0 rotation speed to straighten wheels
+        if (xInput==0.0 && yInput==0.0)
+          rotInput = 0.0;
+        else         // Compute rotational command from PID controller
+          rotInput = m_headingPID.calculate(Utils.AngleDifference(m_PIDTarget, RobotContainer.gyro.getYaw()));
       }
     } else {
       // If there is input, set target to null so it's properly reset next time

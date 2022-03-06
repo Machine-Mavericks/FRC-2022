@@ -6,9 +6,12 @@
 
 package frc.robot;
 
+
+import java.util.Map;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.*;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.networktables.NetworkTableEntry;
 
 
@@ -19,13 +22,12 @@ public class ShuffleboardOI extends SubsystemBase {
     // example autonomous path shuffleboard selection boxes
     // true if selected, false if not
     // <add any other controls here that go on main shufflebard page
-    private NetworkTableEntry m_toggleCenter;
-    private NetworkTableEntry m_toggleOffCenter;
-    private NetworkTableEntry m_toggleSimpleLeft;
-    private NetworkTableEntry m_toggleSimpleRight;
+    public NetworkTableEntry m_delayTime;
+    private SendableChooser<Integer> m_autonomousPath;
 
     // other controls on main page
     private NetworkTableEntry m_timeLeft;
+    public Integer m_selectedPath;
 
     /** Initializes the Shuffleboard
      * Creates the subsystem pages */
@@ -42,6 +44,7 @@ public class ShuffleboardOI extends SubsystemBase {
 
         // update main page
         // update remaining time in match (rounded to nearest second)
+        m_selectedPath = (Integer)m_autonomousPath.getSelected();
         m_timeLeft.setDouble(Math.round(Timer.getMatchTime()));
     }
 
@@ -55,17 +58,17 @@ public class ShuffleboardOI extends SubsystemBase {
 
         // Create Main Tab in Shuffleboard
         ShuffleboardTab tab = Shuffleboard.getTab("Auto");
+        m_autonomousPath = new SendableChooser<Integer>();
 
-        // add autonomous commands to page - example adds toggle switches
-        m_toggleCenter = tab.add("Center", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(0, 0)
-                .withSize(1, 1).getEntry();
-        m_toggleOffCenter = tab.add("OffCenter", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(1, 0)
-                .withSize(1, 1).getEntry();
-        m_toggleSimpleLeft = tab.add("SimpleLeft", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(2, 0)
-                .withSize(1, 1).getEntry();
-        m_toggleSimpleRight = tab.add("SimpleRight", false).withWidget(BuiltInWidgets.kToggleSwitch).withPosition(3, 0)
-                .withSize(1, 1).getEntry();
+        // add autonomous commands to page -
+        m_autonomousPath.addOption("Two-ball auto",0);
+        m_autonomousPath.addOption("Three-ball auto",1);
+        m_autonomousPath.addOption("Low-ball auto",2);
+        m_autonomousPath.setDefaultOption("Two-ball auto", 0);
+        tab.add("Preround Paths", m_autonomousPath).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(1,1);
+        m_delayTime = tab.add("Auto Delay Time", 0).withWidget(BuiltInWidgets.kNumberSlider).withPosition(0, 1).withSize(1, 1).withProperties(Map.of("min", 0, "max", 10)).getEntry();
 
+              
         // add match time remaining in autonomous/teleop part of match (seconds)
         ShuffleboardLayout l1 = tab.getLayout("Timer", BuiltInLayouts.kList);
         l1.withPosition(0, 2);
@@ -78,24 +81,6 @@ public class ShuffleboardOI extends SubsystemBase {
     // returns true if selected, false if not
     // TODO <to be revised for 2022 robot>
 
-    /** Get status of Auto Center toggle switch */
-    public boolean getAutoCommandCenter() {
-        return m_toggleCenter.getBoolean(false);
-    }
 
-    /** Get status of Auto offCenter toggle switch */
-    public boolean getAutoCommandOffCenter() {
-        return m_toggleOffCenter.getBoolean(false);
-    }
-
-    /** Get status of Auto SimpleLeft toggle switch */
-    public boolean getAutoCommandSimpleLeft() {
-        return m_toggleSimpleLeft.getBoolean(false);
-    }
-
-    /** Get status of Auto SimpleRight toggle switch */
-    public boolean getAutoCommandSimpleRight() {
-        return m_toggleSimpleRight.getBoolean(false);
-    }
 
 } // end class ShuffleboardOI

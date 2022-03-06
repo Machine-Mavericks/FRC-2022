@@ -44,6 +44,10 @@ public class RobotMap {
         public static final int RIGHT_SHOOTER_FALCON = 16;
         /** CAN ID for left shooter motor */
         public static final int LEFT_SHOOTER_FALCON = 17;
+        /** CAN ID for left climber motor */
+        public static final int LEFT_CLIMBER_FALCON = 18;
+        /** CAN ID for right climber motor */
+        public static final int RIGHT_CLIMBER_FALCON = 19;
 
         // TODO: Set CANIDs
         public static final int INTAKE_FALCON = 13;
@@ -59,15 +63,16 @@ public class RobotMap {
     public static final int LIFTER_LIMIT_ID = 1;
     public static final int INTAKE_LIMIT_ID = 2;
 
-    public static final double BALL_LIFTER_SPEED = -0.7;
+    public static final double BALL_LIFTER_SPEED = -1.0;
 
     public static class PneumaticsChannel {
     }
 
     public static class PWMPorts {
         /** PWM Port for led strip */
-        static final int LED_STRIP1 = 0;
-        static final int LED_STRIP2 = 2;
+        public static final int LED_STRIP1 = 0;
+        public static final int LED_BLINKIN = 0;
+        public static final int CAMERA_SERVO_ID = 2;
     }  
 
     /**
