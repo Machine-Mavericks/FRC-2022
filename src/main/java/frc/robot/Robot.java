@@ -124,8 +124,9 @@ public class Robot extends TimedRobot {
    
     // if robot has not previously been initialized, then go ahead and initialize
     //if (robotIsInitialized == false) {
-      RobotContainer.gyro.resetGyro();
-      RobotContainer.odometry.InitializetoZero();
+      // TODO: Removed for competition
+      // RobotContainer.gyro.resetGyro();
+      // RobotContainer.odometry.InitializetoZero();
       
       // robot is now initialized
       //robotIsInitialized = true;
