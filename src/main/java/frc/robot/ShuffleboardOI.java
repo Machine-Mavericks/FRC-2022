@@ -64,6 +64,7 @@ public class ShuffleboardOI extends SubsystemBase {
         m_autonomousPath.addOption("Two-ball auto",0);
         m_autonomousPath.addOption("Three-ball auto",1);
         m_autonomousPath.addOption("Low-ball auto",2);
+        m_autonomousPath.setDefaultOption("One-ball auto", 3);
         m_autonomousPath.setDefaultOption("Two-ball auto", 0);
         tab.add("Preround Paths", m_autonomousPath).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(1,1);
         m_delayTime = tab.add("Auto Delay Time", 0).withWidget(BuiltInWidgets.kNumberSlider).withPosition(0, 1).withSize(1, 1).withProperties(Map.of("min", 0, "max", 10)).getEntry();

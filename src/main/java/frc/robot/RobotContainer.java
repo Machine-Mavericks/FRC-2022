@@ -18,6 +18,7 @@ import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
 import frc.robot.commands.autonomous.LowBallAuto;
+import frc.robot.commands.autonomous.OneBallAuto;
 import frc.robot.commands.autonomous.ThreeBallAuto;
 import frc.robot.commands.autonomous.TwoBallAuto;
 import frc.robot.subsystems.BallTargeting;
@@ -33,15 +34,17 @@ import frc.robot.subsystems.PowerPanel;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveOdometry;
 
-
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  
+
   // Create robot's shuffboard operator interface
   public static final ShuffleboardOI shuffleboard = new ShuffleboardOI();
 
@@ -50,7 +53,7 @@ public class RobotContainer {
   public static final Drivetrain drivetrain = new Drivetrain();
   public static final SwerveOdometry odometry = new SwerveOdometry();
   public static final PowerPanel panel = new PowerPanel();
-  //public static final LED LEDStrip = new LED(RobotMap.PWMPorts.LED_STRIP1);
+  // public static final LED LEDStrip = new LED(RobotMap.PWMPorts.LED_STRIP1);
   public static final LEDBlinkin LEDStrip = new LEDBlinkin();
   public static final Shooter m_shooter = new Shooter();
   public static final Lifter lifter = new Lifter();
@@ -60,7 +63,10 @@ public class RobotContainer {
   public static final CameraTilt cameraTilt = new CameraTilt();
   public static final Climber climber = new Climber();
 
-  /** Initialise the container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * Initialise the container for the robot. Contains subsystems, OI devices, and
+   * commands.
+   */
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
     LEDStrip.setDefaultCommand(new LEDCommand());
@@ -71,30 +77,33 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be created by
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+   * it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private static void configureButtonBindings() {
-    //OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
+    // OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
 
     OI.highSpeedButton.whileHeld(new ShooterCommand());
     // TODO: Disable binding for competition use
     OI.zeroButton.whenPressed(() -> gyro.resetGyro());
-    //OI.zeroButton.whenPressed(new RecordCurrentPose2d());
+    // OI.zeroButton.whenPressed(new RecordCurrentPose2d());
     OI.intakeButton.whileHeld(new IntakeCommand());
     OI.ballTrackingButton.whenHeld(new SteerTowardsBall(false, 20.0));
     OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
     OI.releaseBallButton.whileHeld(new ReleaseBall());
-  
-   // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(0.5, 0.20));
-    
+
+    // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(0.5, 0.20));
+
     OI.extendClimberButton.whileHeld(new ExtendClimber());
     OI.retractClimberButton.whileHeld(new RetractClimber());
-    
-    //OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new Rotation2d(0)), 0.35, 0.15, 20.0)); 
-    //new TurnRobot(45.0,false,2.0));//new SampleAutoCommand());
+
+    // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new
+    // Rotation2d(0)), 0.35, 0.15, 20.0));
+    // new TurnRobot(45.0,false,2.0));//new SampleAutoCommand());
   }
 
   /**
@@ -104,14 +113,14 @@ public class RobotContainer {
    */
   public static Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    if (RobotContainer.shuffleboard.m_selectedPath ==0){
+    if (RobotContainer.shuffleboard.m_selectedPath == 0) {
       return new TwoBallAuto();
+    } else if (RobotContainer.shuffleboard.m_selectedPath == 1) {
+      return new ThreeBallAuto();
+    } else if (RobotContainer.shuffleboard.m_selectedPath == 3) {
+      return new OneBallAuto();
+    } else {
+      return new LowBallAuto();
     }
-    else if (RobotContainer.shuffleboard.m_selectedPath ==1){
-    return new ThreeBallAuto();
   }
-  else{
-    return new LowBallAuto();
-  }
-}
 }
