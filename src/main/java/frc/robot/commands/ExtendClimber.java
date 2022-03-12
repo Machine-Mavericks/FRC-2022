@@ -9,7 +9,7 @@ import frc.robot.RobotContainer;
 
 public class ExtendClimber extends CommandBase {
   int m_righttargetpos;
-  int m_lefttargetpos;
+  //int m_lefttargetpos;
   
   /** Creates a new ExtendClimber. */
   public ExtendClimber() {
@@ -23,7 +23,7 @@ public class ExtendClimber extends CommandBase {
       
       // get starting position
       m_righttargetpos = RobotContainer.climber.getRightMotorPosition();
-      m_lefttargetpos = RobotContainer.climber.getLeftMotorPosition();
+      //m_lefttargetpos = RobotContainer.climber.getLeftMotorPosition();
     }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,7 +39,7 @@ public class ExtendClimber extends CommandBase {
     // if (m_righttargetpos == m_lefttargetpos)
     // {
       m_righttargetpos += 5000; //1376;
-      m_lefttargetpos += 5000; //1376;
+      //m_lefttargetpos += 5000; //1376;
     // }
     // else
     // {
@@ -53,11 +53,11 @@ public class ExtendClimber extends CommandBase {
     // limit target to end of position
     if (m_righttargetpos >= (int)(8.80*48*2048.0))
       m_righttargetpos = (int)(8.80*48*2048.0);
-    if (m_lefttargetpos >= (int)(8.80*48*2048))
-      m_lefttargetpos = (int)(8.80*48*2048.0);
+    // if (m_lefttargetpos >= (int)(8.80*48*2048))
+    //   m_lefttargetpos = (int)(8.80*48*2048.0);
 
     // command climbers to move
-    RobotContainer.climber.setLeftMotorPosition(m_lefttargetpos);
+    //RobotContainer.climber.setLeftMotorPosition(m_lefttargetpos);
     RobotContainer.climber.setRightMotorPosition(m_righttargetpos);
     
     //RobotContainer.climber.setLeftMotorPosition(7*48*2048);

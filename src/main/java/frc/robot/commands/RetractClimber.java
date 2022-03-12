@@ -9,7 +9,7 @@ import frc.robot.RobotContainer;
 
 public class RetractClimber extends CommandBase {
   int m_righttargetpos;
-  int m_lefttargetpos;
+  //int m_lefttargetpos;
   
   /** Creates a new RetractClimber. */
   public RetractClimber() {
@@ -21,7 +21,7 @@ public class RetractClimber extends CommandBase {
   public void initialize() {
     // get starting position
     m_righttargetpos = RobotContainer.climber.getRightMotorPosition();
-    m_lefttargetpos = RobotContainer.climber.getLeftMotorPosition();
+    //m_lefttargetpos = RobotContainer.climber.getLeftMotorPosition();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,7 +37,7 @@ public class RetractClimber extends CommandBase {
     // if (m_righttargetpos == m_lefttargetpos)
     // {
       m_righttargetpos -= 4000; //1376;
-      m_lefttargetpos -= 4000; //1376;
+      //m_lefttargetpos -= 4000; //1376;
     // }
     // else
     // {
@@ -51,11 +51,11 @@ public class RetractClimber extends CommandBase {
     // limit target to end of position
     if (m_righttargetpos <=0)
       m_righttargetpos = 0;
-    if (m_lefttargetpos <= 0)
-      m_lefttargetpos = 0;
+    // if (m_lefttargetpos <= 0)
+    //   m_lefttargetpos = 0;
     
     // command climbers to move
-    RobotContainer.climber.setLeftMotorPosition(m_lefttargetpos);
+    //RobotContainer.climber.setLeftMotorPosition(m_lefttargetpos);
     RobotContainer.climber.setRightMotorPosition(m_righttargetpos);
 
     //RobotContainer.climber.setLeftMotorPosition(0);
