@@ -61,7 +61,7 @@ public class OI {
      */
     private static class Bindings {
         /** Button to run shooter at high goal speed */
-        static final Button HIGH_SPEED_BUTTON = XboxController.Button.kB;
+        static final Button HIGH_SPEED_BUTTON = XboxController.Button.kY;
         /** Button to fire ball from shooter */
         static final Button SHOOTER_FIRE_BUTTON = XboxController.Button.kLeftBumper;
         /** Button to re-zero gyro */
@@ -79,7 +79,7 @@ public class OI {
         static final Button TEST_BUTTON = XboxController.Button.kY;
 
         static final Button CLIMBER_RETRACT_BUTTON = XboxController.Button.kA;
-        static final Button CLIMBER_EXTEND_BUTTON = XboxController.Button.kY;
+        static final Button CLIMBER_EXTEND_BUTTON = XboxController.Button.kB;
     
     }
 
