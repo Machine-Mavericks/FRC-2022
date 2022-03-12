@@ -21,7 +21,7 @@ public class LowerShooter extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {RobotContainer.m_shooter.setShooterAngle(0);}
+  public void execute() {RobotContainer.m_shooter.setShooterAngle(1.25);}
 
   // Called once the command ends or is interrupted.
   @Override

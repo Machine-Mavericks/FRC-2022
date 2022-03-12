@@ -41,8 +41,7 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry targetSpeed;
   private NetworkTableEntry servoTilt;
 
-  private double m_shooterTiltAngle;
-  private double m_currentangle = 1;
+  private double m_currentangle = 2.0;
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -52,41 +51,8 @@ public class Shooter extends SubsystemBase {
 
     rightShooterFalcon.configVoltageCompSaturation(11.0, 0);
     leftShooterFalcon.configVoltageCompSaturation(11.0, 0);
-    // enable
 
-    // 19:42
-    // F=0.0477
-    // P=0.7
-    // I=0.001
-    // Ilimit = 80,000
-
-    // 19:51 // near perfect if we get voltage compenstaiton working
-    // F=0.0477
-    // P=0.7
-    // I=0.001
-    // D=0.05
-    // Ilimit = 120,000
-
-    // 20:41 // reduced back down due to new battery (higher voltage)
-    // if possible, get
-    // F=0.0477
-    // P=0.4
-    // I=0.001
-    // D=0.05
-    // Ilimit = 120,000
-
-    // 21:03 // appears ok. maybe add ~100ms before first ball shoots to allow
-    // settling
-    // F=0.0477
-    // P=0.38
-    // I=0.0001
-    // D=0.05
-    // Ilimit = 120,000
-
-    // works. not sure if better than previous, but appears semi-ok
-    // P=0.45
-    // D=0.1
-
+    // old PIF gains archived at bottom of file
     rightShooterFalcon.config_kF(0, 0.0477, 0); // 0.047698 (works ok)
     rightShooterFalcon.config_kP(0, 0.38, 0); // 0.35 // 0.6 //0.75 (works ok)
     rightShooterFalcon.config_kI(0, 0.00010, 0); // kI=0.001
@@ -107,8 +73,7 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // go ahead and set camera angle
-    //m_servo.set(m_currentangle);
-    m_servo.set(1.5);
+    m_servo.set(m_currentangle);
     updateShuffleboard();
   }
 
@@ -131,8 +96,8 @@ public class Shooter extends SubsystemBase {
   // sets camera tilt to desired angle
   // Value is angle (deg)
   public void setShooterAngle(double angle) {
-    //m_servo.set(angle);
-    //m_currentangle = angle;
+    m_servo.set(angle);
+    m_currentangle = angle;
   }
 
   /** returns current camera angle (in deg) */
@@ -178,6 +143,41 @@ public class Shooter extends SubsystemBase {
     leftMotorCurrent.setDouble(leftShooterFalcon.getSupplyCurrent());
     rightMotorCurrent.setDouble(rightShooterFalcon.getSupplyCurrent());
     targetSpeed.setDouble(rightShooterFalcon.getClosedLoopTarget() * ((10.0 / 2048.0) * 60));
-    servoTilt.setDouble(m_servo.getAngle());
+    servoTilt.setDouble(m_currentangle);
   }
 }
+
+    // enable
+
+    // 19:42
+    // F=0.0477
+    // P=0.7
+    // I=0.001
+    // Ilimit = 80,000
+
+    // 19:51 // near perfect if we get voltage compenstaiton working
+    // F=0.0477
+    // P=0.7
+    // I=0.001
+    // D=0.05
+    // Ilimit = 120,000
+
+    // 20:41 // reduced back down due to new battery (higher voltage)
+    // if possible, get
+    // F=0.0477
+    // P=0.4
+    // I=0.001
+    // D=0.05
+    // Ilimit = 120,000
+
+    // 21:03 // appears ok. maybe add ~100ms before first ball shoots to allow
+    // settling
+    // F=0.0477
+    // P=0.38
+    // I=0.0001
+    // D=0.05
+    // Ilimit = 120,000
+
+    // works. not sure if better than previous, but appears semi-ok
+    // P=0.45
+    // D=0.1
