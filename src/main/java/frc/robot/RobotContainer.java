@@ -12,11 +12,13 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ExtendClimber;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LEDCommand;
+import frc.robot.commands.LowerShooter;
 import frc.robot.commands.ReleaseBall;
 import frc.robot.commands.RetractClimber;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
+import frc.robot.commands.TiltShooter;
 import frc.robot.commands.autonomous.LowBallAuto;
 import frc.robot.commands.autonomous.OneBallAuto;
 import frc.robot.commands.autonomous.ThreeBallAuto;
@@ -96,6 +98,8 @@ public class RobotContainer {
     OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
     OI.releaseBallButton.whileHeld(new ReleaseBall());
 
+    OI.tiltShooterButton.whenPressed(new TiltShooter());
+    OI.lowerShooterButton.whenPressed(new LowerShooter());
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(0.5, 0.20));
 
     OI.extendClimberButton.whileHeld(new ExtendClimber());
