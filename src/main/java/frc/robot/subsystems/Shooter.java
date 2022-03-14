@@ -31,8 +31,10 @@ public class Shooter extends SubsystemBase {
   private TalonFX leftShooterFalcon = new TalonFX(RobotMap.CANID.LEFT_SHOOTER_FALCON);
 
   Servo m_servo = new Servo(RobotMap.PWMPorts.SHOOTER_SERVO_ID);
+  Servo m_leftServo = new Servo(RobotMap.PWMPorts.SHOOTER_LEFT_SERVO_ID);
 
   public NetworkTableEntry ChosenSpeed;
+  public NetworkTableEntry ChosenAngle;
   public NetworkTableEntry ChosenIdleSpeed;
   private NetworkTableEntry motorSpeed;
   private NetworkTableEntry motorVoltage;
@@ -41,7 +43,7 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry targetSpeed;
   private NetworkTableEntry servoTilt;
 
-  private double m_currentangle = 2.0;
+  public double m_currentangle = 2.0;
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -66,14 +68,16 @@ public class Shooter extends SubsystemBase {
     // rightShooterFalcon.configOpenLoopRamp(0.1);
 
     m_servo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
-  
+    m_leftServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
+
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     // go ahead and set camera angle
-    m_servo.set(m_currentangle);
+    m_servo.setSpeed(ChosenAngle.getDouble(0.0));
+    m_leftServo.setSpeed(ChosenAngle.getDouble(0.0));
     updateShuffleboard();
   }
 
@@ -96,13 +100,14 @@ public class Shooter extends SubsystemBase {
   // sets camera tilt to desired angle
   // Value is angle (deg)
   public void setShooterAngle(double angle) {
-    m_servo.set(angle);
+
     m_currentangle = angle;
   }
 
   /** returns current camera angle (in deg) */
-  public double getAngle() {return (m_currentangle);}
-
+  public double getAngle() {
+    return (m_currentangle);
+  }
 
   /** Shooter Shuffleboard */
 
@@ -122,6 +127,12 @@ public class Shooter extends SubsystemBase {
         .add("shooter Speed (RPM)", 1.0)
         .withWidget(BuiltInWidgets.kNumberSlider)
         .withProperties(Map.of("min", 0, "max", 5000))
+        .getEntry();
+
+    ChosenAngle = Shuffleboard.getTab("Shooter")
+        .add("Shooter angle", 1.0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min", -1.0, "max", 1.0))
         .getEntry();
 
     // add RPM
@@ -147,37 +158,37 @@ public class Shooter extends SubsystemBase {
   }
 }
 
-    // enable
+// enable
 
-    // 19:42
-    // F=0.0477
-    // P=0.7
-    // I=0.001
-    // Ilimit = 80,000
+// 19:42
+// F=0.0477
+// P=0.7
+// I=0.001
+// Ilimit = 80,000
 
-    // 19:51 // near perfect if we get voltage compenstaiton working
-    // F=0.0477
-    // P=0.7
-    // I=0.001
-    // D=0.05
-    // Ilimit = 120,000
+// 19:51 // near perfect if we get voltage compenstaiton working
+// F=0.0477
+// P=0.7
+// I=0.001
+// D=0.05
+// Ilimit = 120,000
 
-    // 20:41 // reduced back down due to new battery (higher voltage)
-    // if possible, get
-    // F=0.0477
-    // P=0.4
-    // I=0.001
-    // D=0.05
-    // Ilimit = 120,000
+// 20:41 // reduced back down due to new battery (higher voltage)
+// if possible, get
+// F=0.0477
+// P=0.4
+// I=0.001
+// D=0.05
+// Ilimit = 120,000
 
-    // 21:03 // appears ok. maybe add ~100ms before first ball shoots to allow
-    // settling
-    // F=0.0477
-    // P=0.38
-    // I=0.0001
-    // D=0.05
-    // Ilimit = 120,000
+// 21:03 // appears ok. maybe add ~100ms before first ball shoots to allow
+// settling
+// F=0.0477
+// P=0.38
+// I=0.0001
+// D=0.05
+// Ilimit = 120,000
 
-    // works. not sure if better than previous, but appears semi-ok
-    // P=0.45
-    // D=0.1
+// works. not sure if better than previous, but appears semi-ok
+// P=0.45
+// D=0.1
