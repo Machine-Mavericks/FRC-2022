@@ -74,7 +74,6 @@ public class RobotMap {
         public static final int LED_BLINKIN = 0;
         public static final int CAMERA_SERVO_ID = 2;
         public static final int SHOOTER_SERVO_ID = 4;
-        public static final int SHOOTER_LEFT_SERVO_ID = 4;
     }  
 
     /**

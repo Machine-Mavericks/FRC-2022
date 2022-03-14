@@ -31,7 +31,6 @@ public class Shooter extends SubsystemBase {
   private TalonFX leftShooterFalcon = new TalonFX(RobotMap.CANID.LEFT_SHOOTER_FALCON);
 
   Servo m_servo = new Servo(RobotMap.PWMPorts.SHOOTER_SERVO_ID);
-  Servo m_leftServo = new Servo(RobotMap.PWMPorts.SHOOTER_LEFT_SERVO_ID);
 
   public NetworkTableEntry ChosenSpeed;
   public NetworkTableEntry ChosenAngle;
@@ -68,7 +67,6 @@ public class Shooter extends SubsystemBase {
     // rightShooterFalcon.configOpenLoopRamp(0.1);
 
     m_servo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
-    m_leftServo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
 
   }
 
@@ -77,7 +75,6 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
     // go ahead and set camera angle
     m_servo.setSpeed(ChosenAngle.getDouble(0.0));
-    m_leftServo.setSpeed(ChosenAngle.getDouble(0.0));
     updateShuffleboard();
   }
 
