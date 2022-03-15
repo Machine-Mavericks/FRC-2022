@@ -35,6 +35,7 @@ public class Shooter extends SubsystemBase {
   public NetworkTableEntry ChosenSpeed;
   public NetworkTableEntry ChosenAngle;
   public NetworkTableEntry ChosenIdleSpeed;
+  public NetworkTableEntry ChosenLifterSpeed;
   private NetworkTableEntry motorSpeed;
   private NetworkTableEntry motorVoltage;
   private NetworkTableEntry rightMotorCurrent;
@@ -114,10 +115,17 @@ public class Shooter extends SubsystemBase {
 
   public void initializeShuffleboard() {
     ShuffleboardTab Tab = Shuffleboard.getTab("Shooter");
+
     ChosenIdleSpeed = Shuffleboard.getTab("Shooter")
         .add("Idle speed (RPM)", 1.0)
         .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(Map.of("min", 0, "max", 1.0)) //TODO: change back to 5,000 max
+        .withProperties(Map.of("min", 0, "max", 5000.0))
+        .getEntry();
+
+    ChosenLifterSpeed = Shuffleboard.getTab("Shooter")
+        .add("Lifter speed (pct output)", 1.0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min", 0, "max", 1.0))
         .getEntry();
 
     ChosenSpeed = Shuffleboard.getTab("Shooter")
