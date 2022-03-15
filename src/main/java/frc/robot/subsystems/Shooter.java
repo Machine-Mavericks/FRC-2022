@@ -117,7 +117,7 @@ public class Shooter extends SubsystemBase {
     ChosenIdleSpeed = Shuffleboard.getTab("Shooter")
         .add("Idle speed (RPM)", 1.0)
         .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(Map.of("min", 0, "max", 5000))
+        .withProperties(Map.of("min", 0, "max", 1.0)) //TODO: change back to 5,000 max
         .getEntry();
 
     ChosenSpeed = Shuffleboard.getTab("Shooter")

@@ -22,8 +22,8 @@ public class Lifter extends SubsystemBase {
   public NetworkTableEntry limitSwitch;
   public NetworkTableEntry intakeMotorSpeed;
   //two talon
-  VictorSPX leaderLifterTalon = new VictorSPX(RobotMap.CANID.L_LIFTER_TALON); 
-  VictorSPX followerLifterTalon = new VictorSPX(RobotMap.CANID.R_LIFTER_TALON);
+  public VictorSPX leaderLifterTalon = new VictorSPX(RobotMap.CANID.L_LIFTER_TALON); 
+  public VictorSPX followerLifterTalon = new VictorSPX(RobotMap.CANID.R_LIFTER_TALON);
 
   public NetworkTableEntry lifterSpeedEntry;
 

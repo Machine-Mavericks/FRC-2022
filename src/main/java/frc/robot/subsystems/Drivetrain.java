@@ -98,10 +98,10 @@ public class Drivetrain extends SubsystemBase {
             new Translation2d(-TRACKWIDTH_METERS / 2.0, -WHEELBASE_METERS / 2.0));
 
     // These are our modules. We set them in the constructor.
-//     private final SwerveModule m_frontLeftModule;
-//     private final SwerveModule m_frontRightModule;
-//     private final SwerveModule m_backLeftModule;
-//     private final SwerveModule m_backRightModule;
+    private final SwerveModule m_frontLeftModule;
+    private final SwerveModule m_frontRightModule;
+    private final SwerveModule m_backLeftModule;
+    private final SwerveModule m_backRightModule;
 
     private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
@@ -130,34 +130,34 @@ public class Drivetrain extends SubsystemBase {
         TalonFX temp3 = new TalonFX(RobotMap.CANID.BL_DRIVE_FALCON);
         TalonFX temp4 = new TalonFX(RobotMap.CANID.BR_DRIVE_FALCON);
 
-        // m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
-        //         tab.getLayout("Front Left Module", BuiltInLayouts.kList)
-        //                 .withSize(2, 4)
-        //                 .withPosition(0, 0),
-        //         DRIVE_RATIO, RobotMap.CANID.FL_DRIVE_FALCON, RobotMap.CANID.FL_STEER_FALCON,
-        //         RobotMap.CANID.FL_STEER_ENCODER, -Math.toRadians(155 + 180));
+        m_frontLeftModule = Mk4SwerveModuleHelper.createFalcon500(
+                tab.getLayout("Front Left Module", BuiltInLayouts.kList)
+                        .withSize(2, 4)
+                        .withPosition(0, 0),
+                DRIVE_RATIO, RobotMap.CANID.FL_DRIVE_FALCON, RobotMap.CANID.FL_STEER_FALCON,
+                RobotMap.CANID.FL_STEER_ENCODER, -Math.toRadians(155 + 180));
         
 
-        // m_frontRightModule = Mk4SwerveModuleHelper.createFalcon500(
-        //         tab.getLayout("Front right Module", BuiltInLayouts.kList)
-        //                 .withSize(2, 4)
-        //                 .withPosition(2, 0),
-        //         DRIVE_RATIO, RobotMap.CANID.FR_DRIVE_FALCON, RobotMap.CANID.FR_STEER_FALCON,
-        //         RobotMap.CANID.FR_STEER_ENCODER, -Math.toRadians(94 + 180));
+        m_frontRightModule = Mk4SwerveModuleHelper.createFalcon500(
+                tab.getLayout("Front right Module", BuiltInLayouts.kList)
+                        .withSize(2, 4)
+                        .withPosition(2, 0),
+                DRIVE_RATIO, RobotMap.CANID.FR_DRIVE_FALCON, RobotMap.CANID.FR_STEER_FALCON,
+                RobotMap.CANID.FR_STEER_ENCODER, -Math.toRadians(94 + 180));
 
-        // m_backLeftModule = Mk4SwerveModuleHelper.createFalcon500(
-        //         tab.getLayout("Back Left Module", BuiltInLayouts.kList)
-        //                 .withSize(2, 4)
-        //                 .withPosition(4, 0),
-        //         DRIVE_RATIO, RobotMap.CANID.BL_DRIVE_FALCON, RobotMap.CANID.BL_STEER_FALCON,
-        //         RobotMap.CANID.BL_STEER_ENCODER, -Math.toRadians(200 + 180));
+        m_backLeftModule = Mk4SwerveModuleHelper.createFalcon500(
+                tab.getLayout("Back Left Module", BuiltInLayouts.kList)
+                        .withSize(2, 4)
+                        .withPosition(4, 0),
+                DRIVE_RATIO, RobotMap.CANID.BL_DRIVE_FALCON, RobotMap.CANID.BL_STEER_FALCON,
+                RobotMap.CANID.BL_STEER_ENCODER, -Math.toRadians(200 + 180));
 
-        // m_backRightModule = Mk4SwerveModuleHelper.createFalcon500(
-        //         tab.getLayout("Back Right Module", BuiltInLayouts.kList)
-        //                 .withSize(2, 4)
-        //                 .withPosition(6, 0),
-        //         DRIVE_RATIO, RobotMap.CANID.BR_DRIVE_FALCON, RobotMap.CANID.BR_STEER_FALCON,
-        //         RobotMap.CANID.BR_STEER_ENCODER, -Math.toRadians(135 + 180));
+        m_backRightModule = Mk4SwerveModuleHelper.createFalcon500(
+                tab.getLayout("Back Right Module", BuiltInLayouts.kList)
+                        .withSize(2, 4)
+                        .withPosition(6, 0),
+                DRIVE_RATIO, RobotMap.CANID.BR_DRIVE_FALCON, RobotMap.CANID.BR_STEER_FALCON,
+                RobotMap.CANID.BR_STEER_ENCODER, -Math.toRadians(135 + 180));
         
 
         temp1.setNeutralMode(NeutralMode.Brake);
@@ -232,14 +232,14 @@ public class Drivetrain extends SubsystemBase {
         SwerveDriveKinematics.desaturateWheelSpeeds(m_states, MAX_VELOCITY_METERS_PER_SECOND);
         SmartDashboard.putString("Speeds", m_chassisSpeeds.toString());
 
-        // m_frontLeftModule.set(m_states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
-        //         m_states[0].angle.getRadians());
-        // m_frontRightModule.set(m_states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
-        //         m_states[1].angle.getRadians());
-        // m_backLeftModule.set(m_states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
-        //         m_states[2].angle.getRadians());
-        // m_backRightModule.set(m_states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
-        //         m_states[3].angle.getRadians());
+        m_frontLeftModule.set(m_states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
+                m_states[0].angle.getRadians());
+        m_frontRightModule.set(m_states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
+                m_states[1].angle.getRadians());
+        m_backLeftModule.set(m_states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
+                m_states[2].angle.getRadians());
+        m_backRightModule.set(m_states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
+                m_states[3].angle.getRadians());
     }
 
     // -------------------- Kinematics and Swerve Module Status Public Access
@@ -260,20 +260,20 @@ public class Drivetrain extends SubsystemBase {
         SwerveModuleState[] states = new SwerveModuleState[4];
         
         states[0] = new SwerveModuleState();
-        // states[0].speedMetersPerSecond = m_frontLeftModule.getDriveVelocity();
-        // states[0].angle = new Rotation2d(m_frontLeftModule.getSteerAngle());
+        states[0].speedMetersPerSecond = m_frontLeftModule.getDriveVelocity();
+        states[0].angle = new Rotation2d(m_frontLeftModule.getSteerAngle());
 
         states[1] = new SwerveModuleState();
-        // states[1].speedMetersPerSecond = m_frontRightModule.getDriveVelocity();
-        // states[1].angle = new Rotation2d(m_frontRightModule.getSteerAngle());
+        states[1].speedMetersPerSecond = m_frontRightModule.getDriveVelocity();
+        states[1].angle = new Rotation2d(m_frontRightModule.getSteerAngle());
 
         states[2] = new SwerveModuleState();
-        // states[2].speedMetersPerSecond = m_backLeftModule.getDriveVelocity();
-        // states[2].angle = new Rotation2d(m_backLeftModule.getSteerAngle());
+        states[2].speedMetersPerSecond = m_backLeftModule.getDriveVelocity();
+        states[2].angle = new Rotation2d(m_backLeftModule.getSteerAngle());
 
         states[3] = new SwerveModuleState();
-        // states[3].speedMetersPerSecond = m_backRightModule.getDriveVelocity();
-        // states[3].angle = new Rotation2d(m_backRightModule.getSteerAngle());
+        states[3].speedMetersPerSecond = m_backRightModule.getDriveVelocity();
+        states[3].angle = new Rotation2d(m_backRightModule.getSteerAngle());
 
         return states;
     }
