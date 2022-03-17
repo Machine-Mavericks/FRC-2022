@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -102,8 +103,10 @@ public class RobotContainer {
     OI.lowerShooterButton.whenPressed(new LowerShooter());
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(0.5, 0.20));
 
-    OI.extendClimberButton.whileHeld(new ExtendClimber());
-    OI.retractClimberButton.whileHeld(new RetractClimber());
+    if (HAL.getMatchTime() > 119.0){
+      OI.extendClimberButton.whileHeld(new ExtendClimber());
+      OI.retractClimberButton.whileHeld(new RetractClimber());}
+    
 
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new
     // Rotation2d(0)), 0.35, 0.15, 20.0));
