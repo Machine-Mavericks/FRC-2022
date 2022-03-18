@@ -1,4 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
+// Copy (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 public class RetractClimber extends CommandBase {
-  int m_righttargetpos;
+  int m_targetpos;
   //int m_lefttargetpos;
   
   /** Creates a new RetractClimber. */
@@ -20,7 +20,7 @@ public class RetractClimber extends CommandBase {
   @Override
   public void initialize() {
     // get starting position
-    m_righttargetpos = RobotContainer.climber.getRightMotorPosition();
+    m_targetpos = RobotContainer.climber.getMotorPosition();
     //m_lefttargetpos = RobotContainer.climber.getLeftMotorPosition();
   }
 
@@ -34,32 +34,32 @@ public class RetractClimber extends CommandBase {
     
     // decrement our target
     // if arms currently at same target
-    // if (m_righttargetpos == m_lefttargetpos)
+    // if (m_targetpos == m_lefttargetpos)
     // {
-      m_righttargetpos -= 4000; //1376;
+      m_targetpos -= 4000; //1376;
       //m_lefttargetpos -= 4000; //1376;
     // }
     // else
     // {
     //   // we are not in unison - even up the arms
-    //   if (m_lefttargetpos > m_righttargetpos)
-    //     m_lefttargetpos -= Math.min(m_lefttargetpos-m_righttargetpos, 1376);
-    //   else if (m_lefttargetpos < m_righttargetpos)
-    //     m_righttargetpos -= Math.min(m_righttargetpos - m_lefttargetpos, 1376);
+    //   if (m_lefttargetpos > m_targetpos)
+    //     m_lefttargetpos -= Math.min(m_lefttargetpos-m_targetpos, 1376);
+    //   else if (m_lefttargetpos < m_targetpos)
+    //     m_targetpos -= Math.min(m_targetpos - m_lefttargetpos, 1376);
     // }
     
     // limit target to end of position
-    if (m_righttargetpos <=0)
-      m_righttargetpos = 0;
+    if (m_targetpos <=0)
+      m_targetpos = 0;
     // if (m_lefttargetpos <= 0)
     //   m_lefttargetpos = 0;
     
     // command climbers to move
     //RobotContainer.climber.setLeftMotorPosition(m_lefttargetpos);
-    RobotContainer.climber.setRightMotorPosition(m_righttargetpos);
+    RobotContainer.climber.setMotorPosition(m_targetpos);
 
     //RobotContainer.climber.setLeftMotorPosition(0);
-    //RobotContainer.climber.setRightMotorPosition(0);
+    //RobotContainer.climber.setMotorPosition(0);
   }
 
   // Called once the command ends or is interrupted.
@@ -69,6 +69,6 @@ public class RetractClimber extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (m_righttargetpos <=0);
+    return (m_targetpos <=0);
   }
 }

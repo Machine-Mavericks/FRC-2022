@@ -103,11 +103,11 @@ public class RobotContainer {
     OI.lowerShooterButton.whenPressed(new LowerShooter());
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(0.5, 0.20));
 
+    // don't lift the climber unless the time is greater than 119.0
     if (HAL.getMatchTime() > 119.0){
       OI.extendClimberButton.whileHeld(new ExtendClimber());
       OI.retractClimberButton.whileHeld(new RetractClimber());}
     
-
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new
     // Rotation2d(0)), 0.35, 0.15, 20.0));
     // new TurnRobot(45.0,false,2.0));//new SampleAutoCommand());

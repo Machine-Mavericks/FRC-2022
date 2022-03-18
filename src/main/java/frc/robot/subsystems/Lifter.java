@@ -5,8 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -22,8 +21,7 @@ public class Lifter extends SubsystemBase {
   public NetworkTableEntry limitSwitch;
   public NetworkTableEntry intakeMotorSpeed;
   //two talon
-  public VictorSPX leaderLifterTalon = new VictorSPX(RobotMap.CANID.L_LIFTER_TALON); 
-  public VictorSPX followerLifterTalon = new VictorSPX(RobotMap.CANID.R_LIFTER_TALON);
+  public TalonFX lifterFalcon = new TalonFX(RobotMap.CANID.LIFTER_FALCON);
 
   public NetworkTableEntry lifterSpeedEntry;
 
@@ -34,29 +32,25 @@ public class Lifter extends SubsystemBase {
   public Lifter() {
 
     initializeShuffleboard();
-    followerLifterTalon.follow(leaderLifterTalon);
-    followerLifterTalon.setInverted(InvertType.OpposeMaster);
-    
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     updateShuffleboard();
-    
   }
 
   public void liftBalls(){
-    leaderLifterTalon.set(ControlMode.PercentOutput, RobotMap.BALL_LIFTER_SPEED); 
+    lifterFalcon.set(ControlMode.PercentOutput, RobotMap.BALL_LIFTER_SPEED); 
   }
 
   public void releaseBalls(){
-    leaderLifterTalon.set(ControlMode.PercentOutput, -RobotMap.BALL_LIFTER_SPEED); 
+    lifterFalcon.set(ControlMode.PercentOutput, -RobotMap.BALL_LIFTER_SPEED); 
   }
 
   public void stopMotor() {
-    leaderLifterTalon.set(ControlMode.PercentOutput, 0.0);
-    // leaderLifterTalon.NeutralMode.Brake=(2);
+    lifterFalcon.set(ControlMode.PercentOutput, 0.0);
+    // lifterFalcon.NeutralMode.Brake=(2);
 
   }
 
