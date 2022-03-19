@@ -32,9 +32,6 @@ public class Lifter extends SubsystemBase {
   public Lifter() {
 
     initializeShuffleboard();
-
-    lifterFalcon.config_kF(0, 0.0477, 0); // 0.047698 (works ok)
-    lifterFalcon.config_kP(0, 0.38, 0);
   }
 
   @Override
@@ -44,15 +41,15 @@ public class Lifter extends SubsystemBase {
   }
 
   public void liftBalls(){
-    lifterFalcon.set(ControlMode.Velocity, RobotMap.BALL_LIFTER_SPEED); 
+    lifterFalcon.set(ControlMode.PercentOutput, RobotMap.BALL_LIFTER_SPEED); 
   }
 
   public void releaseBalls(){
-    lifterFalcon.set(ControlMode.Velocity, -RobotMap.BALL_LIFTER_SPEED); 
+    lifterFalcon.set(ControlMode.PercentOutput, -RobotMap.BALL_LIFTER_SPEED); 
   }
 
   public void stopMotor() {
-    lifterFalcon.set(ControlMode.Velocity, 0.0);
+    lifterFalcon.set(ControlMode.PercentOutput, 0.0);
     // lifterFalcon.NeutralMode.Brake=(2);
 
   }
