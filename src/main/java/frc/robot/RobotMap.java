@@ -59,7 +59,7 @@ public class RobotMap {
     public static final int LIFTER_LIMIT_ID = 1;
     public static final int INTAKE_LIMIT_ID = 2;
 
-    public static final double BALL_LIFTER_SPEED = -1.0;
+    public static final double BALL_LIFTER_SPEED = 10;
 
     public static class PneumaticsChannel {
     }

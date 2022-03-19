@@ -32,7 +32,7 @@ public class ShooterCommand extends CommandBase {
   public void execute() {
     // If the fire button is held
     RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(5000.0));
-    RobotContainer.lifter.lifterTalon.set(ControlMode.PercentOutput, -RobotContainer.m_shooter.ChosenLifterSpeed.getDouble(0.5));
+    RobotContainer.lifter.lifterFalcon.set(ControlMode.PercentOutput, -RobotContainer.m_shooter.ChosenLifterSpeed.getDouble(0.5));
     RobotContainer.intake.setMotorSpeed(0.35);
     // if(OI.shooterFireButton.get()){
     //   // And the shooter has reached 95% power, feed balls
