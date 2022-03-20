@@ -111,6 +111,8 @@ public class RobotContainer {
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new
     // Rotation2d(0)), 0.35, 0.15, 20.0));
     // new TurnRobot(45.0,false,2.0));//new SampleAutoCommand());
+
+    // (new JoystickButton(OI.driverController, XboxController.Button.kB.value)).whenHeld(new AutoShootCommand(AutoShootCommand.HIGH_SPEED));
   }
 
   /**

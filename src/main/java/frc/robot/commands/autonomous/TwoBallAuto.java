@@ -22,8 +22,6 @@ public class TwoBallAuto extends SequentialCommandGroup {
       new SteerTowardsBall(true, 2.0),
       // // Turn left until hub is in view
       new TurnToHubCommand(0.2, 1),
-      // //get within shooting range
-      new AutoHubDistanceCommand(2.5, 0.2),//,
       // // Shoot first ball
       new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
       // // Shoot second ball

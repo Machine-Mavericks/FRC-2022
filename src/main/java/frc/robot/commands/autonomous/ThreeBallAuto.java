@@ -14,6 +14,7 @@ import frc.robot.commands.AutoDriveToPose;
 import frc.robot.commands.DelayCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
+import frc.robot.commands.TurnRobot;
 
 /**
  * Basic auto which starts on right tarmac, grabs nearest ball, and shoots both
@@ -22,29 +23,9 @@ public class ThreeBallAuto extends SequentialCommandGroup {
   /** Creates a new BasicAuto. */
   public ThreeBallAuto() {
     addCommands(
-      new InstantCommand(()-> RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenIdleSpeed.getDouble(3000))),
-      // Intake the ball
-      new SteerTowardsBall(true, 2),
-      // Turn left until hub is in view
-      new TurnToHubCommand(0.5, 1),
-      //get within shooting range
-      new AutoHubDistanceCommand(3, 0.2),
-      // Shoot first ball
-      new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
-      // Shoot second ball
-      new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
-      // Make a dash for ball near station
-      new AutoDriveToPose(new Pose2d(new Translation2d(2.5, 2.5), Rotation2d.fromDegrees(-135)), 1, 0.10, 3),
-      new SteerTowardsBall(true, 1),
-      new DelayCommand(0.25),
-      // Drive back to shooting position
-      new AutoDriveToPose(new Pose2d(new Translation2d(6.5, 2.5), Rotation2d.fromDegrees(-135)), 0.5, 0.10, 3),
-      // Turn left until hub is in view
-      new TurnToHubCommand(0.5, 1),
-      //get within shooting range
-      new AutoHubDistanceCommand(3, 0.2),
-      // Shoot first ball
-      new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub())
+      new TwoBallAuto(),
+      new TurnRobot(-167, false, 1),
+      new TerminalBallAutoCommand()
     );
   }
 }

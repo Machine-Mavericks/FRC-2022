@@ -44,7 +44,7 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry servoTilt;
 
   // default shooter hood angle setting
-  public double m_currentangle = 0.5;
+  public double m_currentangle = -0.5;
 
   /** Creates a new Shooter. */
   public Shooter() {

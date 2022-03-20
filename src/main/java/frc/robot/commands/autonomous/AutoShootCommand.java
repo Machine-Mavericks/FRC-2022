@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class AutoShootCommand extends CommandBase {
@@ -22,6 +23,8 @@ public class AutoShootCommand extends CommandBase {
   private boolean ballDetected = false;
   public LinearFilter liftLimitFiltered = LinearFilter.movingAverage(10);
   private boolean limPressed = false;
+
+  private long waitUntil;
 
   /**
    * Create a new command to shoot a ball in auto
@@ -40,21 +43,26 @@ public class AutoShootCommand extends CommandBase {
   @Override
   public void initialize() {
     ballDetected = false;
+    double err = Math.abs(RobotContainer.hubTargeting.GetTargetHoodSetting()-RobotContainer.m_shooter.getAngle());
+    waitUntil = System.currentTimeMillis() + 1000;//(long) (err*(3.5/1.75)*1000*1.1); // Servo travels 1.75 units in 3.5 seconds
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // set shooter speed based on supplied value
+    RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
     RobotContainer.m_shooter.setShooterSpeed(flywheelSpeed.getAsDouble());
-    if(RobotContainer.m_shooter.getShooterSpeed() >= flywheelSpeed.getAsDouble()*0.95){
-      RobotContainer.lifter.liftBalls();
+    // set shooter speed based on supplied value
+    if(System.currentTimeMillis() > waitUntil){
+      if(RobotContainer.m_shooter.getShooterSpeed() >= flywheelSpeed.getAsDouble()*0.95){
+        RobotContainer.lifter.liftBalls();
+      }
+      
+      // Update the limit switch filter
+      limPressed = liftLimitFiltered.calculate(!RobotContainer.lifter.liftLimit.get() ? 1 : 0) > 0.5;
+      // Set flag when ball detected at limit switch
+      if(limPressed) ballDetected = true;
     }
-
-    // Update the limit switch filter
-    limPressed = liftLimitFiltered.calculate(!RobotContainer.lifter.liftLimit.get() ? 1 : 0) > 0.5;
-    // Set flag when ball detected at limit switch
-    if(limPressed) ballDetected = true;
   }
 
   // Called once the command ends or is interrupted.
