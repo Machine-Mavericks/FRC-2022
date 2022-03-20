@@ -24,7 +24,6 @@ public class ThreeBallAuto extends SequentialCommandGroup {
   public ThreeBallAuto() {
     addCommands(
       new TwoBallAuto(),
-      new TurnRobot(-167, false, 1),
       new TerminalBallAutoCommand()
     );
   }
