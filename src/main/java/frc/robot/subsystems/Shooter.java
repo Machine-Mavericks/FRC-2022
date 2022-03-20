@@ -137,7 +137,7 @@ public class Shooter extends SubsystemBase {
     ChosenAngle = Shuffleboard.getTab("Shooter")
         .add("Shooter angle", 1.0)
         .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(Map.of("min", -1.0, "max", 1.0))
+        .withProperties(Map.of("min", -1.0, "max", 0.75))
         .getEntry();
 
     // add RPM

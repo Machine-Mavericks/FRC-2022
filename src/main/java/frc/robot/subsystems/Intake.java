@@ -27,7 +27,7 @@ public class Intake extends SubsystemBase {
   
   private DigitalInput ballInputSwitch = new DigitalInput(RobotMap.INTAKE_LIMIT_ID);
   
-  public static double MOTORSPEED = 0.8;
+  public static double MOTORSPEED = 0.35;
 
   // Convert pulses per 100ms to rpm 
   // Multiply by 10 to get pulses/second
