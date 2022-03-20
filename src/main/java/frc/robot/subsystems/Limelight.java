@@ -107,8 +107,8 @@ public class Limelight extends SubsystemBase {
    * returns -20 to +20 degrees
    */
    float getVerticalTargetOffsetAngle() {
-    // march 5 2022 added 3.2degrees for camera angle error
-    return m_table.getEntry("ty").getNumber(0.0).floatValue()+(float)3.2;
+    
+    return m_table.getEntry("ty").getNumber(0.0).floatValue();
   }
 
   /** get rotation angle between view of camera of target */

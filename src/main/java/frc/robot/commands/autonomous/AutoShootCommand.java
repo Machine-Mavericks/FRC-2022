@@ -16,7 +16,7 @@ public class AutoShootCommand extends CommandBase {
    * 
    */
   public static final DoubleSupplier LOW_SPEED = () -> 1750;
-  public static final DoubleSupplier HIGH_SPEED = RobotContainer.hubTargeting::DistanceRPM;
+  public static final DoubleSupplier HIGH_SPEED = RobotContainer.hubTargeting::GetTargetRPM;
   
   private DoubleSupplier flywheelSpeed;
   private boolean ballDetected = false;

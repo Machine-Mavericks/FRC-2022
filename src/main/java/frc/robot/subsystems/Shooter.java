@@ -43,7 +43,8 @@ public class Shooter extends SubsystemBase {
   private NetworkTableEntry targetSpeed;
   private NetworkTableEntry servoTilt;
 
-  public double m_currentangle = 2.0;
+  // default shooter hood angle setting
+  public double m_currentangle = 0.5;
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -75,7 +76,8 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // go ahead and set camera angle
-    m_servo.setSpeed(ChosenAngle.getDouble(0.0));
+    m_servo.setSpeed(m_currentangle);
+    //m_servo.setSpeed(ChosenAngle.getDouble(0.0));
     updateShuffleboard();
   }
 
@@ -96,9 +98,12 @@ public class Shooter extends SubsystemBase {
   }
 
   // sets camera tilt to desired angle
-  // Value is angle (deg)
+  // input: actuator setting
   public void setShooterAngle(double angle) {
-
+    if (angle < -1.0)
+      angle = -1.0;
+    if (angle > 0.75)
+      angle = 0.75;
     m_currentangle = angle;
   }
 

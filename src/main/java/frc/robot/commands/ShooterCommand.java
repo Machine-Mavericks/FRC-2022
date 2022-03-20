@@ -4,10 +4,7 @@
 
 package frc.robot.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.OI;
 import frc.robot.RobotContainer;
 
 public class ShooterCommand extends CommandBase {
@@ -31,7 +28,9 @@ public class ShooterCommand extends CommandBase {
   @Override
   public void execute() {
     // If the fire button is held
-    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(5000.0));
+    //RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(5000.0));
+    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.GetTargetRPM());
+    RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
     RobotContainer.lifter.liftBalls();
     RobotContainer.intake.setMotorSpeed(0.35);
     // if(OI.shooterFireButton.get()){
