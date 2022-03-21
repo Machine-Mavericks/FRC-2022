@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.OI;
 import frc.robot.RobotContainer;
 
 public class ShooterCommand extends CommandBase {
@@ -33,15 +34,15 @@ public class ShooterCommand extends CommandBase {
     RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
     RobotContainer.lifter.liftBalls();
     RobotContainer.intake.setMotorSpeed(0.35);
-    // if(OI.shooterFireButton.get()){
-    //   // And the shooter has reached 95% power, feed balls
-    //   if(RobotContainer.m_shooter.getShooterSpeed() >= RobotContainer.hubTargeting.DistanceRPM()*0.95){
-    //     RobotContainer.lifter.liftBalls();
-    //   }
-    // } else {
-    //   // If the fire button isn't held don't feed
-    //   RobotContainer.lifter.stopMotor();
-    // }
+    if(OI.shooterFireButton.get()){
+      // And the shooter has reached 95% power, feed balls
+      if(RobotContainer.m_shooter.getShooterSpeed() >= RobotContainer.hubTargeting.GetTargetRPM()*0.95){
+        RobotContainer.lifter.liftBalls();
+      }
+    } else {
+      // If the fire button isn't held don't feed
+      RobotContainer.lifter.stopMotor();
+    }
 
     shootTime += 0.02;
   }
@@ -50,16 +51,16 @@ public class ShooterCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     // go back to idle speed and set timer to 0 until command starts again
-    RobotContainer.m_shooter.setShooterSpeed(0.0); //TODO: RobotContainer.m_shooter.ChosenIdleSpeed.getDouble(2500));
-    RobotContainer.lifter.stopMotor(); //TODO: put back
-    RobotContainer.intake.setMotorSpeed(0.0); //TODO: remove
+    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenIdleSpeed.getDouble(2500));
+    RobotContainer.lifter.stopMotor();
+    RobotContainer.intake.setMotorSpeed(0.0);
     shootTime = 0.0;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (shootTime>1000.0);
-    //return false;
+    // return (shootTime>1000.0);
+    return false;
   }
 }

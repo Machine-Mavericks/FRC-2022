@@ -160,10 +160,10 @@ public class Drivetrain extends SubsystemBase {
                 RobotMap.CANID.BR_STEER_ENCODER, -Math.toRadians(135 + 180));
         
 
-        temp1.setNeutralMode(NeutralMode.Coast);
-        temp2.setNeutralMode(NeutralMode.Coast);
-        temp3.setNeutralMode(NeutralMode.Coast);
-        temp4.setNeutralMode(NeutralMode.Coast); //TODO: put back to brake
+        temp1.setNeutralMode(NeutralMode.Brake);
+        temp2.setNeutralMode(NeutralMode.Brake);
+        temp3.setNeutralMode(NeutralMode.Brake);
+        temp4.setNeutralMode(NeutralMode.Brake);
 
                 /**Acceleration Limiting Slider*/
         maxAccel = tab.addPersistent("Max Acceleration", 0.05)
