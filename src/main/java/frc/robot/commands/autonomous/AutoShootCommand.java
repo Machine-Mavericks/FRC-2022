@@ -23,6 +23,7 @@ public class AutoShootCommand extends CommandBase {
   private boolean ballDetected = false;
   public LinearFilter liftLimitFiltered = LinearFilter.movingAverage(10);
   private boolean limPressed = false;
+  private boolean m_teleOpCommand;
 
   private long waitUntil;
 

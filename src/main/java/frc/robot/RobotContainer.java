@@ -19,7 +19,9 @@ import frc.robot.commands.RetractClimber;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
+import frc.robot.commands.TeleOpAutoShootCommand;
 import frc.robot.commands.TiltShooter;
+import frc.robot.commands.autonomous.AutoShootCommand;
 import frc.robot.commands.autonomous.LowBallAuto;
 import frc.robot.commands.autonomous.OneBallAuto;
 import frc.robot.commands.autonomous.ThreeBallAuto;
@@ -90,12 +92,14 @@ public class RobotContainer {
   private static void configureButtonBindings() {
     // OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
 
-    OI.highSpeedButton.whileHeld(new ShooterCommand());
+    //OI.highSpeedButton.whileHeld(new ShooterCommand());
+    OI.highSpeedButton.whileHeld(new AutoShootCommand(RobotContainer.hubTargeting::GetTargetRPM).deadlineWith(new SteerTowardsHub()));
     // TODO: Disable binding for competition use
     OI.zeroButton.whenPressed(() -> gyro.resetGyro());
     // OI.zeroButton.whenPressed(new RecordCurrentPose2d());
     OI.intakeButton.whileHeld(new IntakeCommand());
     OI.ballTrackingButton.whenHeld(new SteerTowardsBall(false, 20.0));
+    //OI.ballTrackingButton.whenHeld(new AutoPickUpBallCommand());
     OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
     OI.releaseBallButton.whileHeld(new ReleaseBall());
 

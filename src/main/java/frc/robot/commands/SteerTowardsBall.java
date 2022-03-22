@@ -88,7 +88,8 @@ public class SteerTowardsBall extends CommandBase {
     if (m_automated)
       xInput = m_speedLimitAuto;
     else
-      xInput = Math.sqrt(Math.pow(OI.driverController.getLeftY(), 2) + Math.pow(OI.driverController.getLeftX(), 2));
+      xInput = m_speedLimitAuto*0.6; //TODO
+      //xInput = Math.sqrt(Math.pow(OI.driverController.getLeftY(), 2) + Math.pow(OI.driverController.getLeftX(), 2));
     
     // assume sideway speed of 0% unless determined otherwise
     double yInput = 0.0;

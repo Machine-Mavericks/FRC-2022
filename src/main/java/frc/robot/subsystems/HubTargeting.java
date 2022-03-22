@@ -172,7 +172,7 @@ public class HubTargeting extends SubsystemBase {
 
     m_RPMAdjust = Tab.add("Shooter Speed Adjust (rpm)", 0.0)
                   .withWidget(BuiltInWidgets.kNumberSlider)
-                  .withProperties(Map.of("min", -100.0, "max", 100.0))
+                  .withProperties(Map.of("min", -200.0, "max", 200.0))
                   .withPosition(3,0)
                   .withSize(3,1)
                   .getEntry();
