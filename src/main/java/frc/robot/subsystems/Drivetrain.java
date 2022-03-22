@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
@@ -98,12 +99,14 @@ public class Drivetrain extends SubsystemBase {
             new Translation2d(-TRACKWIDTH_METERS / 2.0, -WHEELBASE_METERS / 2.0));
 
     // These are our modules. We set them in the constructor.
-    private final SwerveModule m_frontLeftModule;
-    private final SwerveModule m_frontRightModule;
-    private final SwerveModule m_backLeftModule;
-    private final SwerveModule m_backRightModule;
+    private SwerveModule m_frontLeftModule;
+    private SwerveModule m_frontRightModule;
+    private SwerveModule m_backLeftModule;
+    private SwerveModule m_backRightModule;
 
     private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+
+    private ShuffleboardTab tab;
 
     // Swerve module states - contains speed(m/s) and angle for each swerve module
     SwerveModuleState[] m_states;
@@ -121,9 +124,29 @@ public class Drivetrain extends SubsystemBase {
 
         // SmartDashboard.putData("Field", m_field);
 
-        final Mk4SwerveModuleHelper.GearRatio DRIVE_RATIO = Mk4SwerveModuleHelper.GearRatio.L1;
+        tab = Shuffleboard.getTab("Drivetrain");
 
-        ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+        resetModules(NeutralMode.Brake);
+
+                /**Acceleration Limiting Slider*/
+        maxAccel = tab.addPersistent("Max Acceleration", 0.05)
+        .withPosition(8, 0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min", 0, "max", 0.5))
+        .getEntry();
+        speedLimitFactor = tab.addPersistent("SpeedLimitFactor", 0.75)
+        .withPosition(8, 0)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min", 0, "max", 1.0))
+        .getEntry();
+        tab.add("Reset Drivetrain", new InstantCommand(()->{resetModules(NeutralMode.Brake);}))
+        .withPosition(0,0)
+        .withSize(2, 1);
+    }
+
+    private void resetModules(NeutralMode nm) {
+
+        final Mk4SwerveModuleHelper.GearRatio DRIVE_RATIO = Mk4SwerveModuleHelper.GearRatio.L1;
 
         TalonFX temp1 = new TalonFX(RobotMap.CANID.FL_DRIVE_FALCON);
         TalonFX temp2 = new TalonFX(RobotMap.CANID.FR_DRIVE_FALCON);
@@ -160,22 +183,10 @@ public class Drivetrain extends SubsystemBase {
                 RobotMap.CANID.BR_STEER_ENCODER, -Math.toRadians(135 + 180));
         
 
-        temp1.setNeutralMode(NeutralMode.Brake);
-        temp2.setNeutralMode(NeutralMode.Brake);
-        temp3.setNeutralMode(NeutralMode.Brake);
-        temp4.setNeutralMode(NeutralMode.Brake);
-
-                /**Acceleration Limiting Slider*/
-        maxAccel = tab.addPersistent("Max Acceleration", 0.05)
-        .withPosition(8, 0)
-        .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(Map.of("min", 0, "max", 0.5))
-        .getEntry();
-        speedLimitFactor = tab.addPersistent("SpeedLimitFactor", 0.75)
-        .withPosition(8, 0)
-        .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(Map.of("min", 0, "max", 1.0))
-        .getEntry();
+        temp1.setNeutralMode(nm);
+        temp2.setNeutralMode(nm);
+        temp3.setNeutralMode(nm);
+        temp4.setNeutralMode(nm);
     }
 
     /**
