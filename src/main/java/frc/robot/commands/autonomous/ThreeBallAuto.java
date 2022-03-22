@@ -4,17 +4,7 @@
 
 package frc.robot.commands.autonomous;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.RobotContainer;
-import frc.robot.commands.AutoDriveToPose;
-import frc.robot.commands.DelayCommand;
-import frc.robot.commands.SteerTowardsBall;
-import frc.robot.commands.SteerTowardsHub;
-import frc.robot.commands.TurnRobot;
 
 /**
  * Basic auto which starts on right tarmac, grabs nearest ball, and shoots both
