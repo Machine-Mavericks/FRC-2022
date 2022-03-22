@@ -4,9 +4,10 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.networktables.NetworkTable;
+import java.util.Map;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -24,6 +25,11 @@ public class HubTargeting extends SubsystemBase {
   private NetworkTableEntry m_readyToShoot;
   private NetworkTableEntry m_targetDetected;
   
+  private NetworkTableEntry m_RPMAdjust;
+  private NetworkTableEntry m_DistanceAdjust;
+
+  // default shooter idle speed (rpm)
+  private final double m_ShooterIdleSpeed = 3350.0;
 
   /** Creates a new HubTargeting. */
   public HubTargeting() {
@@ -34,33 +40,26 @@ public class HubTargeting extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
     // update shuffleboard
     updateShuffleboard();
-  
   }
 
-  /**
-   * Function to tell if target is visible in limelight.
-   * @return boolean (true if target is in sight)
-   */
+  /** Function to tell if target is visible in limelight.
+   * @return boolean (true if target is in sight) */
   public boolean isTargetPresent(){
     return m_hubCamera.isTargetPresent();
   }
 
-  /**
-   * Decides if a target is present and in range
+  /** Decides if a target is present and in range
    * Note: Range can (and will) be adjusted post testing
-   * 
-   * @return boolean (true if target, false if not)
-   */
+   * @return boolean (true if target, false if not) */
   public boolean IsTarget() {
     boolean target = m_hubCamera.isTargetPresent();
     double distance = EstimateDistance();
     boolean yesTarget;
     
-    // based on Feb 22/2022 test data. If distance between 7 and 11
-    if (target == true && distance >=3.00) {
+    // we have valid target if distance is >2.9m
+    if (target == true && distance >=2.90) {
       yesTarget = true;
     } else {
       yesTarget = false;
@@ -68,12 +67,9 @@ public class HubTargeting extends SubsystemBase {
     return yesTarget;
   }
 
-  /**
-   * Estimates the distance of the hub
+  /** Estimates the distance of the hub
    * Note: Equation will change with mounted limelight and testing
-   * 
-   * @return distance in meters
-   */
+   * @return distance in meters */
   public double EstimateDistance() {
     double ty = m_hubCamera.getVerticalTargetOffsetAngle();
     double distance;
@@ -85,7 +81,10 @@ public class HubTargeting extends SubsystemBase {
     else
       distance = 0.0039*ty*ty -0.1523*ty + 4.094;
 
-    // return distance estimate (m)
+    // add in adustment (if any) from shuffleboard
+    distance += m_DistanceAdjust.getDouble(0.0);
+
+    // return distance estimate (m) 
     return distance;
   }
 
@@ -96,17 +95,14 @@ public class HubTargeting extends SubsystemBase {
     return tx;
   }
 
-  /**
-   * Finds if targeting is ready
+  /** Finds if targeting is ready
    * Note: angle displacement parameters are placement holders
-   * 
-   * @return boolean
-   */
+   * @return boolean */
   public boolean ReadyToShoot() {
     double targetAngle = getHubAngle();
     Boolean target = IsTarget();
     Boolean ready;
-    if (targetAngle <= 5 && targetAngle >= -5 && target == true) {
+    if (targetAngle <= 1.0 && targetAngle >= -1.0 && target == true) {
       ready = true;
     } else {
       ready = false;
@@ -124,6 +120,9 @@ public class HubTargeting extends SubsystemBase {
     // speed from test data March 19/2022
     double RPM = 380.02*m + 1842.2;
 
+    // add in RPM adustment (if any) from shuffleboard
+    RPM += m_RPMAdjust.getDouble(0.0);
+
     return RPM;
   }
 
@@ -139,9 +138,14 @@ public class HubTargeting extends SubsystemBase {
     return hood;
   }
 
+  /** Returns shooter idle speed (rpm)*/
+  public double getShooterIdleSpeed() {
+    return m_ShooterIdleSpeed;
+}
 
 
   // -------------------- Subsystem Shuffleboard Methods --------------------
+
 
   /** Initialize subsystem shuffleboard page and controls */
   private void initializeShuffleboard() {
@@ -151,17 +155,34 @@ public class HubTargeting extends SubsystemBase {
     // create controls to display limelight ty, target ready, estimated distance and
     // estimated RPM
     ShuffleboardLayout l1 = Tab.getLayout("Hub Target", BuiltInLayouts.kList);
-    l1.withPosition(2, 0);
-    l1.withSize(2, 4);
+    l1.withPosition(0, 0);
+    l1.withSize(2, 3);
     m_ty = l1.add("limelight ty", 0.0).getEntry();
     m_distance = l1.add("Estimated Target Distance", 0.0).getEntry();
-    m_RPM = l1.add("Estimated Target RPM", 0.0).getEntry();
-    m_Hood = l1.add("Estimated Hood Setting", 0.0).getEntry();
+    m_RPM = l1.add("Target RPM", 0.0).getEntry();
+    m_Hood = l1.add("Target Hood", 0.0).getEntry();
 
     // does camera detect target
-    m_targetDetected =Tab.add("Detected", false).withPosition(0,0).getEntry();
-    m_targetWithinRange = Tab.add("Within Range", false).withPosition(0,1).getEntry();
-    m_readyToShoot = Tab.add("Ready to Shoot", false).withPosition(0,2).getEntry();
+    m_targetDetected =Tab.add("Detected", false)
+    .withPosition(2,0).getEntry();
+    m_targetWithinRange = Tab.add("Within Range", false)
+    .withPosition(2,1).getEntry();
+    m_readyToShoot = Tab.add("Ready to Shoot", false)
+    .withPosition(2,2).getEntry();
+
+    m_RPMAdjust = Tab.add("Shooter Speed Adjust (rpm)", 0.0)
+                  .withWidget(BuiltInWidgets.kNumberSlider)
+                  .withProperties(Map.of("min", -100.0, "max", 100.0))
+                  .withPosition(3,0)
+                  .withSize(1,2)
+                  .getEntry();
+
+    m_DistanceAdjust = Tab.add("Hub Distance Adjust (m)", 0.0)
+                .withWidget(BuiltInWidgets.kNumberSlider)
+                .withProperties(Map.of("min", -0.25, "max", 0.25))
+                .withPosition(3,1)
+                .withSize(1,2)
+                .getEntry();
   }
 
   /** Update subsystem shuffle board page with current targeting values */
