@@ -35,8 +35,8 @@ public class ShooterCommand extends CommandBase {
     RobotContainer.lifter.liftBalls();
     RobotContainer.intake.setMotorSpeed(0.35);
     if(OI.shooterFireButton.get()){
-      // And the shooter has reached 95% power, feed balls
-      if(RobotContainer.m_shooter.getShooterSpeed() >= RobotContainer.hubTargeting.GetTargetRPM()*0.95){
+      // And the shooter has reached 95% flywheel speed, feed balls
+      if((RobotContainer.m_shooter.getShooterSpeed() >= RobotContainer.hubTargeting.GetTargetRPM()*0.95)){
         RobotContainer.lifter.liftBalls();
       }
     } else {
