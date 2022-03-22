@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
 
-import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -57,7 +56,6 @@ public class Drivetrain extends SubsystemBase {
      */
     public static final double MAX_VOLTAGE = 12.0;
 
-    // TODO: Measure the drivetrain's maximum velocity or calculate the theoretical.
     // The formula for calculating the theoretical maximum velocity is:
     // <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> *
     // pi
@@ -222,19 +220,6 @@ public class Drivetrain extends SubsystemBase {
                     newrotation);
         }
     }
-
-    // TODO SetChassisSpeeds To be Deleted - No longer needed
-    /**
-     * manually set drivetrain speed
-     * 
-     * @param translation   X/Y translation, in meters per second
-     * @param rotation      Rotation, in radians per second
-     * @param fieldOriented Boolean indicating if directions are field- or
-     *                      robot-oriented
-     */
-    // public void setChassisSpeeds(ChassisSpeeds speeds) {
-    // m_chassisSpeeds = speeds;
-    // }
 
     @Override
     public void periodic() {

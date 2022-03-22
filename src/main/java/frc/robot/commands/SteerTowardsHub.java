@@ -62,14 +62,14 @@ public class SteerTowardsHub extends CommandBase {
             new Translation2d(yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
                 xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
                 angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
-      } // TODO: update this to be correct
+      } 
       else {
         // drive towards target
         RobotContainer.drivetrain.drive(
             new Translation2d(yInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
                 xInput * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
                 angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
-      } // TODO: update this to be correct
+      }
 
     }
   }

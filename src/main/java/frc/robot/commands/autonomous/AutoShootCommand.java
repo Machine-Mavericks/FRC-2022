@@ -8,7 +8,6 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class AutoShootCommand extends CommandBase {
@@ -23,7 +22,6 @@ public class AutoShootCommand extends CommandBase {
   private boolean ballDetected = false;
   public LinearFilter liftLimitFiltered = LinearFilter.movingAverage(10);
   private boolean limPressed = false;
-  private boolean m_teleOpCommand;
 
   private long waitUntil;
 
