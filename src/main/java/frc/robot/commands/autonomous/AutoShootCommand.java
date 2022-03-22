@@ -43,7 +43,7 @@ public class AutoShootCommand extends CommandBase {
   @Override
   public void initialize() {
     ballDetected = false;
-    double err = Math.abs(RobotContainer.hubTargeting.GetTargetHoodSetting()-RobotContainer.m_shooter.getAngle());
+    double err = Math.abs(RobotContainer.hubTargeting.GetTargetHoodSetting()-RobotContainer.m_shooter.getHoodEstimatedPos());
     waitUntil = System.currentTimeMillis() + 1000;//(long) (err*(3.5/1.75)*1000*1.1); // Servo travels 1.75 units in 3.5 seconds
   }
 
@@ -68,7 +68,7 @@ public class AutoShootCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenIdleSpeed.getDouble(0));
+    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed());
     RobotContainer.lifter.stopMotor();
   }
 

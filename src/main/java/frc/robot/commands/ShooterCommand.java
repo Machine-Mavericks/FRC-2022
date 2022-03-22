@@ -51,7 +51,7 @@ public class ShooterCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     // go back to idle speed and set timer to 0 until command starts again
-    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenIdleSpeed.getDouble(2500));
+    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed());
     RobotContainer.lifter.stopMotor();
     RobotContainer.intake.setMotorSpeed(0.0);
     shootTime = 0.0;

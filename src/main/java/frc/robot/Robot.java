@@ -133,7 +133,7 @@ public class Robot extends TimedRobot {
     //}
    
    
-    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenIdleSpeed.getDouble(2500.0)); //TODO: fix for comp
+    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed());
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to

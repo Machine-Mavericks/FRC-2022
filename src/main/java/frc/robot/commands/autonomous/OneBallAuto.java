@@ -17,7 +17,7 @@ public class OneBallAuto extends SequentialCommandGroup {
   /** Creates a new BasicAuto. */
   public OneBallAuto() {
     addCommands(
-      new InstantCommand(()-> RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenIdleSpeed.getDouble(3000))),
+      new InstantCommand(()-> RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed())),
       // Intake the ball
       new SteerTowardsBall(true, 2.0),
       // // Turn left until hub is in view
