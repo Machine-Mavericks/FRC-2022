@@ -174,14 +174,14 @@ public class HubTargeting extends SubsystemBase {
                   .withWidget(BuiltInWidgets.kNumberSlider)
                   .withProperties(Map.of("min", -100.0, "max", 100.0))
                   .withPosition(3,0)
-                  .withSize(1,2)
+                  .withSize(3,1)
                   .getEntry();
 
     m_DistanceAdjust = Tab.add("Hub Distance Adjust (m)", 0.0)
                 .withWidget(BuiltInWidgets.kNumberSlider)
                 .withProperties(Map.of("min", -0.25, "max", 0.25))
                 .withPosition(3,1)
-                .withSize(1,2)
+                .withSize(3,1)
                 .getEntry();
   }
 
