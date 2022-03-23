@@ -45,17 +45,21 @@ public class AutoShootCommand extends CommandBase {
   public void initialize() {
     ballDetected = false;
     double err = Math.abs(RobotContainer.hubTargeting.GetTargetHoodSetting()-RobotContainer.m_shooter.getHoodEstimatedPos());
-    waitUntil = System.currentTimeMillis() + 1000;//(long) (err*(3.5/1.75)*1000*1.1); // Servo travels 1.75 units in 3.5 seconds
+    waitUntil = System.currentTimeMillis() + 300;//(long) (err*(3.5/1.75)*1000*1.1); // Servo travels 1.75 units in 3.5 seconds
+  
+    RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
+    RobotContainer.m_shooter.setShooterSpeed(flywheelSpeed.getAsDouble());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
-    RobotContainer.m_shooter.setShooterSpeed(flywheelSpeed.getAsDouble());
+    //RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
+    //RobotContainer.m_shooter.setShooterSpeed(flywheelSpeed.getAsDouble());
     // set shooter speed based on supplied value
     if(System.currentTimeMillis() > waitUntil){
-      if(RobotContainer.m_shooter.getShooterSpeed() >= flywheelSpeed.getAsDouble()*0.95){
+      if(RobotContainer.m_shooter.getShooterSpeed() >= flywheelSpeed.getAsDouble()*0.95
+        && (Math.abs(RobotContainer.m_shooter.getHoodEstimatedPos() - RobotContainer.m_shooter.getHoodEstimatedPos()) <= 0.1)){
         RobotContainer.lifter.liftBalls();
       }
       
