@@ -21,10 +21,12 @@ import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
 import frc.robot.commands.TiltShooter;
 import frc.robot.commands.autonomous.AutoShootCommand;
+import frc.robot.commands.autonomous.FiveBallAuto;
 import frc.robot.commands.autonomous.LowBallAuto;
 import frc.robot.commands.autonomous.OneBallAuto;
 import frc.robot.commands.autonomous.ThreeBallAuto;
 import frc.robot.commands.autonomous.TwoBallAuto;
+import frc.robot.commands.autonomous.AnywhereTwoBallAuto;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.CameraTilt;
 import frc.robot.subsystems.Climber;
@@ -129,8 +131,11 @@ public class RobotContainer {
       return new TwoBallAuto();
     } else if (RobotContainer.shuffleboard.m_selectedPath == 1) {
       return new ThreeBallAuto();
+    } else if (RobotContainer.shuffleboard.m_selectedPath == 2) {
+        return new AnywhereTwoBallAuto();
     } else if (RobotContainer.shuffleboard.m_selectedPath == 3) {
-      return new OneBallAuto();
+        return new FiveBallAuto();
+      //return new OneBallAuto();
     } else {
       return new LowBallAuto();
     }

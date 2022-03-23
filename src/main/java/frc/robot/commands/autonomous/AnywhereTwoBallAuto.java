@@ -10,24 +10,24 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
 
-/**
- * Basic auto which starts on right tarmac, grabs nearest ball, and shoots both
- */
-public class TwoBallAuto extends SequentialCommandGroup {
-  /** Creates a new BasicAuto. */
-  public TwoBallAuto() {
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+public class AnywhereTwoBallAuto extends SequentialCommandGroup {
+  /** Creates a new AnywhereTwoBallAuto. */
+  public AnywhereTwoBallAuto() {
+    // Add your commands in the addCommands() call, e.g.
+    // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       // ramp up shooter speed in preparation to shoot balls  
-      new InstantCommand(()-> RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed())),
+      new InstantCommand(()-> RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed())),  
       // auto delay per shuffleboard value
       new AutoDelayCommand(),
       // Intake the ball
-      new SteerTowardsBall(true, 2.0),
-      // // Turn left until hub is in view
-      new TurnToHubCommand(0.2, 1),
-      // // Shoot first ball
+      new SteerTowardsBall(true, 2.0, 0.2),
+      // Shoot first ball
       new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
-      // // Shoot second ball
+      // Shoot second ball
       new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub())
     );
   }

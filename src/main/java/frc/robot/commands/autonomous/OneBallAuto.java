@@ -20,13 +20,13 @@ public class OneBallAuto extends SequentialCommandGroup {
       new InstantCommand(()-> RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed())),
       // Intake the ball
       new SteerTowardsBall(true, 2.0),
-      // // Turn left until hub is in view
+      // Turn left until hub is in view
       new TurnToHubCommand(0.2, 1),
-      // //get within shooting range
+      // get within shooting range
       new AutoHubDistanceCommand(2.5, 0.2),
-      // // Shoot first ball
+      // Shoot first ball
       new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
-      // // Shoot second ball
+      // Shoot second ball
       new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub())
     );
   }

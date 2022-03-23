@@ -21,7 +21,7 @@ public class CameraTilt extends SubsystemBase {
 
   public NetworkTableEntry m_cameraTiltAngle;
 
-  double m_currentangle=0.42;
+  double m_currentangle=0.45;
 
 
   /** Creates a new CameraTilt. */
@@ -49,8 +49,8 @@ public class CameraTilt extends SubsystemBase {
       double value = 0.5 + angle * 0.00555;
     
       // limit value to allowable range by camera
-      if (value > 0.42)
-        value = 0.42;
+      if (value > 0.45)  // was 0.42
+        value = 0.45;
       if (value <0.28)
         value = 0.28;
 
