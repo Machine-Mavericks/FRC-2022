@@ -19,7 +19,6 @@ import frc.robot.commands.RetractClimber;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
-//import frc.robot.commands.TeleOpAutoShootCommand;
 import frc.robot.commands.TiltShooter;
 import frc.robot.commands.autonomous.AutoShootCommand;
 import frc.robot.commands.autonomous.LowBallAuto;

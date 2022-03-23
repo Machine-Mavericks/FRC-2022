@@ -75,9 +75,6 @@ public class OI {
         /** Button to spit out balls */
         static final Button BALL_RELEASE_BUTTON = XboxController.Button.kBack;
 
-        //TODO: get rid of this after testing
-        //static final Button TEST_BUTTON = XboxController.Button.kY;
-
         static final Button CLIMBER_RETRACT_BUTTON = XboxController.Button.kA;
         static final Button CLIMBER_EXTEND_BUTTON = XboxController.Button.kB;
 
@@ -115,10 +112,6 @@ public class OI {
 
     public static final JoystickButton tiltShooterButton = new JoystickButton(driverController, Bindings.SHOOTER_TILT_BUTTON.value);
     public static final JoystickButton lowerShooterButton = new JoystickButton(driverController, Bindings.SHOOTER_LOWER_BUTTON.value);
-
-//TODO: get rid of this button after testing
-//public static final JoystickButton testRobotRelativePath = new JoystickButton(driverController, Bindings.TEST_BUTTON.value);
-
 
 }
  

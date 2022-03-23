@@ -18,21 +18,23 @@ public class AutoShootCommand extends CommandBase {
    */
   public static final DoubleSupplier LOW_SPEED = () -> 1750;
   public static final DoubleSupplier HIGH_SPEED = RobotContainer.hubTargeting::GetTargetRPM;
-  
+
   private DoubleSupplier flywheelSpeed;
   private boolean ballDetected = false;
   public LinearFilter liftLimitFiltered = LinearFilter.movingAverage(10);
   private boolean limPressed = false;
-  private boolean m_teleOpCommand;
 
   private long waitUntil;
 
   /**
    * Create a new command to shoot a ball in auto
    * Note that this does not apply any targeting consideration
-   * @param flywheelSpeed Double supplier to be used for getting the flywheel speed, in RPM. 
-   * Defaults for low and high are provided by the class as {@link #LOW_SPEED}, and {@link #HIGH_SPEED} respetively
-  */
+   * 
+   * @param flywheelSpeed Double supplier to be used for getting the flywheel
+   *                      speed, in RPM.
+   *                      Defaults for low and high are provided by the class as
+   *                      {@link #LOW_SPEED}, and {@link #HIGH_SPEED} respetively
+   */
   public AutoShootCommand(DoubleSupplier flywheelSpeed) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_shooter);
@@ -62,11 +64,12 @@ public class AutoShootCommand extends CommandBase {
         && (Math.abs(RobotContainer.m_shooter.getHoodEstimatedPos() - RobotContainer.m_shooter.getHoodEstimatedPos()) <= 0.1)){
         RobotContainer.lifter.liftBalls();
       }
-      
+
       // Update the limit switch filter
       limPressed = liftLimitFiltered.calculate(!RobotContainer.lifter.liftLimit.get() ? 1 : 0) > 0.5;
       // Set flag when ball detected at limit switch
-      if(limPressed) ballDetected = true;
+      if (limPressed)
+        ballDetected = true;
     }
   }
 

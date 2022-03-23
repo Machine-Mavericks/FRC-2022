@@ -8,7 +8,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Utils;
 import frc.robot.subsystems.Drivetrain;
@@ -39,7 +38,6 @@ public class DriveCommand extends CommandBase {
   @Override
   public void execute() {
     // Driver inputs, should be in range [-1,1]
-    // TODO: Map to controller, using functions like OI.driverController.getLeftX()
     //SmartDashboard.putNumber("SDB", SlowDownButton);
 
     double xInput = OI.getXDriveInput();

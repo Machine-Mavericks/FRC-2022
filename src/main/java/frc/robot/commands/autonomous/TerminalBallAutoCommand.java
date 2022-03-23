@@ -8,7 +8,6 @@ import frc.robot.commands.AutoDriveToPose;
 import frc.robot.commands.DelayCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
-import frc.robot.commands.TurnRobot;
 
 public class TerminalBallAutoCommand extends SequentialCommandGroup {
     public TerminalBallAutoCommand() {
