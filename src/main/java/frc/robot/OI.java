@@ -75,8 +75,7 @@ public class OI {
         /** Button to spit out balls */
         static final Button BALL_RELEASE_BUTTON = XboxController.Button.kBack;
 
-        static final Button CLIMBER_RETRACT_BUTTON = XboxController.Button.kA;
-        static final Button CLIMBER_EXTEND_BUTTON = XboxController.Button.kB;
+        static final Button CLIMBER_BUTTON = XboxController.Button.kA;
 
         // button to tilt the shooter
         static final Button SHOOTER_TILT_BUTTON = XboxController.Button.kA;
@@ -107,8 +106,7 @@ public class OI {
     /** Ball tracking button. Mapped to {@link Bindings#BALL_TRACKING_BUTTON} */
     public static final JoystickButton releaseBallButton = new JoystickButton(operatorController, Bindings.BALL_RELEASE_BUTTON.value);
 
-    public static final JoystickButton extendClimberButton = new JoystickButton(operatorController, Bindings.CLIMBER_EXTEND_BUTTON.value);
-    public static final JoystickButton retractClimberButton = new JoystickButton(operatorController, Bindings.CLIMBER_RETRACT_BUTTON.value);
+    public static final JoystickButton ClimberButton = new JoystickButton(operatorController, Bindings.CLIMBER_BUTTON.value);
 
     public static final JoystickButton tiltShooterButton = new JoystickButton(driverController, Bindings.SHOOTER_TILT_BUTTON.value);
     public static final JoystickButton lowerShooterButton = new JoystickButton(driverController, Bindings.SHOOTER_LOWER_BUTTON.value);

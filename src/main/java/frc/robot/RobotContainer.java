@@ -10,12 +10,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.BallCameraAutoTilt;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.ExtendClimber;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LEDCommand;
 import frc.robot.commands.LowerShooter;
 import frc.robot.commands.ReleaseBall;
-import frc.robot.commands.RetractClimber;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
@@ -25,6 +23,7 @@ import frc.robot.commands.autonomous.LowBallAuto;
 import frc.robot.commands.autonomous.OneBallAuto;
 import frc.robot.commands.autonomous.ThreeBallAuto;
 import frc.robot.commands.autonomous.TwoBallAuto;
+import frc.robot.commands.ClimbCommand;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.CameraTilt;
 import frc.robot.subsystems.Climber;
@@ -107,9 +106,9 @@ public class RobotContainer {
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(0.5, 0.20));
 
     // don't lift the climber unless the time is greater than 119.0
-    if (HAL.getMatchTime() > 119.0){
-      OI.extendClimberButton.whileHeld(new ExtendClimber());
-      OI.retractClimberButton.whileHeld(new RetractClimber());}
+    // if (HAL.getMatchTime() > 119.0){
+    OI.ClimberButton.whileHeld(new ClimbCommand());
+    //}
     
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new
     // Rotation2d(0)), 0.35, 0.15, 20.0));

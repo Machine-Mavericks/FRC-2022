@@ -12,11 +12,18 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
+import java.util.Map;
+
 
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
@@ -25,53 +32,23 @@ public class Climber extends SubsystemBase {
   NetworkTableEntry forwardLimit;
   NetworkTableEntry reverseLimit;
   NetworkTableEntry motorPosition;
+  NetworkTableEntry encoderValue;
 
   private TalonFX m_climberFalcon; 
 
   public Climber() {
-    
     // create falcon motors
-    m_climberFalcon= new TalonFX(RobotMap.CANID.CLIMBER_FALCON);
+    m_climberFalcon = new TalonFX(RobotMap.CANID.CLIMBER_FALCON);
   
     // set factory default settings
     m_climberFalcon.configFactoryDefault();
 
-    // select quadrature encoder (first parameter) as primary feedback sensor (second parameter=0)
-    // Third parameter kTimeoutMs is timeout to wait for Talon to confirm update - set to 0 for no checking
-    //m_climberFalcon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,0);
-    //m_rightClimberFalcon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0,0);
-    
-    // set nominal and peak outputs of drive 
-    // nominal = 0, peak is +1 or -1 depending on direction
-    // second parameter is timeout (use 0)
-    // m_climberFalcon.configNominalOutputForward(0, 0);
-    // m_climberFalcon.configNominalOutputReverse(0, 0);
-    // m_climberFalcon.configPeakOutputForward (0.25, 0);      // % peak voltage
-    // m_climberFalcon.configPeakOutputReverse (-0.25, 0);     // % peak voltage
-    // m_rightClimberFalcon.configNominalOutputForward(0, 0);
-    // m_rightClimberFalcon.configNominalOutputReverse(0, 0);
-    // m_rightClimberFalcon.configPeakOutputForward (0.25, 0);      // % peak voltage
-    // m_rightClimberFalcon.configPeakOutputReverse (-0.25, 0);     // % peak voltage
-
-    // set up forward direction soft (software) limit - set to maximum allowed encoder pulse counts at elevator top
-    m_climberFalcon.configForwardSoftLimitEnable(true,0);
-    m_climberFalcon.configForwardSoftLimitThreshold(8.80*48*2048.0);
-
-    // set up reverse direction soft limit - assumes encoder pulse at bottom is 0
-    m_climberFalcon.configReverseSoftLimitEnable(true, 0);
-    m_climberFalcon.configReverseSoftLimitThreshold(0);
-
-    // configure motor drive limit switches
-    m_climberFalcon.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
+    // m_climberFalcon.configForwardSoftLimitEnable(true,0);
+    // m_climberFalcon.configForwardSoftLimitThreshold(8.80*48*2048.0);
 
     // right motor spins in opposite direction
     m_climberFalcon.setInverted(InvertType.InvertMotorOutput);
-    //m_rightClimberFalcon.setInverted(InvertType.InvertMotorOutput);
-  
-    // set allowable closed loop error
-    //m_climberFalcon.configAllowableClosedloopError(0, 4096.0);
-    //m_climberFalcon.configAllowableClosedloopError(0, 4096.0);
-    
+      
     // set PID gains
     m_climberFalcon.config_kP(0, 0.25, 0);
     m_climberFalcon.config_kI(0, 0.0, 0);
@@ -82,7 +59,6 @@ public class Climber extends SubsystemBase {
 
     // initialize shuffleboard
     initializeShuffleboard();
-  
   }
 
   @Override
@@ -91,13 +67,21 @@ public class Climber extends SubsystemBase {
     updateShuffleboard();
   }
 
-
   /** set motor posiiton */
-  public void setMotorPosition(int pos)
-  {  m_climberFalcon.set(ControlMode.Position, pos); }
-  public int getMotorPosition()
-  {  return (int)m_climberFalcon.getClosedLoopTarget(0); }
+  public void motorVelocity(double velocity)
+  {  
+    if (m_climberFalcon.getSelectedSensorPosition() < 0 || m_climberFalcon.getSelectedSensorPosition() >= 100) //TODO:
+    {
+      m_climberFalcon.set(ControlMode.Velocity, 0); 
+    }else{
+      m_climberFalcon.set(ControlMode.Velocity, velocity * 600 / 4096); 
+    }
+    
+  }
 
+
+
+  public NetworkTableEntry ClimbSpeed;
   /** Initialize subsystem shuffleboard page and controls */
   private void initializeShuffleboard() {
    // Create odometry page in shuffleboard
@@ -114,17 +98,20 @@ public class Climber extends SubsystemBase {
     l2.withPosition(2, 0);
     l2.withSize(1, 2);
     motorPosition = l1.add(" mtr pos", 0.0).getEntry();
+
+    ShuffleboardLayout l3 = Tab.getLayout("climber", BuiltInLayouts.kList);
+    l3.withPosition(4, 0);
+    l3.withSize(1, 2);
+    encoderValue = l3.add("Climbing Motor Encoder Reading", 0.0).getEntry();
+
+    ChosenAngle = Tab.add("Shooter angle", 1.0)
+    .withWidget(BuiltInWidgets.kNumberSlider)
+    .withProperties(Map.of("min", -1.0, "max", 0.75))
+    .getEntry();
   }
 
   /** Update subsystem shuffle board page with climber values */
   private void updateShuffleboard() {
-    // write limit switch statuses
-    forwardLimit.setDouble(m_climberFalcon.getSensorCollection().isFwdLimitSwitchClosed());
-    reverseLimit.setDouble(m_climberFalcon.getSensorCollection().isRevLimitSwitchClosed());
-  
-    motorPosition.setDouble(m_climberFalcon.getSelectedSensorPosition(0));
+    encoderValue.setDouble(m_climberFalcon.getSelectedSensorPosition(0));
   }
-
-
-
 }
