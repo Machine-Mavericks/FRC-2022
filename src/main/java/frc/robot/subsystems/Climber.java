@@ -70,7 +70,7 @@ public class Climber extends SubsystemBase {
   /** set motor posiiton */
   public void motorVelocity(double velocity)
   {  
-    if (m_climberFalcon.getSelectedSensorPosition() < 0 || m_climberFalcon.getSelectedSensorPosition() >= 100) //TODO:
+    if (m_climberFalcon.getSelectedSensorPosition() < 0 || m_climberFalcon.getSelectedSensorPosition() >= 50000) //TODO:
     {
       m_climberFalcon.set(ControlMode.Velocity, 0); 
     }else{
