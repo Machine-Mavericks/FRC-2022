@@ -92,7 +92,7 @@ public class BallCameraAutoTilt extends CommandBase {
   public void forceCameraLow()
   {
     m_notargettimer = 0.0;
-    RobotContainer.cameraTilt.setAngle (-39.6);
+    RobotContainer.cameraTilt.setAngle (-36.0);
   }
 
 

@@ -135,7 +135,7 @@ public class Drivetrain extends SubsystemBase {
         speedLimitFactor = tab.addPersistent("SpeedLimitFactor", 0.75)
         .withPosition(8, 0)
         .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(Map.of("min", 0, "max", 1.0))
+        .withProperties(Map.of("min", 0, "max", 0.75))
         .getEntry();
         tab.add("Reset Drivetrain", new InstantCommand(()->{resetModules(NeutralMode.Brake);}))
         .withPosition(0,0)

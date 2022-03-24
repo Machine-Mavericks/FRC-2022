@@ -145,8 +145,13 @@ public class SteerTowardsBall extends CommandBase {
   @Override
   public boolean isFinished() {
     // we are finished if max time in our command expires
-    return (m_automated &&
-          (m_intake.GetIntakeLimitSwitchStatus() || (m_time >= m_timeoutlimit))
+    // automatically finish command if we already sense having two balls
+    return ((m_automated && (m_intake.GetIntakeLimitSwitchStatus() || (m_time >= m_timeoutlimit)))
+    
+          || ( RobotContainer.intake.GetIntakeLimitSwitchStatus() && (!RobotContainer.lifter.liftLimit.get()))
+          
+          
+          
           );
 
   }

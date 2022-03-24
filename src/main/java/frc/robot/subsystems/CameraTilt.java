@@ -51,7 +51,7 @@ public class CameraTilt extends SubsystemBase {
       // limit value to allowable range by camera
       if (value > 0.45)  // was 0.42
         value = 0.45;
-      if (value <0.28)
+      if (value <0.28)    // was 0.28    // 0.34 works well w/o camera cropping
         value = 0.28;
 
       m_currentangle = value;
