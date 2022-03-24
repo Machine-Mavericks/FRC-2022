@@ -25,10 +25,13 @@ public class AnywhereTwoBallAuto extends SequentialCommandGroup {
       new AutoDelayCommand(),
       // Intake the ball
       new SteerTowardsBall(true, 2.0, 0.2),
+      // Shoot all balls
+      new AutoShootAllCommand().deadlineWith(new SteerTowardsHub())
+      
       // Shoot first ball
-      new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
+      //new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
       // Shoot second ball
-      new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub())
+      //new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub())
     );
   }
 }

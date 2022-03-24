@@ -49,6 +49,9 @@ public class Robot extends TimedRobot {
       RobotContainer.ballTargeting.setBallPipeline(1);
     else
       RobotContainer.ballTargeting.setBallPipeline(2);
+
+    // reset the gyro when robot powered up
+    RobotContainer.gyro.resetGyro();
   }
 
   /**

@@ -6,6 +6,7 @@ package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import edu.wpi.first.math.geometry.Translation2d;
 
 public class AutoShootAllCommand extends CommandBase {
   
@@ -25,6 +26,10 @@ public class AutoShootAllCommand extends CommandBase {
   public void initialize() {
     m_time = 0.0;
     m_noballtime = 0.0;
+
+    // stop robot from moving
+    //RobotContainer.drivetrain.drive(
+    //new Translation2d(0,0),0, false);
 
     // set our shooting solution
     RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
