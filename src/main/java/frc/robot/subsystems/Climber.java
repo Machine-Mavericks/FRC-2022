@@ -4,25 +4,20 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
-import java.util.Map;
 
 
 public class Climber extends SubsystemBase {
@@ -68,20 +63,25 @@ public class Climber extends SubsystemBase {
   }
 
   /** set motor posiiton */
-  public void motorVelocity(double velocity)
+  public void motorVelocity()
   {  
-    if (m_climberFalcon.getSelectedSensorPosition() < 0 || m_climberFalcon.getSelectedSensorPosition() >= 50000) //TODO:
+    if (m_climberFalcon.getSelectedSensorPosition() < 0 || m_climberFalcon.getSelectedSensorPosition() >= 50000)
     {
       m_climberFalcon.set(ControlMode.Velocity, 0); 
     }else{
-      m_climberFalcon.set(ControlMode.Velocity, velocity * 600 / 4096); 
+      m_climberFalcon.set(ControlMode.Velocity, climbSpeed.getDouble(0.0) * 600 / 4096); 
     }
     
   }
+  /** Stops climbing motor*/
+  public void stopMotor() {
+    m_climberFalcon.set(ControlMode.Velocity, 0);
+  }
+ 
 
 
 
-  public NetworkTableEntry ClimbSpeed;
+  public NetworkTableEntry climbSpeed;
   /** Initialize subsystem shuffleboard page and controls */
   private void initializeShuffleboard() {
    // Create odometry page in shuffleboard
@@ -104,9 +104,9 @@ public class Climber extends SubsystemBase {
     l3.withSize(1, 2);
     encoderValue = l3.add("Climbing Motor Encoder Reading", 0.0).getEntry();
 
-    ChosenAngle = Tab.add("Shooter angle", 1.0)
+    climbSpeed = Tab.add("Climb Speed", 1.0)
     .withWidget(BuiltInWidgets.kNumberSlider)
-    .withProperties(Map.of("min", -1.0, "max", 0.75))
+    .withProperties(Map.of("min", 0, "max", 3000))
     .getEntry();
   }
 
