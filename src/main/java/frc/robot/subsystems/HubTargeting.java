@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 
 public class HubTargeting extends SubsystemBase {
   private Limelight m_hubCamera;
@@ -41,6 +42,8 @@ public class HubTargeting extends SubsystemBase {
   @Override
   public void periodic() {
     // update shuffleboard
+    if (isTargetPresent()){
+      RobotContainer.m_shooter.setShooterAngle(RobotContainer.m_shooter.getHoodTargetPos());}
     updateShuffleboard();
   }
 

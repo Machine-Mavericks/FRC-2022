@@ -83,9 +83,9 @@ public class Shooter extends SubsystemBase {
 
     // update our internal estimate of hood position
     if (m_HoodEstimatedPos < m_HoodTargetPos)
-      Math.min(m_HoodEstimatedPos + 0.02 * m_HoodMaxSpeed, m_HoodTargetPos);
+      m_HoodEstimatedPos = Math.min(m_HoodEstimatedPos + 0.02 * m_HoodMaxSpeed, m_HoodTargetPos);
     if (m_HoodEstimatedPos > m_HoodTargetPos)
-      Math.max(m_HoodEstimatedPos - 0.02 * m_HoodMaxSpeed, m_HoodTargetPos);
+    m_HoodEstimatedPos = Math.max(m_HoodEstimatedPos - 0.02 * m_HoodMaxSpeed, m_HoodTargetPos);
 
     // update shuffleboard
     updateShuffleboard();

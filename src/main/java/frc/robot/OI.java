@@ -76,6 +76,7 @@ public class OI {
         static final Button BALL_RELEASE_BUTTON = XboxController.Button.kBack;
 
         static final Button CLIMBER_BUTTON = XboxController.Button.kA;
+        static final Button CLIMBER_BUTTON_REVERSE = XboxController.Button.kRightBumper;
 
         // button to tilt the shooter
         static final Button SHOOTER_TILT_BUTTON = XboxController.Button.kA;
@@ -107,6 +108,7 @@ public class OI {
     public static final JoystickButton releaseBallButton = new JoystickButton(operatorController, Bindings.BALL_RELEASE_BUTTON.value);
 
     public static final JoystickButton ClimberButton = new JoystickButton(operatorController, Bindings.CLIMBER_BUTTON.value);
+    public static final JoystickButton ClimberButtonReverse = new JoystickButton(operatorController, Bindings.CLIMBER_BUTTON_REVERSE.value);
 
     public static final JoystickButton tiltShooterButton = new JoystickButton(driverController, Bindings.SHOOTER_TILT_BUTTON.value);
     public static final JoystickButton lowerShooterButton = new JoystickButton(driverController, Bindings.SHOOTER_LOWER_BUTTON.value);

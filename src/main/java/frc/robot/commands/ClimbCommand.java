@@ -4,14 +4,25 @@
 
 package frc.robot.commands;
 
+import javax.lang.model.util.ElementScanner6;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 public class ClimbCommand extends CommandBase {
+  
+  int motorSpeed;
+
   /** Creates a new ClimbCommand. */
-  public ClimbCommand() {
+  public ClimbCommand(boolean reverse) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.climber);
+    boolean m_reverse = reverse;
+
+    if (m_reverse)
+      motorSpeed = 600;
+    else
+      motorSpeed = -600;
   }
 
   // Called when the command is initially scheduled.

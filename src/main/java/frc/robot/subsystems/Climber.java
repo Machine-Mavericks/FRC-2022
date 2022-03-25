@@ -73,7 +73,7 @@ public class Climber extends SubsystemBase {
     }
     
   }
-  /** Stops climbing motor*/
+  /** stops the climbing motor*/
   public void stopMotor() {
     m_climberFalcon.set(ControlMode.Velocity, 0);
   }
