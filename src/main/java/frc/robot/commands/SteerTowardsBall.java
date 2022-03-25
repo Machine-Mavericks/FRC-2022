@@ -51,7 +51,8 @@ public class SteerTowardsBall extends CommandBase {
     m_timeoutlimit = timeout;
 
     // assume speed limit of 0.5
-    m_speedLimitAuto= 0.5;
+    // TODO ken add comment
+    m_speedLimitAuto= 0.65;
   }
   
   /** Steers robot towards ball

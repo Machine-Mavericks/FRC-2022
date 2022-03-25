@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import javax.lang.model.util.ElementScanner6;
+
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -127,17 +129,23 @@ public class RobotContainer {
    */
   public static Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    if (RobotContainer.shuffleboard.m_selectedPath == 0) {
-      return new TwoBallAuto();
-    } else if (RobotContainer.shuffleboard.m_selectedPath == 1) {
-      return new ThreeBallAuto();
-    } else if (RobotContainer.shuffleboard.m_selectedPath == 2) {
-        return new AnywhereTwoBallAuto();
-    } else if (RobotContainer.shuffleboard.m_selectedPath == 3) {
-        return new FiveBallAuto();
-      //return new OneBallAuto();
-    } else {
-      return new LowBallAuto();
-    }
+    if (RobotContainer.shuffleboard.m_selectedPath == 0) 
+      return new AnywhereTwoBallAuto();
+    else if (RobotContainer.shuffleboard.m_selectedPath == 1)
+      return new FiveBallAuto();
+    else 
+      return new AnywhereTwoBallAuto();
+    // if (RobotContainer.shuffleboard.m_selectedPath == 0) {
+    //   return new TwoBallAuto();
+    // } else if (RobotContainer.shuffleboard.m_selectedPath == 1) {
+    //   return new ThreeBallAuto();
+    // } else if (RobotContainer.shuffleboard.m_selectedPath == 2) {
+    //     return new AnywhereTwoBallAuto();
+    // } else if (RobotContainer.shuffleboard.m_selectedPath == 3) {
+    //     return new FiveBallAuto();
+    //   //return new OneBallAuto();
+    // } else {
+    //   return new LowBallAuto();
+    // }
   }
 }

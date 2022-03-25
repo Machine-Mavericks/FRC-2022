@@ -80,7 +80,7 @@ public class BallCameraAutoTilt extends CommandBase {
     // reset pipeline to ordinary ball detection
     if (m_notargettimer > 1.0)
     {
-      RobotContainer.cameraTilt.setAngle (-7.4);  // was -14.4
+      RobotContainer.cameraTilt.setAngle (-14.4);  // was -14.4
       if (DriverStation.getAlliance() == Alliance.Red)
         RobotContainer.ballTargeting.setBallPipeline(1);
       else

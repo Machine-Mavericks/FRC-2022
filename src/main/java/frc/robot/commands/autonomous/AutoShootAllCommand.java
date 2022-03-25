@@ -28,8 +28,7 @@ public class AutoShootAllCommand extends CommandBase {
     m_noballtime = 0.0;
 
     // stop robot from moving
-    //RobotContainer.drivetrain.drive(
-    //new Translation2d(0,0),0, false);
+    RobotContainer.drivetrain.drive(new Translation2d(0,0),0, false);
 
     // set our shooting solution
     RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());

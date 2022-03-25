@@ -47,12 +47,21 @@ public class FiveBallAuto extends SequentialCommandGroup {
       
       new SteerTowardsBall(true, 2.0, 0.3),
 
+      // wait for 300ms to try and get human ball. after 300ms, start next command
+      new SteerTowardsBall(true, 0.3, 0),
+      
+      // switch on intake to allow human ball player to provide ball
+      new InstantCommand(()-> RobotContainer.intake.setMotorSpeed(0.5)),
+      
       new AutoDriveToPose(new Pose2d(new Translation2d(-4.95, -0.42), Rotation2d.fromDegrees(-150.0)), 0.7, 0.10, 15.0),
       // Shoot first ball
       //new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
       // Shoot first ball
       //new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub())
-      new AutoShootAllCommand().deadlineWith(new SteerTowardsHub())
+      new AutoShootAllCommand().deadlineWith(new SteerTowardsHub()),
+
+      // switch on intake to allow human ball player to provide ball
+      new InstantCommand(()-> RobotContainer.intake.setMotorSpeed(0))
       );
   }
 }
