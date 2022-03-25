@@ -4,12 +4,15 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -25,8 +28,9 @@ public class Climber extends SubsystemBase {
   NetworkTableEntry reverseLimit;
   NetworkTableEntry motorPosition;
   NetworkTableEntry encoderValue;
+  NetworkTableEntry ChosenSpeed;
 
-  private TalonFX m_climberFalcon; 
+  public TalonFX m_climberFalcon; 
 
   public Climber() {
     // create falcon motors
@@ -42,12 +46,16 @@ public class Climber extends SubsystemBase {
     m_climberFalcon.setInverted(InvertType.InvertMotorOutput);
       
     // set PID gains
-    m_climberFalcon.config_kP(0, 0.25, 0);
-    m_climberFalcon.config_kI(0, 0.0, 0);
+    //m_climberFalcon.config_kF(0, 0.044, 0);
     m_climberFalcon.config_kD(0, 0.0, 0);
+    m_climberFalcon.config_kP(0, 0.09, 0);
+    //m_climberFalcon.config_kI(0, 0.00010, 0); 
 
     // reset encoder positions
     m_climberFalcon.setSelectedSensorPosition(0, 0, 0);
+
+    m_climberFalcon.configPeakOutputForward(1, 0);
+    m_climberFalcon.configPeakOutputReverse(-1.0, 0);
 
     // initialize shuffleboard
     initializeShuffleboard();
@@ -60,14 +68,9 @@ public class Climber extends SubsystemBase {
   }
 
   /** set motor posiiton */
-  public void motorVelocity(double velocity)
+  public void motorVelocity()
   {  
-    if (m_climberFalcon.getSelectedSensorPosition() < 0 || m_climberFalcon.getSelectedSensorPosition() >= 50000) //TODO:
-    {
-      m_climberFalcon.set(ControlMode.Velocity, 0); 
-    }else{
-      m_climberFalcon.set(ControlMode.Velocity, velocity * 600 / 4096); 
-    }
+    m_climberFalcon.set(ControlMode.Velocity, ChosenSpeed.getDouble(3000)* (2048 / 600.0)); 
     
   }
 
@@ -95,6 +98,11 @@ public class Climber extends SubsystemBase {
     l3.withPosition(4, 0);
     l3.withSize(1, 2);
     encoderValue = l3.add("Climbing Motor Encoder Reading", 0.0).getEntry();
+
+    ChosenSpeed = Tab.addPersistent("cimber speed", 3000)
+        .withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("min",3000, "max", 6000))
+        .getEntry();
   }
 
   /** Update subsystem shuffle board page with climber values */

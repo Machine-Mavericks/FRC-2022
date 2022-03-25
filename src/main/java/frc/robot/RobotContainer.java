@@ -107,8 +107,7 @@ public class RobotContainer {
 
     // don't lift the climber unless the time is greater than 119.0
     // if (HAL.getMatchTime() > 119.0){
-    OI.ClimberButton.whileHeld(new ClimbCommand(false));
-    OI.ClimberButtonReverse.whileHeld(new ClimbCommand(true));
+    OI.ClimberButtonReverse.whileHeld(new ClimbCommand());
     //}
     
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new

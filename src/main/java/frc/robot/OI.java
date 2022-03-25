@@ -15,6 +15,8 @@ public class OI {
     static double prevXInput = 0.0;
     static double prevYInput = 0.0;
 
+// TODO: ADD SLOW DRIVE BUTTON
+
     public static double getXDriveInput(){
         
         double speedLimitFactor = RobotContainer.drivetrain.speedLimitFactor.getDouble(1.0);
@@ -72,10 +74,12 @@ public class OI {
         static final Button BALL_TRACKING_BUTTON = XboxController.Button.kLeftBumper;
         /** Button to track hub */
         static final Button HUB_TRACKING_BUTTON = XboxController.Button.kB;
+        /** Button to drive at reduced speed */
+        static final Button SLOW_DRIVE_BUTTON = XboxController.Button.kRightBumper;
         /** Button to spit out balls */
         static final Button BALL_RELEASE_BUTTON = XboxController.Button.kBack;
 
-        static final Button CLIMBER_BUTTON = XboxController.Button.kA;
+        static final Button CLIMBER_BUTTON = XboxController.Button.kB;
         static final Button CLIMBER_BUTTON_REVERSE = XboxController.Button.kRightBumper;
 
         // button to tilt the shooter
@@ -104,6 +108,9 @@ public class OI {
     public static final JoystickButton ballTrackingButton = new JoystickButton(driverController, Bindings.BALL_TRACKING_BUTTON.value);
     /** Ball tracking button. Mapped to {@link Bindings#BALL_TRACKING_BUTTON} */
     public static final JoystickButton hubTrackingButton = new JoystickButton(driverController, Bindings.HUB_TRACKING_BUTTON.value);
+    /** Drive reduced speed button. Mapped to {@link Bindings#SLOW_DRIVE_BUTTON} */
+    public static final JoystickButton slowDriveButton = new JoystickButton(driverController, Bindings.SLOW_DRIVE_BUTTON.value);
+
     /** Ball tracking button. Mapped to {@link Bindings#BALL_TRACKING_BUTTON} */
     public static final JoystickButton releaseBallButton = new JoystickButton(operatorController, Bindings.BALL_RELEASE_BUTTON.value);
 
