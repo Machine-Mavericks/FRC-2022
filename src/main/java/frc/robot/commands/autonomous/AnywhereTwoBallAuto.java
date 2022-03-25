@@ -24,7 +24,7 @@ public class AnywhereTwoBallAuto extends SequentialCommandGroup {
       // auto delay per shuffleboard value
       new AutoDelayCommand(),
       // Intake the ball
-      new SteerTowardsBall(true, 2.0, 0.2),
+      new SteerTowardsBall(true, 2.5, 0.2),
       // Shoot all balls
       new AutoShootAllCommand().deadlineWith(new SteerTowardsHub())
       

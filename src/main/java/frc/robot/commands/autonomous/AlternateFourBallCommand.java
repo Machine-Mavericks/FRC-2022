@@ -29,12 +29,12 @@ public class AlternateFourBallCommand extends SequentialCommandGroup {
       new InstantCommand(()-> RobotContainer.m_shooter.setShooterSpeed(4450.0)),  
       // Intake the ball
       //new SteerTowardsBall(true, 4.0, 0.2),
-      new AutoDriveToPose(new Pose2d(new Translation2d(-2.0, -0.5), Rotation2d.fromDegrees(-90.0)), 0.7, 0.10, 15.0),
+      new AutoDriveToPose(new Pose2d(new Translation2d(-4.0, -1.0), Rotation2d.fromDegrees(-90.0)), 0.7, 0.10, 15.0),
       // Drive back a bit
       new AutoDriveToPose(new Pose2d(new Translation2d(-6.0, 0.5), Rotation2d.fromDegrees(-128.0)), 0.7, 0.10, 15.0),
       new SteerTowardsBall(true, 2.0, 0.3),
       // wait for 300ms to try and get human ball. after 300ms, start next command
-      new SteerTowardsBall(true, 0.3, 0),
+      new SteerTowardsBall(true, 0.4, 0),
       // switch on intake to allow human ball player to provide ball
       new InstantCommand(()-> RobotContainer.intake.setMotorSpeed(0.5)),
       new AutoDriveToPose(new Pose2d(new Translation2d(-4.95, -0.42), Rotation2d.fromDegrees(-150.0)), 0.7, 0.10, 15.0),
