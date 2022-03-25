@@ -17,6 +17,7 @@ import frc.robot.commands.ReleaseBall;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
 import frc.robot.commands.TiltShooter;
+import frc.robot.commands.autonomous.AlternateFourBallCommand;
 import frc.robot.commands.autonomous.AnywhereTwoBallAuto;
 import frc.robot.commands.autonomous.AutoShootCommand;
 import frc.robot.commands.autonomous.FiveBallAuto;
@@ -124,6 +125,8 @@ public class RobotContainer {
       return new AnywhereTwoBallAuto();
     else if (RobotContainer.shuffleboard.m_selectedPath == 1)
       return new FiveBallAuto();
+    else if (RobotContainer.shuffleboard.m_selectedPath == 2)
+      return new AlternateFourBallCommand();
     else 
       return new AnywhereTwoBallAuto();
     // if (RobotContainer.shuffleboard.m_selectedPath == 0) {

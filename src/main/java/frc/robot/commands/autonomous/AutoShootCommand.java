@@ -59,7 +59,7 @@ public class AutoShootCommand extends CommandBase {
     //RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
     //RobotContainer.m_shooter.setShooterSpeed(flywheelSpeed.getAsDouble());
     // set shooter speed based on supplied value
-    if(System.currentTimeMillis() > waitUntil){
+    if(System.currentTimeMillis() > waitUntil && RobotContainer.hubTargeting.isTargetPresent()){
       if(RobotContainer.m_shooter.getShooterSpeed() >= flywheelSpeed.getAsDouble()*0.95
         && (Math.abs(RobotContainer.m_shooter.getHoodEstimatedPos() - RobotContainer.m_shooter.getHoodEstimatedPos()) <= 0.1)){
         RobotContainer.lifter.liftBalls();
