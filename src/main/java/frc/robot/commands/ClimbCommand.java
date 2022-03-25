@@ -29,7 +29,7 @@ public class ClimbCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (DriverStation.getMatchTime() > 30.0) //do not deploy climber if it isn't endgame
+    if (DriverStation.getMatchTime() < 30.0) //do not deploy climber if it isn't endgame
       RobotContainer.climber.motorVelocity();
     else
     RobotContainer.climber.m_climberFalcon.set(ControlMode.PercentOutput, 0.0);
