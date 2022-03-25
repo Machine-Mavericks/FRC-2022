@@ -17,7 +17,10 @@ public class TwoBallAuto extends SequentialCommandGroup {
   /** Creates a new BasicAuto. */
   public TwoBallAuto() {
     addCommands(
+      // ramp up shooter speed in preparation to shoot balls  
       new InstantCommand(()-> RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed())),
+      // auto delay per shuffleboard value
+      new AutoDelayCommand(),
       // Intake the ball
       new SteerTowardsBall(true, 2.0),
       // // Turn left until hub is in view

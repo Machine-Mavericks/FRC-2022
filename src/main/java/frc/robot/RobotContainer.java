@@ -4,26 +4,22 @@
 
 package frc.robot;
 
-import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.BallCameraAutoTilt;
+import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LEDCommand;
 import frc.robot.commands.LowerShooter;
 import frc.robot.commands.ReleaseBall;
-import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
 import frc.robot.commands.TiltShooter;
+import frc.robot.commands.autonomous.AnywhereTwoBallAuto;
 import frc.robot.commands.autonomous.AutoShootCommand;
-import frc.robot.commands.autonomous.LowBallAuto;
-import frc.robot.commands.autonomous.OneBallAuto;
-import frc.robot.commands.autonomous.ThreeBallAuto;
-import frc.robot.commands.autonomous.TwoBallAuto;
-import frc.robot.commands.ClimbCommand;
+import frc.robot.commands.autonomous.FiveBallAuto;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.CameraTilt;
 import frc.robot.subsystems.Climber;
@@ -124,14 +120,23 @@ public class RobotContainer {
    */
   public static Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    if (RobotContainer.shuffleboard.m_selectedPath == 0) {
-      return new TwoBallAuto();
-    } else if (RobotContainer.shuffleboard.m_selectedPath == 1) {
-      return new ThreeBallAuto();
-    } else if (RobotContainer.shuffleboard.m_selectedPath == 3) {
-      return new OneBallAuto();
-    } else {
-      return new LowBallAuto();
-    }
+    if (RobotContainer.shuffleboard.m_selectedPath == 0) 
+      return new AnywhereTwoBallAuto();
+    else if (RobotContainer.shuffleboard.m_selectedPath == 1)
+      return new FiveBallAuto();
+    else 
+      return new AnywhereTwoBallAuto();
+    // if (RobotContainer.shuffleboard.m_selectedPath == 0) {
+    //   return new TwoBallAuto();
+    // } else if (RobotContainer.shuffleboard.m_selectedPath == 1) {
+    //   return new ThreeBallAuto();
+    // } else if (RobotContainer.shuffleboard.m_selectedPath == 2) {
+    //     return new AnywhereTwoBallAuto();
+    // } else if (RobotContainer.shuffleboard.m_selectedPath == 3) {
+    //     return new FiveBallAuto();
+    //   //return new OneBallAuto();
+    // } else {
+    //   return new LowBallAuto();
+    // }
   }
 }

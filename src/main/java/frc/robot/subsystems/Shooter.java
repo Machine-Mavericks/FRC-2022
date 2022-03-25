@@ -58,9 +58,9 @@ public class Shooter extends SubsystemBase {
 
     // old PIF gains archived at bottom of file
     rightShooterFalcon.config_kF(0, 0.0477, 0); // 0.047698 (works ok)
-    rightShooterFalcon.config_kP(0, 0.38, 0); // 0.35 // 0.6 //0.75 (works ok)
-    rightShooterFalcon.config_kI(0, 0.00010, 0); // kI=0.001
-    rightShooterFalcon.config_kD(0, 0.05, 0);
+    rightShooterFalcon.config_kP(0, 0.28, 0); // 0.35 // 0.6 //0.75 (works ok) // was 0.38
+    rightShooterFalcon.config_kI(0, 0.00005, 0); // kI=0.001
+    rightShooterFalcon.config_kD(0, 0.0, 0);   // was 0.05
     rightShooterFalcon.configMaxIntegralAccumulator(0, 120000.0, 0);
 
     // rightShooterFalcon.set(ControlMode.PercentOutput, 0);

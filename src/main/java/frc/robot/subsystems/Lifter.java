@@ -72,9 +72,9 @@ public class Lifter extends SubsystemBase {
     ShuffleboardLayout l1 = Tab.getLayout("Lifter", BuiltInLayouts.kList);
     l1.withPosition(3, 0);
     l1.withSize(1, 4);
-    limitSwitch = l1.add("limswitch", 0.0).getEntry();
+    //limitSwitch = l1.add("limswitch", 0.0).getEntry();
     lifterSpeed = l1.add("lifter speed (RPM)",0.0).getEntry();
-
+    limitSwitch = Tab.add("SwitchActivated", false).withPosition(3,0).getEntry();
   }
   public void updateShuffleboard() {
 

@@ -28,6 +28,7 @@ public class HubTargeting extends SubsystemBase {
   
   private NetworkTableEntry m_RPMAdjust;
   private NetworkTableEntry m_DistanceAdjust;
+  private NetworkTableEntry m_HoodAdjust;
 
   // default shooter idle speed (rpm)
   private final double m_ShooterIdleSpeed = 3350.0;
@@ -43,7 +44,8 @@ public class HubTargeting extends SubsystemBase {
   public void periodic() {
     // update shuffleboard
     if (isTargetPresent()){
-      RobotContainer.m_shooter.setShooterAngle(RobotContainer.m_shooter.getHoodTargetPos());}
+      RobotContainer.m_shooter.setShooterAngle(GetTargetHoodSetting());
+    }
     updateShuffleboard();
   }
 
@@ -138,6 +140,9 @@ public class HubTargeting extends SubsystemBase {
     // speed from test data March 19/2022
     double hood = -0.0855*m*m +1.2416*m - 4.2243;
 
+    // add in hood adustment (if any) from shuffleboard
+    hood += m_HoodAdjust.getDouble(0.0);
+
     return hood;
   }
 
@@ -173,19 +178,26 @@ public class HubTargeting extends SubsystemBase {
     m_readyToShoot = Tab.add("Ready to Shoot", false)
     .withPosition(2,2).getEntry();
 
-    m_RPMAdjust = Tab.add("Shooter Speed Adjust (rpm)", 0.0)
+    m_RPMAdjust = Tab.addPersistent("Shooter Speed Adjust (rpm)", 0.0)
                   .withWidget(BuiltInWidgets.kNumberSlider)
-                  .withProperties(Map.of("min", -200.0, "max", 200.0))
+                  .withProperties(Map.of("min", -200.0, "max", 300.0))
                   .withPosition(3,0)
                   .withSize(3,1)
                   .getEntry();
 
-    m_DistanceAdjust = Tab.add("Hub Distance Adjust (m)", 0.0)
+    m_DistanceAdjust = Tab.addPersistent("Hub Distance Adjust (m)", 0.0)
                 .withWidget(BuiltInWidgets.kNumberSlider)
                 .withProperties(Map.of("min", -0.25, "max", 0.25))
                 .withPosition(3,1)
                 .withSize(3,1)
                 .getEntry();
+
+    m_HoodAdjust = Tab.addPersistent("Hood Adjust (m)", 0.0)
+                .withWidget(BuiltInWidgets.kNumberSlider)
+                .withProperties(Map.of("min", -0.15, "max", 0.15))
+                .withPosition(3,2)
+                .withSize(3,1)
+                .getEntry();         
   }
 
   /** Update subsystem shuffle board page with current targeting values */

@@ -14,9 +14,9 @@ public class TerminalBallAutoCommand extends SequentialCommandGroup {
         addCommands(
             // Make a dash for ball near station
             new AutoDriveToPose(new Pose2d(new Translation2d(1.5, 1.70), Rotation2d.fromDegrees(-135)), 0.75, 0.25, 30),
-            new DelayCommand(0.5),
+            new DelayCommand(0.25),
             new SteerTowardsBall(true, 2, 0.2),
-            new DelayCommand(0.5),
+            new DelayCommand(0.25),
             new SteerTowardsBall(true, 5, 0),
             // Drive back to shooting position
             new AutoDriveToPose(new Pose2d(new Translation2d(3, 2), Rotation2d.fromDegrees(-135)), 0.5, 0.10, 2),

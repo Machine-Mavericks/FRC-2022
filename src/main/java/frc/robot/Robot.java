@@ -49,6 +49,9 @@ public class Robot extends TimedRobot {
       RobotContainer.ballTargeting.setBallPipeline(1);
     else
       RobotContainer.ballTargeting.setBallPipeline(2);
+
+    // reset the gyro when robot powered up
+    RobotContainer.gyro.resetGyro();
   }
 
   /**
@@ -107,11 +110,9 @@ public class Robot extends TimedRobot {
     robotIsInitialized = true;
     autonomousCommand = RobotContainer.getAutonomousCommand();
     
-    // schedule the autonomous command (example)
-    if (autonomousCommand != null) {
-      new DelayCommand(RobotContainer.shuffleboard.m_delayTime.getDouble(0.0)).schedule();
+    // schedule the autonomous command
+    if (autonomousCommand != null)
       autonomousCommand.schedule();
-    }
   }
 
   /** This function is called periodically during autonomous. */
