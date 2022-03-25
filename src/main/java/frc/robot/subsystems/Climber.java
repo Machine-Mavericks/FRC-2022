@@ -73,10 +73,15 @@ public class Climber extends SubsystemBase {
     m_climberFalcon.set(ControlMode.Velocity, ChosenSpeed.getDouble(3000)* (2048 / 600.0)); 
     
   }
+  /** stops the climbing motor*/
+  public void stopMotor() {
+    m_climberFalcon.set(ControlMode.Velocity, 0);
+  }
+ 
 
 
 
-  public NetworkTableEntry ClimbSpeed;
+  public NetworkTableEntry climbSpeed;
   /** Initialize subsystem shuffleboard page and controls */
   private void initializeShuffleboard() {
    // Create odometry page in shuffleboard
