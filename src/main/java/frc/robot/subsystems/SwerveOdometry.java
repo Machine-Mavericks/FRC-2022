@@ -168,7 +168,6 @@ public class SwerveOdometry extends SubsystemBase {
     m_gyroAngle = l1.add("Gyro(deg)", 0.0).getEntry();
 
     // Controls to set initial robot position and angle
-    // TODO Unsure if this will be needed. If not, can be deleted.
     ShuffleboardLayout l2 = Tab.getLayout("Initial Position", BuiltInLayouts.kList);
     l2.withPosition(4, 0);
     l2.withSize(1, 3);

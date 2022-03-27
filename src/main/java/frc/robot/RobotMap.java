@@ -36,20 +36,16 @@ public class RobotMap {
         /** CAN ID for front-left steer encoder */
         public static final int BR_STEER_ENCODER  = 10;
         /** CAN ID for left lifter motor */
-        public static final int L_LIFTER_TALON = 14;
-        /** CAN ID for right lifter motor */
-        public static final int R_LIFTER_TALON = 15;
-        
+        public static final int LIFTER_FALCON = 14;
+
         /** CAN ID for right shooter motor */
         public static final int RIGHT_SHOOTER_FALCON = 16;
         /** CAN ID for left shooter motor */
         public static final int LEFT_SHOOTER_FALCON = 17;
         /** CAN ID for left climber motor */
-        public static final int LEFT_CLIMBER_FALCON = 18;
-        /** CAN ID for right climber motor */
-        public static final int RIGHT_CLIMBER_FALCON = 19;
+        public static final int CLIMBER_FALCON = 18;
 
-        // TODO: Set CANIDs
+        /** CAN ID for intake motor */
         public static final int INTAKE_FALCON = 13;
     }
 
@@ -63,7 +59,7 @@ public class RobotMap {
     public static final int LIFTER_LIMIT_ID = 1;
     public static final int INTAKE_LIMIT_ID = 2;
 
-    public static final double BALL_LIFTER_SPEED = -1.0;
+    public static final double BALL_LIFTER_SPEED = -3160;
 
     public static class PneumaticsChannel {
     }
@@ -71,8 +67,9 @@ public class RobotMap {
     public static class PWMPorts {
         /** PWM Port for led strip */
         public static final int LED_STRIP1 = 0;
-        public static final int LED_BLINKIN = 0;
+        public static final int LED_BLINKIN = 3;
         public static final int CAMERA_SERVO_ID = 2;
+        public static final int SHOOTER_SERVO_ID = 4;
     }  
 
     /**

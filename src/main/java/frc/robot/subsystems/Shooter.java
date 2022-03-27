@@ -4,14 +4,12 @@
 
 package frc.robot.subsystems;
 
-import java.util.Map;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -22,20 +20,32 @@ import frc.robot.RobotMap;
 
 public class Shooter extends SubsystemBase {
 
-  public enum HoodState {
-    HIGH, LOW
-  }
-
+  // shooter motors
   private TalonFX rightShooterFalcon = new TalonFX(RobotMap.CANID.RIGHT_SHOOTER_FALCON);
   private TalonFX leftShooterFalcon = new TalonFX(RobotMap.CANID.LEFT_SHOOTER_FALCON);
 
-  public NetworkTableEntry ChosenSpeed;
-  public NetworkTableEntry ChosenIdleSpeed;
+  // servo to move shooter hood
+  private Servo m_servo = new Servo(RobotMap.PWMPorts.SHOOTER_SERVO_ID);
+
+  //private NetworkTableEntry ChosenSpeed;
+  //private NetworkTableEntry ChosenAngle;
+  //public NetworkTableEntry ChosenIdleSpeed;
+  //public NetworkTableEntry ChosenLifterSpeed;
   private NetworkTableEntry motorSpeed;
   private NetworkTableEntry motorVoltage;
   private NetworkTableEntry rightMotorCurrent;
   private NetworkTableEntry leftMotorCurrent;
   private NetworkTableEntry targetSpeed;
+  private NetworkTableEntry hoodTargetPos;
+  private NetworkTableEntry hoodEstimatedPos;
+
+  // current shooter hood angle setting
+  private double m_HoodTargetPos;
+  // current estimate of hood angle
+  private double m_HoodEstimatedPos;
+  // max speed servo can move at = range of position / total time
+  // -1.0 to 0.75 over time of 3.2s
+  private final double m_HoodMaxSpeed = (1.0 + 0.75)/3.2;
 
   /** Creates a new Shooter. */
   public Shooter() {
@@ -45,93 +55,76 @@ public class Shooter extends SubsystemBase {
 
     rightShooterFalcon.configVoltageCompSaturation(11.0, 0);
     leftShooterFalcon.configVoltageCompSaturation(11.0, 0);
-    // enable 
 
-    // 19:42
-    // F=0.0477
-    // P=0.7
-    // I=0.001
-    // Ilimit = 80,000
-
-    // 19:51      // near perfect if we get voltage compenstaiton working
-    // F=0.0477
-    // P=0.7
-    // I=0.001
-    // D=0.05
-    // Ilimit = 120,000
-
-    // 20:41  // reduced back down due to new battery (higher voltage)
-    // if possible, get 
-    // F=0.0477
-    // P=0.4
-    // I=0.001
-    // D=0.05
-    // Ilimit = 120,000
-
-    //21:03   // appears ok.  maybe add ~100ms before first ball shoots to allow settling
-    //F=0.0477
-    // P=0.38
-    // I=0.0001
-    // D=0.05
-    // Ilimit = 120,000
-
-    // works.  not sure if better than previous, but appears semi-ok
-    // P=0.45
-    // D=0.1
-
-    rightShooterFalcon.config_kF(0,  0.0477, 0);  //0.047698 (works ok)
-    rightShooterFalcon.config_kP(0, 0.38, 0);      //0.35  // 0.6  //0.75 (works ok)
-    rightShooterFalcon.config_kI(0, 0.00010, 0);     //kI=0.001
-    rightShooterFalcon.config_kD(0, 0.05, 0);
+    // old PIF gains archived at bottom of file
+    rightShooterFalcon.config_kF(0, 0.0477, 0); // 0.047698 (works ok)
+    rightShooterFalcon.config_kP(0, 0.28, 0); // 0.35 // 0.6 //0.75 (works ok) // was 0.38
+    rightShooterFalcon.config_kI(0, 0.00005, 0); // kI=0.001
+    rightShooterFalcon.config_kD(0, 0.0, 0);   // was 0.05
     rightShooterFalcon.configMaxIntegralAccumulator(0, 120000.0, 0);
 
     // rightShooterFalcon.set(ControlMode.PercentOutput, 0);
     rightShooterFalcon.configPeakOutputForward(1, 0);
     rightShooterFalcon.configPeakOutputReverse(0.1, 0);
     initializeShuffleboard();
-    // rightShooterFalcon.configOpenLoopRamp(0.1);
+
+    // set up PWM to operate hood servos
+    m_servo.setBounds(2.0, 1.8, 1.5, 1.2, 1.0);
+
+    // set default hood target position and estimate
+    m_HoodTargetPos = -0.5;
+    m_HoodEstimatedPos = m_HoodTargetPos;
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    // set hood angle to current target
+    m_servo.setSpeed(m_HoodTargetPos);
+
+    // update our internal estimate of hood position
+    if (m_HoodEstimatedPos < m_HoodTargetPos)
+      m_HoodEstimatedPos = Math.min(m_HoodEstimatedPos + 0.02 * m_HoodMaxSpeed, m_HoodTargetPos);
+    if (m_HoodEstimatedPos > m_HoodTargetPos)
+    m_HoodEstimatedPos = Math.max(m_HoodEstimatedPos - 0.02 * m_HoodMaxSpeed, m_HoodTargetPos);
+
+    // update shuffleboard
     updateShuffleboard();
   }
 
-
-  /**
-   * This method will set the motors to the given motor speed
-   * 
-   * @param shooterSpeed the desired motor speed in rpm
-   */
+  /** This method will set the motors to the given motor speed
+   * @param shooterSpeed the desired motor speed in rpm */
   public void setShooterSpeed(double shooterSpeed) {
-    rightShooterFalcon.set(ControlMode.Velocity,shooterSpeed* (2048/600.0));
+    rightShooterFalcon.set(ControlMode.Velocity, shooterSpeed * (2048 / 600.0));
   }
 
-  /**
-   * This method will return motor speed
-   */
+  /** This method will return motor speed (rpm)*/
   public double getShooterSpeed() {
-    return rightShooterFalcon.getSelectedSensorVelocity() / (2048/600.0);
+    return rightShooterFalcon.getSelectedSensorVelocity() / (2048 / 600.0);
   }
-  
-  /**
-   * This method will raise or lower the hood on the shooter for high or low
-   * shooting
-   * 
-   * @param state either HIGH or LOW, the desired state for the hood of the
-   *              shooter to be in
-   */
-  // public void setShooterHood(HoodState state) {
-  // switch(state) {
-  // case HIGH:
-  // shooterSolenoid.set(PISTON_EXTENDED);
-  // break;
-  // case LOW:
-  // shooterSolenoid.set(PISTON_RETRACTED);
-  // break;
-  // }
-  // }
+
+  // sets camera tilt to desired angle
+  // input: actuator setting
+  public void setShooterAngle(double angle) {
+    // limit hood servo to setting between -1.0 and 0.75 to avoid hardware damage
+    if (angle < -1.0)
+      angle = -1.0;
+    if (angle > 0.75)
+      angle = 0.75;
+    
+    // go ahead and set angle
+    m_HoodTargetPos = angle;
+  }
+
+  /** Returns current hood servo position  */
+  public double getHoodTargetPos() {
+    return m_HoodTargetPos;
+  }
+
+  /** Returns estimated hood servo position */
+  public double getHoodEstimatedPos() {
+      return m_HoodEstimatedPos;
+  }
+
 
   /** Shooter Shuffleboard */
 
@@ -141,35 +134,92 @@ public class Shooter extends SubsystemBase {
 
   public void initializeShuffleboard() {
     ShuffleboardTab Tab = Shuffleboard.getTab("Shooter");
-    ChosenIdleSpeed = Shuffleboard.getTab("Shooter")
-        .add("Idle speed (RPM)", 1.0)
-        .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(Map.of("min", 0, "max", 5000))
-        .getEntry();
 
-    ChosenSpeed = Shuffleboard.getTab("Shooter")
-        .add("shooter Speed (RPM)", 1.0)
-        .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(Map.of("min", 0, "max", 5000))
-        .getEntry();
-    
-    // add RPM
+    // ChosenIdleSpeed = Shuffleboard.getTab("Shooter")
+    //     .add("Idle speed (RPM)", 1.0)
+    //     .withWidget(BuiltInWidgets.kNumberSlider)
+    //     .withProperties(Map.of("min", 0, "max", 5000.0))
+    //     .getEntry();
+
+    // ChosenLifterSpeed = Shuffleboard.getTab("Shooter")
+    //     .add("Lifter speed (pct output)", 1.0)
+    //     .withWidget(BuiltInWidgets.kNumberSlider)
+    //     .withProperties(Map.of("min", 0, "max", 1.0))
+    //     .getEntry();
+
+    // ChosenSpeed = Tab.add("shooter Speed (RPM)", 1.0)
+    //     .withWidget(BuiltInWidgets.kNumberSlider)
+    //     .withProperties(Map.of("min", 0, "max", 5000))
+    //     .getEntry();
+
+    // ChosenAngle = Tab.add("Shooter angle", 1.0)
+    //     .withWidget(BuiltInWidgets.kNumberSlider)
+    //     .withProperties(Map.of("min", -1.0, "max", 0.75))
+    //     .getEntry();
+
+    // Shooter Parameters
     ShuffleboardLayout l1 = Tab.getLayout("Shooter", BuiltInLayouts.kList);
-    l1.withPosition(3, 0);
-    l1.withSize(1, 4);
+    l1.withPosition(0, 0);
+    l1.withSize(1, 3);
     motorSpeed = l1.add("motor speed", 0.0).getEntry();
     motorVoltage = l1.add("motor voltage", 0.0).getEntry();
-    leftMotorCurrent = l1.add("L motor current",0.0).getEntry();
-    rightMotorCurrent = l1.add("R motor current",0.0).getEntry();
-    targetSpeed = l1.add("Target Speed",0.0).getEntry();
+    leftMotorCurrent = l1.add("L motor current", 0.0).getEntry();
+    rightMotorCurrent = l1.add("R motor current", 0.0).getEntry();
+    targetSpeed = l1.add("Target Speed", 0.0).getEntry();
+
+    ShuffleboardLayout l2 = Tab.getLayout("Hood", BuiltInLayouts.kList);
+    l2.withPosition(1, 0);
+    l2.withSize(1, 2);
+    hoodTargetPos= l2.add("Servo Target", 0.0).getEntry();
+    hoodEstimatedPos = l2.add("Esimated Pos", 0.0).getEntry();
   }
 
   public void updateShuffleboard() {
 
+    // update shooter parameters
     motorSpeed.setDouble(rightShooterFalcon.getSelectedSensorVelocity() * ((10.0 / 2048.0) * 60));
     motorVoltage.setDouble(rightShooterFalcon.getMotorOutputVoltage());
     leftMotorCurrent.setDouble(leftShooterFalcon.getSupplyCurrent());
     rightMotorCurrent.setDouble(rightShooterFalcon.getSupplyCurrent());
     targetSpeed.setDouble(rightShooterFalcon.getClosedLoopTarget() * ((10.0 / 2048.0) * 60));
+    
+    // update hood parameters
+    hoodTargetPos.setDouble(m_HoodTargetPos);
+    hoodEstimatedPos.setDouble(m_HoodEstimatedPos);
   }
 }
+
+// enable
+
+// 19:42
+// F=0.0477
+// P=0.7
+// I=0.001
+// Ilimit = 80,000
+
+// 19:51 // near perfect if we get voltage compenstaiton working
+// F=0.0477
+// P=0.7
+// I=0.001
+// D=0.05
+// Ilimit = 120,000
+
+// 20:41 // reduced back down due to new battery (higher voltage)
+// if possible, get
+// F=0.0477
+// P=0.4
+// I=0.001
+// D=0.05
+// Ilimit = 120,000
+
+// 21:03 // appears ok. maybe add ~100ms before first ball shoots to allow
+// settling
+// F=0.0477
+// P=0.38
+// I=0.0001
+// D=0.05
+// Ilimit = 120,000
+
+// works. not sure if better than previous, but appears semi-ok
+// P=0.45
+// D=0.1

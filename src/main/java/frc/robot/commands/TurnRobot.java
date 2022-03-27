@@ -22,6 +22,8 @@ public class TurnRobot extends CommandBase {
   double m_rotatespeed;
   double m_angleerror;
   double m_time;
+  
+  boolean m_cameraControlled;
 
   // PID gains for rotating robot towards ball target
   double kp = 0.0125;

@@ -5,8 +5,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -20,56 +20,65 @@ import frc.robot.RobotMap;
 public class Lifter extends SubsystemBase {
 
   public NetworkTableEntry limitSwitch;
-  public NetworkTableEntry intakeMotorSpeed;
+  public NetworkTableEntry lifterSpeed;
   //two talon
-  VictorSPX leaderLifterTalon = new VictorSPX(RobotMap.CANID.L_LIFTER_TALON); 
-  VictorSPX followerLifterTalon = new VictorSPX(RobotMap.CANID.R_LIFTER_TALON);
+  public TalonFX lifterFalcon = new TalonFX(RobotMap.CANID.LIFTER_FALCON);
 
   public NetworkTableEntry lifterSpeedEntry;
 
   public DigitalInput liftLimit = new DigitalInput(RobotMap.LIFTER_LIMIT_ID);
 
-
   /** Creates a new Lifter. */
   public Lifter() {
 
+    lifterFalcon.setNeutralMode(NeutralMode.Brake);
+
+    lifterFalcon.config_kF(0, 0.044, 0);
+    lifterFalcon.config_kD(0, 0.0, 0);
+    lifterFalcon.config_kP(0, 0.06, 0);
+    lifterFalcon.config_kI(0, 0.00010, 0); 
+    // lifterFalcon.config_kD(0, 0.05, 0);
+    // lifterFalcon.configMaxIntegralAccumulator(0, 120000.0, 0);
+
+    // rightShooterFalcon.set(ControlMode.PercentOutput, 0);
+    lifterFalcon.configPeakOutputForward(1, 0);
+    lifterFalcon.configPeakOutputReverse(-1.0, 0);
+
     initializeShuffleboard();
-    followerLifterTalon.follow(leaderLifterTalon);
-    followerLifterTalon.setInverted(InvertType.OpposeMaster);
-    
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     updateShuffleboard();
-    
   }
 
   public void liftBalls(){
-    leaderLifterTalon.set(ControlMode.PercentOutput, RobotMap.BALL_LIFTER_SPEED); 
+    lifterFalcon.set(ControlMode.Velocity, RobotMap.BALL_LIFTER_SPEED* (2048 / 600.0)); 
   }
 
   public void releaseBalls(){
-    leaderLifterTalon.set(ControlMode.PercentOutput, -RobotMap.BALL_LIFTER_SPEED); 
+    lifterFalcon.set(ControlMode.Velocity, -RobotMap.BALL_LIFTER_SPEED* (2048 / 600.0)); 
   }
 
   public void stopMotor() {
-    leaderLifterTalon.set(ControlMode.PercentOutput, 0.0);
-    // leaderLifterTalon.NeutralMode.Brake=(2);
+    lifterFalcon.set(ControlMode.PercentOutput, 0.0);
+    // lifterFalcon.NeutralMode.Brake=(2);
 
   }
 
   public void initializeShuffleboard() {
     ShuffleboardTab Tab = Shuffleboard.getTab("Lifter");
-    ShuffleboardLayout l1 = Tab.getLayout("Shooter", BuiltInLayouts.kList);
+    ShuffleboardLayout l1 = Tab.getLayout("Lifter", BuiltInLayouts.kList);
     l1.withPosition(3, 0);
     l1.withSize(1, 4);
-    limitSwitch = l1.add("limswitch", 0.0).getEntry();
+    //limitSwitch = l1.add("limswitch", 0.0).getEntry();
+    lifterSpeed = l1.add("lifter speed (RPM)",0.0).getEntry();
+    limitSwitch = Tab.add("SwitchActivated", false).withPosition(3,0).getEntry();
   }
   public void updateShuffleboard() {
 
     limitSwitch.setBoolean(liftLimit.get());
-
+    lifterSpeed.setDouble(lifterFalcon.getSelectedSensorVelocity() / (2048 / 600.0));
   }
 }

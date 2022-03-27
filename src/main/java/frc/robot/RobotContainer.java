@@ -8,19 +8,19 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.BallCameraAutoTilt;
+import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.ExtendClimber;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LEDCommand;
+import frc.robot.commands.LowerShooter;
 import frc.robot.commands.ReleaseBall;
-import frc.robot.commands.RetractClimber;
-import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
-import frc.robot.commands.autonomous.LowBallAuto;
-import frc.robot.commands.autonomous.OneBallAuto;
-import frc.robot.commands.autonomous.ThreeBallAuto;
-import frc.robot.commands.autonomous.TwoBallAuto;
+import frc.robot.commands.TiltShooter;
+import frc.robot.commands.autonomous.AlternateFourBallCommand;
+import frc.robot.commands.autonomous.AnywhereTwoBallAuto;
+import frc.robot.commands.autonomous.AutoShootCommand;
+import frc.robot.commands.autonomous.FiveBallAuto;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.CameraTilt;
 import frc.robot.subsystems.Climber;
@@ -87,23 +87,31 @@ public class RobotContainer {
   private static void configureButtonBindings() {
     // OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
 
-    OI.highSpeedButton.whileHeld(new ShooterCommand());
+    //OI.highSpeedButton.whileHeld(new ShooterCommand());
+    OI.highSpeedButton.whileHeld(new AutoShootCommand(RobotContainer.hubTargeting::GetTargetRPM).deadlineWith(new SteerTowardsHub()));
     // TODO: Disable binding for competition use
     OI.zeroButton.whenPressed(() -> gyro.resetGyro());
     // OI.zeroButton.whenPressed(new RecordCurrentPose2d());
     OI.intakeButton.whileHeld(new IntakeCommand());
     OI.ballTrackingButton.whenHeld(new SteerTowardsBall(false, 20.0));
+    //OI.ballTrackingButton.whenHeld(new AutoPickUpBallCommand());
     OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
     OI.releaseBallButton.whileHeld(new ReleaseBall());
 
+    OI.tiltShooterButton.whenPressed(new TiltShooter());
+    OI.lowerShooterButton.whenPressed(new LowerShooter());
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(0.5, 0.20));
 
-    OI.extendClimberButton.whileHeld(new ExtendClimber());
-    OI.retractClimberButton.whileHeld(new RetractClimber());
-
+    // don't lift the climber unless the time is greater than 119.0
+    // if (HAL.getMatchTime() > 119.0){
+    OI.ClimberButtonReverse.whileHeld(new ClimbCommand());
+    //}
+    
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new
     // Rotation2d(0)), 0.35, 0.15, 20.0));
     // new TurnRobot(45.0,false,2.0));//new SampleAutoCommand());
+
+    // (new JoystickButton(OI.driverController, XboxController.Button.kB.value)).whenHeld(new AutoShootCommand(AutoShootCommand.HIGH_SPEED));
   }
 
   /**
@@ -113,14 +121,25 @@ public class RobotContainer {
    */
   public static Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    if (RobotContainer.shuffleboard.m_selectedPath == 0) {
-      return new TwoBallAuto();
-    } else if (RobotContainer.shuffleboard.m_selectedPath == 1) {
-      return new ThreeBallAuto();
-    } else if (RobotContainer.shuffleboard.m_selectedPath == 3) {
-      return new OneBallAuto();
-    } else {
-      return new LowBallAuto();
-    }
+    if (RobotContainer.shuffleboard.m_selectedPath == 0) 
+      return new AnywhereTwoBallAuto();
+    else if (RobotContainer.shuffleboard.m_selectedPath == 1)
+      return new FiveBallAuto();
+    else if (RobotContainer.shuffleboard.m_selectedPath == 2)
+      return new AlternateFourBallCommand();
+    else 
+      return new AnywhereTwoBallAuto();
+    // if (RobotContainer.shuffleboard.m_selectedPath == 0) {
+    //   return new TwoBallAuto();
+    // } else if (RobotContainer.shuffleboard.m_selectedPath == 1) {
+    //   return new ThreeBallAuto();
+    // } else if (RobotContainer.shuffleboard.m_selectedPath == 2) {
+    //     return new AnywhereTwoBallAuto();
+    // } else if (RobotContainer.shuffleboard.m_selectedPath == 3) {
+    //     return new FiveBallAuto();
+    //   //return new OneBallAuto();
+    // } else {
+    //   return new LowBallAuto();
+    // }
   }
 }

@@ -51,7 +51,8 @@ public class SteerTowardsBall extends CommandBase {
     m_timeoutlimit = timeout;
 
     // assume speed limit of 0.5
-    m_speedLimitAuto= 0.5;
+    // TODO ken add comment
+    m_speedLimitAuto= 0.65;
   }
   
   /** Steers robot towards ball
@@ -88,7 +89,8 @@ public class SteerTowardsBall extends CommandBase {
     if (m_automated)
       xInput = m_speedLimitAuto;
     else
-      xInput = Math.sqrt(Math.pow(OI.driverController.getLeftY(), 2) + Math.pow(OI.driverController.getLeftX(), 2));
+      xInput = m_speedLimitAuto*0.6; // ball pickup is completely autonomous
+      //xInput = Math.sqrt(Math.pow(OI.driverController.getLeftY(), 2) + Math.pow(OI.driverController.getLeftX(), 2));
     
     // assume sideway speed of 0% unless determined otherwise
     double yInput = 0.0;
@@ -144,8 +146,9 @@ public class SteerTowardsBall extends CommandBase {
   @Override
   public boolean isFinished() {
     // we are finished if max time in our command expires
-    return (m_automated &&
-          (m_intake.GetIntakeLimitSwitchStatus() || (m_time >= m_timeoutlimit))
+    // automatically finish command if we already sense having two balls
+    return ((m_automated && (m_intake.GetIntakeLimitSwitchStatus() || (m_time >= m_timeoutlimit)))
+          || ( RobotContainer.intake.GetIntakeLimitSwitchStatus() && (!RobotContainer.lifter.liftLimit.get()))
           );
 
   }
