@@ -50,7 +50,8 @@ public class AutoShootCommand extends CommandBase {
     waitUntil = System.currentTimeMillis() + 300;//(long) (err*(3.5/1.75)*1000*1.1); // Servo travels 1.75 units in 3.5 seconds
   
     RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
-    RobotContainer.m_shooter.setShooterSpeed(flywheelSpeed.getAsDouble());
+    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.GetTargetRPM());
+    RobotContainer.m_shooter.setTopShooterSpeed(RobotContainer.hubTargeting.GetTopTargetRPM());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -76,7 +77,7 @@ public class AutoShootCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed());
+    //RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed());
     RobotContainer.lifter.stopMotor();
   }
 

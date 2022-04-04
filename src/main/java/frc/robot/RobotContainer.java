@@ -19,7 +19,7 @@ import frc.robot.commands.SteerTowardsHub;
 import frc.robot.commands.TiltShooter;
 import frc.robot.commands.autonomous.AlternateFourBallCommand;
 import frc.robot.commands.autonomous.AnywhereTwoBallAuto;
-import frc.robot.commands.autonomous.AutoShootCommand;
+import frc.robot.commands.autonomous.AutoShootAllCommand;
 import frc.robot.commands.autonomous.FiveBallAuto;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.CameraTilt;
@@ -88,7 +88,9 @@ public class RobotContainer {
     // OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
 
     //OI.highSpeedButton.whileHeld(new ShooterCommand());
-    OI.highSpeedButton.whileHeld(new AutoShootCommand(RobotContainer.hubTargeting::GetTargetRPM).deadlineWith(new SteerTowardsHub()));
+    //OI.highSpeedButton.whileHeld(new AutoShootCommand(RobotContainer.hubTargeting::GetTargetRPM).deadlineWith(new SteerTowardsHub()));
+    OI.highSpeedButton.whileHeld(new AutoShootAllCommand().deadlineWith(new SteerTowardsHub()));
+
     // TODO: Disable binding for competition use
     OI.zeroButton.whenPressed(() -> gyro.resetGyro());
     // OI.zeroButton.whenPressed(new RecordCurrentPose2d());

@@ -29,6 +29,7 @@ public class HubTargeting extends SubsystemBase {
   private NetworkTableEntry m_RPMAdjust;
   private NetworkTableEntry m_DistanceAdjust;
   private NetworkTableEntry m_HoodAdjust;
+  private NetworkTableEntry m_TopRPMAdjust;
 
   // default shooter idle speed (rpm)
   private final double m_ShooterIdleSpeed = 3350.0;
@@ -45,6 +46,8 @@ public class HubTargeting extends SubsystemBase {
     // update shuffleboard
     if (isTargetPresent()){
       RobotContainer.m_shooter.setShooterAngle(GetTargetHoodSetting());
+      //RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.GetTargetRPM());
+      //RobotContainer.m_shooter.setTopShooterSpeed(RobotContainer.hubTargeting.GetTopTargetRPM());
     }
     updateShuffleboard();
   }
@@ -78,14 +81,15 @@ public class HubTargeting extends SubsystemBase {
   public double EstimateDistance() {
     double ty = m_hubCamera.getVerticalTargetOffsetAngle();
     double distance;
-    // based on test data from March 19 2022
-    //double distance = -0.001*ty*ty*ty + 0.0081*ty*ty - 0.1462*ty + 4.2368;
-    //double distance = 0.0131*ty*ty - 0.1883*ty + 4.1267;
+    
+    // based on test data from April 2 2022
     if (ty<0.67)
-       distance = 0.00008*ty*ty*ty*ty - 0.0003*ty*ty*ty + 0.0046*ty*ty - 0.1699*ty + 4.2458;
+      distance = 0.00016*ty*ty*ty*ty + 0.000877*ty*ty*ty + 0.008232*ty*ty - 0.194295*ty + 4.176152;
     else
+      // re-used from last characterization
       distance = 0.0039*ty*ty -0.1523*ty + 4.094;
-
+   
+    
     // add in adustment (if any) from shuffleboard
     distance += m_DistanceAdjust.getDouble(0.0);
 
@@ -122,8 +126,14 @@ public class HubTargeting extends SubsystemBase {
     // get distance in m
     double m = EstimateDistance();
     
-    // speed from test data March 19/2022
-    double RPM = 380.02*m + 1842.2;
+    // based on test data from April 2 2022
+    double RPM;
+    if (m<=6.50)
+      RPM = 79.754607*m*m*m - 1048.135892*m*m + 4676.800317*m - 5344.739444;
+    else
+      RPM = -155.138546*m*m +2579.107342*m - 7666.820108;  
+    //RPM = -223.553975*m*m + 3614.984958*m - 11390.579404;
+    //RPM = -490.671237*m*m + 7244.183846*m - 23572.468835;
 
     // add in RPM adustment (if any) from shuffleboard
     RPM += m_RPMAdjust.getDouble(0.0);
@@ -131,14 +141,46 @@ public class HubTargeting extends SubsystemBase {
     return RPM;
   }
 
+  public double GetTopTargetRPM() {
+    // get distance in m
+    double m = EstimateDistance();
+    
+    // based on test data from April 2 2022
+    double RPM;
+    if (m<5.50)
+      RPM = 24.836680*m*m + 21.019404*m + 2409.906201;
+    else
+      RPM = 436.415649*m*m -6400.682739*m +25605.030690;
+    
+    if (m<3.75)
+      RPM += 50.0;
+    if (m<3.50)
+      RPM += 50.0;
+    if (m<3.25)
+      RPM += 50.0;
+      
+
+    //RPM = -171.693590*m*m +1810.923496*m - 1559.209071;
+
+    // adjust top flywheel RPM
+    RPM += m_TopRPMAdjust.getDouble(0.0);
+
+    return RPM;
+  }
+
+
   /** Finds the Shooter Hood actuator Setting need to shoot a distance
    * @return hood actuator setting*/
   public double GetTargetHoodSetting() {
     // get distance in m
     double m = EstimateDistance();
     
-    // speed from test data March 19/2022
-    double hood = -0.0855*m*m +1.2416*m - 4.2243;
+    // based on test data from April 2 2022
+    double hood;
+    if (m<=4.78)
+      hood = -1.0;
+    else
+      hood = 0.018890*m*m*m - 0.462281*m*m +3.744794*m - 10.400234; 
 
     // add in hood adustment (if any) from shuffleboard
     hood += m_HoodAdjust.getDouble(0.0);
@@ -198,7 +240,17 @@ public class HubTargeting extends SubsystemBase {
                 .withPosition(3,2)
                 .withSize(3,1)
                 .getEntry();         
-  }
+  
+    m_TopRPMAdjust = Tab.add("Top Flywheel Speed Adjust (rpm)", 0.0)
+                  .withWidget(BuiltInWidgets.kNumberSlider)
+                  .withProperties(Map.of("min", -500.0, "max", 500.0))
+                  .withPosition(3,3)
+                  .withSize(3,1)
+                  .getEntry();
+  
+              }
+
+
 
   /** Update subsystem shuffle board page with current targeting values */
   private void updateShuffleboard() {
