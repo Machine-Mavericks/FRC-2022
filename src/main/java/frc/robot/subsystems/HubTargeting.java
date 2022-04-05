@@ -32,7 +32,8 @@ public class HubTargeting extends SubsystemBase {
   private NetworkTableEntry m_TopRPMAdjust;
 
   // default shooter idle speed (rpm)
-  private final double m_ShooterIdleSpeed = 3350.0;
+  private final double m_ShooterIdleSpeed = 1650.0;
+  private final double m_TopShooterIdleSpeed = 2200.0;
 
   /** Creates a new HubTargeting. */
   public HubTargeting() {
@@ -191,7 +192,12 @@ public class HubTargeting extends SubsystemBase {
   /** Returns shooter idle speed (rpm)*/
   public double getShooterIdleSpeed() {
     return m_ShooterIdleSpeed;
-}
+  }
+
+  /** Returns top shooter idle speed (rpm)*/
+  public double getTopShooterIdleSpeed() {
+    return m_TopShooterIdleSpeed;
+  }
 
 
   // -------------------- Subsystem Shuffleboard Methods --------------------

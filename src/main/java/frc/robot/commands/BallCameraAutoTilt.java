@@ -15,7 +15,7 @@ public class BallCameraAutoTilt extends CommandBase {
   double m_notargettimer;
 
   // PID gains for rotating robot towards ball target
-  double kp = 0.22;
+  double kp = 0.20;
   double ki = 0.0;
   double kd = 0.0;
   
@@ -53,7 +53,7 @@ public class BallCameraAutoTilt extends CommandBase {
       m_notargettimer = 0.0;
 
       // if we are 'looking down', widen ball detection to look for non-square objects
-      if (RobotContainer.cameraTilt.getAngle() < -30.0)
+      if (RobotContainer.cameraTilt.getAngle() < -50.0)
       {
         if (DriverStation.getAlliance() == Alliance.Red)
           RobotContainer.ballTargeting.setBallPipeline(3);
