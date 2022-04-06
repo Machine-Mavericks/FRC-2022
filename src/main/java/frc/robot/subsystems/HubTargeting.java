@@ -61,15 +61,9 @@ public class HubTargeting extends SubsystemBase {
   public boolean IsTarget() {
     boolean target = m_hubCamera.isTargetPresent();
     double distance = EstimateDistance();
-    boolean yesTarget;
     
     // we have valid target if distance is >2.9m
-    if (target == true && distance >=2.90) {
-      yesTarget = true;
-    } else {
-      yesTarget = false;
-    }
-    return yesTarget;
+    return(target == true && distance >=2.90);
   }
 
   public void barPipeline() {
@@ -125,12 +119,7 @@ public class HubTargeting extends SubsystemBase {
     double targetAngle = getHubAngle();
     Boolean target = IsTarget();
     Boolean ready;
-    if (targetAngle <= 1.0 && targetAngle >= -1.0 && target == true) {
-      ready = true;
-    } else {
-      ready = false;
-    }
-    return ready;
+    return(targetAngle <= 1.0 && targetAngle >= -1.0 && target == true);
   }
 
   /** Finds the RPM (rates per minute) needed to shoot a distance

@@ -41,7 +41,7 @@ public class AutoShootAllCommand extends CommandBase {
     m_time += 0.02;
     
     // is it time to switch on lifter? turn on lifter after initial delay
-    if (m_time > m_startdelay)
+    if (m_time > m_startdelay && RobotContainer.hubTargeting.isTargetPresent())
       RobotContainer.lifter.liftBalls();
 
     // do we have any balls in the stack? if not, count up no-ball time

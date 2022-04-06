@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Drivetrain;
 
 public class DriveToBarCommand extends CommandBase {
   /** Creates a new DriveToBarCommand. */
@@ -27,17 +26,11 @@ public class DriveToBarCommand extends CommandBase {
   @Override
   public void execute() {
     if (!RobotContainer.hubTargeting.barReady()){
-      System.out.println("working");
-      RobotContainer.drivetrain.drive(
-        new Translation2d(-0.2 * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
-            0.0 * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
-            0.0 * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, true); }
+      new FollowGyroCommand(0.2);
+    System.out.print("yes");}
     else {
       RobotContainer.drivetrain.drive(
-      new Translation2d(0.0 * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
-          0.0 * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND),
-          0.0* Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, true);
-      System.out.println("not working");
+      new Translation2d(0.0,0.0),0.0, true);
     }
     }
 
