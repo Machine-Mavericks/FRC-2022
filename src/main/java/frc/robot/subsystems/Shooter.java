@@ -112,7 +112,7 @@ public class Shooter extends SubsystemBase {
       angle = 0.75;
     
     // go ahead and set angle
-    m_HoodTargetPos = angle;
+    m_HoodTargetPos = -1.0; //angle; TODO: for testing only, put this back
   }
 
   /** Returns current hood servo position  */

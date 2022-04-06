@@ -72,6 +72,24 @@ public class HubTargeting extends SubsystemBase {
     return yesTarget;
   }
 
+  public void barPipeline() {
+    //set the pipeline to the bar
+    m_hubCamera.setPipeline(1);
+  }
+
+  public boolean barReady() {
+    // check if the bar is within range to climb
+    double ty = m_hubCamera.getVerticalTargetOffsetAngle();
+    System.out.println(ty);
+    return (ty>-7);
+  }
+
+  public boolean isBar(){
+    // check if we see a bar
+    System.out.println(m_hubCamera.isTargetPresent());
+    return m_hubCamera.isTargetPresent();
+  }
+
   /** Estimates the distance of the hub
    * Note: Equation will change with mounted limelight and testing
    * @return distance in meters */
