@@ -63,13 +63,13 @@ public class OI {
      */
     private static class Bindings {
         /** Button to run shooter at high goal speed */
-        static final Button HIGH_SPEED_BUTTON = XboxController.Button.kY;
+        static final Button HIGH_SPEED_BUTTON = XboxController.Button.kStart;
         /** Button to fire ball from shooter */
         static final Button SHOOTER_FIRE_BUTTON = XboxController.Button.kLeftBumper;
         /** Button to re-zero gyro */
         static final Button ZERO_GYRO = XboxController.Button.kBack;
         /** Button to intake ball */
-        static final Button INTAKE_BUTTON = XboxController.Button.kX;
+        static final Button INTAKE_BUTTON = XboxController.Button.kRightBumper;
         /** Button to track balls */
         static final Button BALL_TRACKING_BUTTON = XboxController.Button.kLeftBumper;
         /** Button to track hub */
@@ -79,8 +79,9 @@ public class OI {
         /** Button to spit out balls */
         static final Button BALL_RELEASE_BUTTON = XboxController.Button.kBack;
 
-        static final Button CLIMBER_BUTTON = XboxController.Button.kB;
-        static final Button CLIMBER_BUTTON_REVERSE = XboxController.Button.kRightBumper;
+        //Not the right mappings, fix later
+        //static final Button CLIMBER_BUTTON = XboxController.Button.kLeftBumper;
+        //static final Button CLIMBER_BUTTON_REVERSE = XboxController.Button.kStart;
 
         // button to tilt the shooter
         static final Button SHOOTER_TILT_BUTTON = XboxController.Button.kA;
@@ -120,8 +121,9 @@ public class OI {
     /** Ball tracking button. Mapped to {@link Bindings#BALL_TRACKING_BUTTON} */
     public static final JoystickButton releaseBallButton = new JoystickButton(operatorController, Bindings.BALL_RELEASE_BUTTON.value);
 
-    public static final JoystickButton ClimberButton = new JoystickButton(operatorController, Bindings.CLIMBER_BUTTON.value);
-    public static final JoystickButton ClimberButtonReverse = new JoystickButton(operatorController, Bindings.CLIMBER_BUTTON_REVERSE.value);
+    //Key bindings need to be changed for operator controller remapping
+    //public static final JoystickButton ClimberButton = new JoystickButton(operatorController, Bindings.CLIMBER_BUTTON.value);
+    //public static final JoystickButton ClimberButtonReverse = new JoystickButton(operatorController, Bindings.CLIMBER_BUTTON_REVERSE.value);
 
     public static final JoystickButton tiltShooterButton = new JoystickButton(driverController, Bindings.SHOOTER_TILT_BUTTON.value);
     public static final JoystickButton lowerShooterButton = new JoystickButton(driverController, Bindings.SHOOTER_LOWER_BUTTON.value);

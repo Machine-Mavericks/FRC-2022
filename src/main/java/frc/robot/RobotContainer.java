@@ -105,7 +105,10 @@ public class RobotContainer {
 
     // don't lift the climber unless the time is greater than 119.0
     // if (HAL.getMatchTime() > 119.0){
-    OI.ClimberButtonReverse.whileHeld(new ClimbCommand());
+    
+    
+    //Breaks climber, removed because of keymapping issues, once button layout is finalized, uncomment and fix
+    //OI.ClimberButtonReverse.whileHeld(new ClimbCommand());
 
     OI.overshootButton.whenPressed(new shotEvaluationCommand("Overshoot"));
     OI.undershootButton.whenPressed(new shotEvaluationCommand("Undershoot"));
