@@ -9,14 +9,31 @@ import frc.robot.RobotContainer;
 
 public class shotEvaluationCommand extends CommandBase {
   /** Creates a new shotEvaluationCommand. */
-  int underShots;
-  int overShots;
-  public boolean shotWasShort;
-  public double shooterAdjustFactor;
+  //int ShotNumber;
+  
+  private double ShooterSpeedOffset = 0;
+  private int Overshoots = 0;
+  private int Undershoots = 0;
+  private int Bounceouts = 0;
+  private int Hits = 0;
 
-  public shotEvaluationCommand(boolean underShoot) {
+  private static double RPMIncrement = 100;
+
+  public shotEvaluationCommand(String shotType) {
+    //What kind of shot just happened?
+    switch (shotType) {
+      case "Hit":
+        Hits+=1;
+      case "Overshoot":
+        Overshoots+=1;
+      case "Undershoot":
+        Undershoots+=1;
+      case "Bounced-Out":
+        Bounceouts+=1;
+      default:
+        Hits+=1;
+    }
     // Use addRequirements() here to declare subsystem dependencies.
-    shotWasShort = underShoot;
     addRequirements(RobotContainer.m_shooter);
   }
 
@@ -27,16 +44,16 @@ public class shotEvaluationCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (shotWasShort)
-      underShots +=1;
-    else
-      overShots +=1;
+    double Offset = Undershoots - Overshoots;
+    Offset = Offset * RPMIncrement;
     
-    if (overShots - underShots == 3)
-      shooterAdjustFactor += 1;
-    if (underShots- overShots ==3)
-      shooterAdjustFactor -=1;
+    //If the RPM offset needed has changed, print to log what it changed to, move this all to shuffleboard later.
+    if (Offset != ShooterSpeedOffset){
+      ShooterSpeedOffset = Offset;
+      System.out.println("Changing shooter RPM offset to: " + ShooterSpeedOffset);
+    }
 
+    RobotContainer.hubTargeting.m_OnTheFlyRPMAdjust = ShooterSpeedOffset;
   }
 
   // Called once the command ends or is interrupted.

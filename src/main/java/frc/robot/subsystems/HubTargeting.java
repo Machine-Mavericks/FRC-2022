@@ -30,6 +30,8 @@ public class HubTargeting extends SubsystemBase {
   private NetworkTableEntry m_DistanceAdjust;
   private NetworkTableEntry m_HoodAdjust;
 
+  public double m_OnTheFlyRPMAdjust = 0;
+
   // default shooter idle speed (rpm)
   private final double m_ShooterIdleSpeed = 3350.0;
 
@@ -47,6 +49,10 @@ public class HubTargeting extends SubsystemBase {
       RobotContainer.m_shooter.setShooterAngle(GetTargetHoodSetting());
     }
     updateShuffleboard();
+  }
+
+  public void setShooterSpeedOffset(double Offset){
+      m_OnTheFlyRPMAdjust = Offset;
   }
 
   /** Function to tell if target is visible in limelight.
@@ -127,6 +133,9 @@ public class HubTargeting extends SubsystemBase {
 
     // add in RPM adustment (if any) from shuffleboard
     RPM += m_RPMAdjust.getDouble(0.0);
+
+    //Add in operator shot evaluation adjustment
+    RPM += m_OnTheFlyRPMAdjust;
 
     return RPM;
   }

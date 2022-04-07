@@ -85,6 +85,12 @@ public class OI {
         // button to tilt the shooter
         static final Button SHOOTER_TILT_BUTTON = XboxController.Button.kA;
         static final Button SHOOTER_LOWER_BUTTON = XboxController.Button.kY;
+
+        //Operator adjustment buttons
+        static final Button OPERATOREVALUATION_UNDERSHOOT = XboxController.Button.kX;
+        static final Button OPERATOREVALUATION_OVERSHOOT = XboxController.Button.kB;
+        static final Button OPERATOREVALUATION_SHOTHIT = XboxController.Button.kA;
+        static final Button OPERATOREVALUATION_BOUNCEOUT = XboxController.Button.kY;
     }
 
     /** Port for controller used by driver */
@@ -119,6 +125,11 @@ public class OI {
 
     public static final JoystickButton tiltShooterButton = new JoystickButton(driverController, Bindings.SHOOTER_TILT_BUTTON.value);
     public static final JoystickButton lowerShooterButton = new JoystickButton(driverController, Bindings.SHOOTER_LOWER_BUTTON.value);
+
+    public static final JoystickButton undershootButton = new JoystickButton(operatorController, Bindings.OPERATOREVALUATION_UNDERSHOOT.value);
+    public static final JoystickButton overshootButton = new JoystickButton(operatorController, Bindings.OPERATOREVALUATION_OVERSHOOT.value);
+    public static final JoystickButton shothitButton = new JoystickButton(operatorController, Bindings.OPERATOREVALUATION_SHOTHIT.value);
+    public static final JoystickButton bounceoutButton = new JoystickButton(operatorController, Bindings.OPERATOREVALUATION_BOUNCEOUT.value);
 
 }
  

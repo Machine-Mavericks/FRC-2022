@@ -17,6 +17,7 @@ import frc.robot.commands.ReleaseBall;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
 import frc.robot.commands.TiltShooter;
+import frc.robot.commands.shotEvaluationCommand;
 import frc.robot.commands.autonomous.AlternateFourBallCommand;
 import frc.robot.commands.autonomous.AnywhereTwoBallAuto;
 import frc.robot.commands.autonomous.AutoShootCommand;
@@ -105,6 +106,11 @@ public class RobotContainer {
     // don't lift the climber unless the time is greater than 119.0
     // if (HAL.getMatchTime() > 119.0){
     OI.ClimberButtonReverse.whileHeld(new ClimbCommand());
+
+    OI.overshootButton.whenPressed(new shotEvaluationCommand("Overshoot"));
+    OI.undershootButton.whenPressed(new shotEvaluationCommand("Undershoot"));
+    OI.shothitButton.whenPressed(new shotEvaluationCommand("Hit"));
+    OI.bounceoutButton.whenPressed(new shotEvaluationCommand("Bounced-Out"));
     //}
     
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new
