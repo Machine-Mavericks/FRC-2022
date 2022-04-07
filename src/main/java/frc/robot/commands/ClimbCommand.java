@@ -16,19 +16,25 @@ import frc.robot.RobotContainer;
 public class ClimbCommand extends CommandBase {
   
   double motorSpeed;
+  double m_climbTime;
+  double m_targetClimbTime;
 
   /** Creates a new ClimbCommand. */
-  public ClimbCommand() {
+  public ClimbCommand(int targetClimbTime) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.climber);
+    m_targetClimbTime = targetClimbTime;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_climbTime = 0.0;
+  }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_climbTime +=0.02;
     if (DriverStation.getMatchTime() < 30.0) //do not deploy climber if it isn't endgame
       RobotContainer.climber.motorVelocity();
     else
@@ -44,6 +50,6 @@ public class ClimbCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; 
+    return (m_climbTime>=m_targetClimbTime); 
   }
 }

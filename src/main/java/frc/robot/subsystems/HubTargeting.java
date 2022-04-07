@@ -71,11 +71,15 @@ public class HubTargeting extends SubsystemBase {
     m_hubCamera.setPipeline(1);
   }
 
+  public double getBarTY(){
+    return(m_hubCamera.getVerticalTargetOffsetAngle());
+  }
+
   public boolean barReady() {
     // check if the bar is within range to climb
     double ty = m_hubCamera.getVerticalTargetOffsetAngle();
     System.out.println(ty);
-    return (ty>-7);
+    return (ty>-7 &&ty!=0);
   }
 
   public boolean isBar(){

@@ -97,9 +97,9 @@ public class RobotContainer {
     OI.intakeButton.whileHeld(new IntakeCommand()); // X button
     OI.releaseBallButton.whileHeld(new ReleaseBall()); // Right trigger
 
-    OI.ClimberButtonReverse.whileHeld(new ClimbCommand()); //right bumper
-    //OI.ClimberButton.whileHeld(new AutoClimbCommand()); // B button
-    OI.ClimberButton.whileHeld(new DriveToBarCommand()); // B button
+    //OI.ClimberButtonReverse.whileHeld(new ClimbCommand()); //right bumper
+    OI.ClimberButton.whileHeld(new AutoClimbCommand()); // B button
+    //OI.ClimberButton.whileHeld(new FollowGyroCommand(6)); // B button
   }
 
   /**
