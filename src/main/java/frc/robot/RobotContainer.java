@@ -86,18 +86,10 @@ public class RobotContainer {
    */
   private static void configureButtonBindings() {
 
-    //OI.highSpeedButton.whileHeld(new ShooterCommand());
-    //OI.highSpeedButton.whileHeld(new AutoShootCommand(RobotContainer.hubTargeting::GetTargetRPM).deadlineWith(new SteerTowardsHub()));
-    OI.highSpeedButton.whileHeld(new AutoShootAllCommand().deadlineWith(new SteerTowardsHub()));
-
-    // TODO: Disable binding for competition use
-    OI.zeroButton.whenPressed(() -> gyro.resetGyro());
-    // OI.zeroButton.whenPressed(new RecordCurrentPose2d());
-    OI.intakeButton.whileHeld(new IntakeCommand());
-    OI.ballTrackingButton.whenHeld(new SteerTowardsBall(false, 20.0));
-    //OI.ballTrackingButton.whenHeld(new AutoPickUpBallCommand());
-    OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
-    OI.releaseBallButton.whileHeld(new ReleaseBall());
+    /** DRIVER BUTTONS */
+    OI.zeroButton.whenPressed(() -> gyro.resetGyro()); //back button
+    OI.ballTrackingButton.whenHeld(new SteerTowardsBall(false, 20.0)); // left bumper
+    OI.hubTrackingButton.whenHeld(new SteerTowardsHub().deadlineWith(new AutoShootAllCommand())); // B button
 
     /** OPERATOR BUTTONS */
     // OI.highSpeedButton.whileHeld(new ShooterCommand());

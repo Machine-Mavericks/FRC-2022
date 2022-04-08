@@ -15,10 +15,10 @@ public class AutoClimbCommand extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new FollowGyroCommand(6, true),
-      new ClimbCommand(5),
-      new FollowGyroCommand(6,false),
-      new ClimbCommand(4)
+      new FollowGyroCommand(6, true)
+      // new ClimbCommand(5),
+      // new FollowGyroCommand(6,false),
+      // new ClimbCommand(4)
       //new FollowGyroCommand(0.2).deadlineWith(new DriveToBarCommand())
     );
   }

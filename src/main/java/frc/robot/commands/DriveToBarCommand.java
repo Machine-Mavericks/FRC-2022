@@ -40,6 +40,5 @@ public class DriveToBarCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     return(RobotContainer.hubTargeting.barReady());
-    //return false;
   }
 }
