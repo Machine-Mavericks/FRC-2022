@@ -4,35 +4,60 @@
 
 package frc.robot.commands;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.RobotContainer;
 
 public class shotEvaluationCommand extends CommandBase {
-  /** Creates a new shotEvaluationCommand. */
   //int ShotNumber;
   
   private double ShooterSpeedOffset = 0;
-  private int Overshoots = 0;
-  private int Undershoots = 0;
-  private int Bounceouts = 0;
-  private int Hits = 0;
 
-  private static double RPMIncrement = 100;
+  public static int ShotsTaken = 0;
+  public static Pose2d RobotPose;
+  private int ShotsLogged = 0;
 
+  private String[] LastTwoShots = {"",""};
+
+  private final double RPMIncrement = 30;
+
+  //Logs odometry and shot successfullness, but does nothing with it, implement logging to file later.
+  private ArrayList<ArrayList<String>> ShotList = new ArrayList<ArrayList<String>>();
+
+  /** Creates a new shotEvaluationCommand. */
   public shotEvaluationCommand(String shotType) {
-    //What kind of shot just happened?
-    switch (shotType) {
-      case "Hit":
-        Hits+=1;
-      case "Overshoot":
-        Overshoots+=1;
-      case "Undershoot":
-        Undershoots+=1;
-      case "Bounced-Out":
-        Bounceouts+=1;
-      default:
-        Hits+=1;
+    if (ShotsTaken > ShotsLogged){
+      //Define arraylist of data for this shot
+      ArrayList<String> SavedCurrentShotData = new ArrayList<String>();
+      
+      //Define the robot's current Pose2D
+      //Pose2d RobotPose = RobotContainer.odometry.getPose2d();
+
+      //First value is what happened to that shot
+      SavedCurrentShotData.add(shotType);
+      //Second value is X position
+      SavedCurrentShotData.add(String.valueOf(RobotPose.getX()));
+      //Third value is Y position
+      SavedCurrentShotData.add(String.valueOf(RobotPose.getY()));
+      //Fourth value is robot rotation in degrees
+      SavedCurrentShotData.add(String.valueOf(RobotPose.getRotation().getDegrees()));
+
+      //Save this shot to the list of shots
+      ShotList.add(SavedCurrentShotData);
+
+      //Move previous shot back by one in array
+      LastTwoShots[0] = LastTwoShots[1];
+      //Set new shot into array
+      LastTwoShots[1] = shotType;
+
+      ShotsLogged+=1;
     }
+   
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.m_shooter);
   }
@@ -44,16 +69,21 @@ public class shotEvaluationCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double Offset = Undershoots - Overshoots;
-    Offset = Offset * RPMIncrement;
-    
-    //If the RPM offset needed has changed, print to log what it changed to, move this all to shuffleboard later.
-    if (Offset != ShooterSpeedOffset){
-      ShooterSpeedOffset = Offset;
-      System.out.println("Changing shooter RPM offset to: " + ShooterSpeedOffset);
+    double Offset;
+    if (LastTwoShots[0]==LastTwoShots[1]) {
+      switch (LastTwoShots[1]) {
+        case "Hit":
+          Offset = 0;
+        case "Overshoot":
+          Offset = RPMIncrement;
+        case "Undershoot":
+          Offset = -RPMIncrement;
+        default:
+          Offset = 0;
+      }
+      ShooterSpeedOffset+=Offset;
+      RobotContainer.hubTargeting.m_OnTheFlyRPMAdjust = ShooterSpeedOffset;
     }
-
-    RobotContainer.hubTargeting.m_OnTheFlyRPMAdjust = ShooterSpeedOffset;
   }
 
   // Called once the command ends or is interrupted.

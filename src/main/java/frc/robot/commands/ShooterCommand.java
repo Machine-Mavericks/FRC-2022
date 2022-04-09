@@ -30,6 +30,8 @@ public class ShooterCommand extends CommandBase {
   public void execute() {
     // If the fire button is held
     //RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(5000.0));
+    boolean TwoBallsLoaded = RobotContainer.lifter.liftLimit.get();
+
     RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.GetTargetRPM());
     RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
     RobotContainer.lifter.liftBalls();
@@ -37,6 +39,12 @@ public class ShooterCommand extends CommandBase {
     if(OI.shooterFireButton.get()){
       // And the shooter has reached 95% flywheel speed, feed balls
       if((RobotContainer.m_shooter.getShooterSpeed() >= RobotContainer.hubTargeting.GetTargetRPM()*0.95)){
+        //If two balls are loaded, then increment the number of shots taken in shotEvaluationCommand by two, if only one is loaded, increment it by one 
+        if (TwoBallsLoaded){shotEvaluationCommand.ShotsTaken+=2;}else{shotEvaluationCommand.ShotsTaken+=1;}
+        //Set the current pose2D for odometry recording purposes
+        shotEvaluationCommand.RobotPose = RobotContainer.odometry.getPose2d();
+
+        //Lift balls
         RobotContainer.lifter.liftBalls();
       }
     } else {
