@@ -56,7 +56,7 @@ public class LEDCommand extends CommandBase {
     // }  
 
     // hub present
-    else if (RobotContainer.hubTargeting.isTargetPresent() && counter >12 && counter <25)
+    else if (RobotContainer.hubTargeting.IsTarget() && counter >12 && counter <25)
     {
       RobotContainer.LEDStrip.setPattern(LED_PATTERN.HUB);
     }

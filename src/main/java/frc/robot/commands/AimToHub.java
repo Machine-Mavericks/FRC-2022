@@ -66,8 +66,11 @@ int missedSamples;
 
     // calculate PID controller
     double controlleroutput = 0.0;
-    if (Math.abs(TargetAngle)>=3.0)
-      controlleroutput = pidController.calculate(TargetAngle);
+    if (Math.abs(TargetAngle)>2.0 && Math.abs(TargetAngle)<3.0)
+      pidController.setI(0.05);
+    else
+      pidController.setI(0.001);
+    controlleroutput = pidController.calculate(TargetAngle);
 
     // limit rotation speed of robot
     if (controlleroutput > 0.5)
@@ -80,7 +83,7 @@ int missedSamples;
       new Translation2d(0,0), controlleroutput * RobotContainer.drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
   
     // add time if we are on target within 1deg. Otherwise, reset timer
-    if (RobotContainer.hubTargeting.IsTarget() && Math.abs(TargetAngle)<3.0)
+    if (RobotContainer.hubTargeting.IsTarget() && Math.abs(TargetAngle)<2.0)
       OnTargetTime += 0.02;
     else
       OnTargetTime = 0.0;

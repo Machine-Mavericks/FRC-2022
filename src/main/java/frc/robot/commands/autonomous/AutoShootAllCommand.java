@@ -17,6 +17,12 @@ public class AutoShootAllCommand extends CommandBase {
   private double m_enddelay = 0.1;
   private double m_timeout = 2.0;
   
+  private double m_sampletime = 0.2;
+  private int    NumSamples;
+  private double distanceestimate;
+  private boolean FinishedSampling;
+  private boolean NoSamplesFound;
+
   /** Creates a new AutoShootAllCommand. */
   public AutoShootAllCommand() {
     // aiming uses drive system
@@ -32,10 +38,16 @@ public class AutoShootAllCommand extends CommandBase {
     // stop robot from moving
     RobotContainer.drivetrain.drive(new Translation2d(0,0),0, false);
 
+    // reset number of camera samples
+    NumSamples = 0;
+    distanceestimate = 0.0;
+    FinishedSampling = false;
+    NoSamplesFound = false;
+
     // set our shooting solution
-    RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
-    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.GetTargetRPM());
-    RobotContainer.m_shooter.setTopShooterSpeed(RobotContainer.hubTargeting.GetTopTargetRPM());
+    //RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
+    //RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.GetTargetRPM());
+    //RobotContainer.m_shooter.setTopShooterSpeed(RobotContainer.hubTargeting.GetTopTargetRPM());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,6 +55,44 @@ public class AutoShootAllCommand extends CommandBase {
   public void execute() {
     m_time += 0.02;
     
+    // are we taking camera samples?
+    if (m_time < m_sampletime)
+    {
+        // do we have camera target? if so, add in to our samples
+        if (RobotContainer.hubTargeting.IsTarget())
+        {
+          double estimate = RobotContainer.hubTargeting.EstimateDistance();
+          // preset shooter speed to get it warmed up
+          RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting(estimate));
+          RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.GetTargetRPM(estimate));
+          RobotContainer.m_shooter.setTopShooterSpeed(RobotContainer.hubTargeting.GetTopTargetRPM(estimate));
+          
+          // add in our estimate to total
+          distanceestimate += estimate;
+          NumSamples +=1;
+        }
+    }
+    else if (!FinishedSampling)
+    {
+      FinishedSampling = true;
+      
+      // if we have more than 1 sample, then get average distance
+      if (NumSamples>1)
+        distanceestimate = distanceestimate / (double)NumSamples;
+
+      // as long as we have one good sample, then go ahead and set final shooter solution
+      if (NumSamples>=1)
+      {
+        RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting(distanceestimate));
+        RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.GetTargetRPM(distanceestimate));
+        RobotContainer.m_shooter.setTopShooterSpeed(RobotContainer.hubTargeting.GetTopTargetRPM(distanceestimate));
+      }
+      else
+        // we have no camera target. set flag to exit command
+        NoSamplesFound = true;
+    }
+
+
     // is it time to switch on lifter? turn on lifter after initial delay
     if (m_time > m_startdelay)
       // lift balls - set lifter motor to 5,000 rpm
@@ -69,6 +119,6 @@ public class AutoShootAllCommand extends CommandBase {
   public boolean isFinished() {
     // if we have not had any balls for certain time, then we have finished
     // if time out reached, then consider command completed
-    return ((m_noballtime >= m_enddelay) || (m_time > m_timeout));
+    return ((m_noballtime >= m_enddelay) || (m_time > m_timeout) || NoSamplesFound);
   }
 }

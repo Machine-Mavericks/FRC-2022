@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.DelayCommand;
+import frc.robot.subsystems.BallTargeting;
 
 
 /**
@@ -44,11 +45,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     RobotContainer.init();
 
-    // set ball pickup pipeline
-    if (DriverStation.getAlliance() == Alliance.Red)
-      RobotContainer.ballTargeting.setBallPipeline(1);
-    else
-      RobotContainer.ballTargeting.setBallPipeline(2);
+    // set targeting to ball
+    RobotContainer.ballTargeting.SettoBallTarget();
 
     // reset the gyro when robot powered up
     RobotContainer.gyro.resetGyro();
@@ -100,11 +98,8 @@ public class Robot extends TimedRobot {
     // RobotContainer.gyro.resetGyro(); // Todo: Removed as auto may start at variying angles
     RobotContainer.odometry.InitializefromShuffleboard();
     
-    // set ball pickup pipeline
-    if (DriverStation.getAlliance() == Alliance.Red)
-      RobotContainer.ballTargeting.setBallPipeline(1);
-    else
-      RobotContainer.ballTargeting.setBallPipeline(2);
+    // set targeting to ball
+    RobotContainer.ballTargeting.SettoBallTarget();
 
     // robot is now initialized
     robotIsInitialized = true;
@@ -145,12 +140,8 @@ public class Robot extends TimedRobot {
       autonomousCommand.cancel();
     }
 
-    // TODO remove from teleop init
-    // set ball pickup pipeline
-    if (DriverStation.getAlliance() == Alliance.Red)
-    RobotContainer.ballTargeting.setBallPipeline(1);
-    else
-    RobotContainer.ballTargeting.setBallPipeline(2);
+    // set targeting to ball
+    RobotContainer.ballTargeting.SettoBallTarget();
 
   }
 
