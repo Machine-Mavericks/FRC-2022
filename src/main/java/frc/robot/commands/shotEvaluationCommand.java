@@ -23,7 +23,7 @@ public class shotEvaluationCommand extends CommandBase {
 
   private String[] LastTwoShots = {"",""};
 
-  private final double RPMIncrement = 30;
+  private final double RPMIncrement = 0.05;
 
   //Logs odometry and shot successfullness, but does nothing with it, implement logging to file later.
   private ArrayList<ArrayList<String>> ShotList = new ArrayList<ArrayList<String>>();
@@ -82,7 +82,8 @@ public class shotEvaluationCommand extends CommandBase {
           Offset = 0;
       }
       ShooterSpeedOffset+=Offset;
-      RobotContainer.hubTargeting.m_OnTheFlyRPMAdjust = ShooterSpeedOffset;
+      //RobotContainer.hubTargeting.m_OnTheFlyRPMAdjust = ShooterSpeedOffset;
+      RobotContainer.hubTargeting.m_DistanceAdjust.setDouble(ShooterSpeedOffset);
     }
   }
 

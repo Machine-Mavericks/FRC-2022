@@ -27,7 +27,7 @@ public class HubTargeting extends SubsystemBase {
   private NetworkTableEntry m_targetDetected;
   
   private NetworkTableEntry m_RPMAdjust;
-  private NetworkTableEntry m_DistanceAdjust;
+  public NetworkTableEntry m_DistanceAdjust;
   private NetworkTableEntry m_HoodAdjust;
 
   public double m_OnTheFlyRPMAdjust = 0;
