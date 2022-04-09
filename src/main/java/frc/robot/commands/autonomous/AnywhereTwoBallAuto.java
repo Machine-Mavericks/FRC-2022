@@ -28,7 +28,7 @@ public class AnywhereTwoBallAuto extends SequentialCommandGroup {
       // Intake the ball
       new SteerTowardsBall(true, 2.5, 0.2),
       // Shoot all balls
-      new AutoShootAllCommand().deadlineWith(new SteerTowardsHub())
+      new AutoShootAllCommand(false).deadlineWith(new SteerTowardsHub())
       
     );
   }
