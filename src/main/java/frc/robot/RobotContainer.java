@@ -8,19 +8,16 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.BallCameraAutoTilt;
-import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LEDCommand;
-import frc.robot.commands.LowerShooter;
 import frc.robot.commands.ReleaseBall;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.SteerTowardsHub;
-import frc.robot.commands.TiltShooter;
 import frc.robot.commands.shotEvaluationCommand;
 import frc.robot.commands.autonomous.AlternateFourBallCommand;
 import frc.robot.commands.autonomous.AnywhereTwoBallAuto;
-import frc.robot.commands.autonomous.AutoShootCommand;
+import frc.robot.commands.autonomous.AutoShootAllCommand;
 import frc.robot.commands.autonomous.FiveBallAuto;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.CameraTilt;
@@ -54,7 +51,6 @@ public class RobotContainer {
   public static final Drivetrain drivetrain = new Drivetrain();
   public static final SwerveOdometry odometry = new SwerveOdometry();
   public static final PowerPanel panel = new PowerPanel();
-  // public static final LED LEDStrip = new LED(RobotMap.PWMPorts.LED_STRIP1);
   public static final LEDBlinkin LEDStrip = new LEDBlinkin();
   public static final Shooter m_shooter = new Shooter();
   public static final Lifter lifter = new Lifter();
@@ -86,42 +82,22 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private static void configureButtonBindings() {
-    // OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
 
-    //OI.highSpeedButton.whileHeld(new ShooterCommand());
-    OI.highSpeedButton.whileHeld(new AutoShootCommand(RobotContainer.hubTargeting::GetTargetRPM).deadlineWith(new SteerTowardsHub()));
-    // TODO: Disable binding for competition use
-    OI.zeroButton.whenPressed(() -> gyro.resetGyro());
-    // OI.zeroButton.whenPressed(new RecordCurrentPose2d());
-    OI.intakeButton.whileHeld(new IntakeCommand());
-    OI.ballTrackingButton.whenHeld(new SteerTowardsBall(false, 20.0));
-    //OI.ballTrackingButton.whenHeld(new AutoPickUpBallCommand());
-    OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
-    OI.releaseBallButton.whileHeld(new ReleaseBall());
+    /** DRIVER BUTTONS */
+    OI.zeroButton.whenPressed(() -> gyro.resetGyro()); //back button
+    OI.ballTrackingButton.whenHeld(new SteerTowardsBall(false, 20.0)); // left bumper
+    OI.hubTrackingButton.whenHeld(new SteerTowardsHub().deadlineWith(new AutoShootAllCommand())); // B button
 
-    OI.tiltShooterButton.whenPressed(new TiltShooter());
-    OI.lowerShooterButton.whenPressed(new LowerShooter());
-    // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(0.5, 0.20));
-
-    // don't lift the climber unless the time is greater than 119.0
-    // if (HAL.getMatchTime() > 119.0){
-    
-    
-    //Breaks climber, removed because of keymapping issues, once button layout is finalized, uncomment and fix
-    //OI.ClimberButtonReverse.whileHeld(new ClimbCommand());
+    /** OPERATOR BUTTONS */
+    // OI.highSpeedButton.whileHeld(new ShooterCommand());
+    OI.highSpeedButton.whileHeld(new AutoShootAllCommand().deadlineWith(new SteerTowardsHub())); // Y button
+    OI.intakeButton.whileHeld(new IntakeCommand()); // X button
+    OI.releaseBallButton.whileHeld(new ReleaseBall()); // Right trigger
 
     OI.overshootButton.whenPressed(new shotEvaluationCommand("Overshoot"));
     OI.undershootButton.whenPressed(new shotEvaluationCommand("Undershoot"));
     OI.shothitButton.whenPressed(new shotEvaluationCommand("Hit"));
-    OI.bounceoutButton.whenPressed(new shotEvaluationCommand("Bounced-Out"));
-    //}
-    
-    // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new
-    // Rotation2d(0)), 0.35, 0.15, 20.0));
-    // new TurnRobot(45.0,false,2.0));//new SampleAutoCommand());
-
-    // (new JoystickButton(OI.driverController, XboxController.Button.kB.value)).whenHeld(new AutoShootCommand(AutoShootCommand.HIGH_SPEED));
-  }
+    OI.bounceoutButton.whenPressed(new shotEvaluationCommand("Bounced-Out"));}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -130,25 +106,13 @@ public class RobotContainer {
    */
   public static Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    if (RobotContainer.shuffleboard.m_selectedPath == 0) 
+    if (RobotContainer.shuffleboard.m_selectedPath == 0)
       return new AnywhereTwoBallAuto();
     else if (RobotContainer.shuffleboard.m_selectedPath == 1)
       return new FiveBallAuto();
     else if (RobotContainer.shuffleboard.m_selectedPath == 2)
       return new AlternateFourBallCommand();
-    else 
+    else
       return new AnywhereTwoBallAuto();
-    // if (RobotContainer.shuffleboard.m_selectedPath == 0) {
-    //   return new TwoBallAuto();
-    // } else if (RobotContainer.shuffleboard.m_selectedPath == 1) {
-    //   return new ThreeBallAuto();
-    // } else if (RobotContainer.shuffleboard.m_selectedPath == 2) {
-    //     return new AnywhereTwoBallAuto();
-    // } else if (RobotContainer.shuffleboard.m_selectedPath == 3) {
-    //     return new FiveBallAuto();
-    //   //return new OneBallAuto();
-    // } else {
-    //   return new LowBallAuto();
-    // }
   }
 }

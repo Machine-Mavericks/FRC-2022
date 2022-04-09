@@ -57,6 +57,10 @@ public class Lifter extends SubsystemBase {
     lifterFalcon.set(ControlMode.Velocity, RobotMap.BALL_LIFTER_SPEED* (2048 / 600.0)); 
   }
 
+  public void liftBalls(double Speed){
+    lifterFalcon.set(ControlMode.Velocity, Speed* (2048 / 600.0)); 
+  }
+
   public void releaseBalls(){
     lifterFalcon.set(ControlMode.Velocity, -RobotMap.BALL_LIFTER_SPEED* (2048 / 600.0)); 
   }

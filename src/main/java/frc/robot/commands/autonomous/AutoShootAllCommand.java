@@ -8,12 +8,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import edu.wpi.first.math.geometry.Translation2d;
 
+
 public class AutoShootAllCommand extends CommandBase {
   
   private double m_time;
   private double m_noballtime;
-  private double m_startdelay = 0.25;
-  private double m_enddelay = 0.3;
+  private double m_startdelay = 0.3;
+  private double m_enddelay = 0.1;
   private double m_timeout = 2.0;
   
   /** Creates a new AutoShootAllCommand. */
@@ -33,6 +34,7 @@ public class AutoShootAllCommand extends CommandBase {
     // set our shooting solution
     RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
     RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.GetTargetRPM());
+    RobotContainer.m_shooter.setTopShooterSpeed(RobotContainer.hubTargeting.GetTopTargetRPM());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,8 +43,9 @@ public class AutoShootAllCommand extends CommandBase {
     m_time += 0.02;
     
     // is it time to switch on lifter? turn on lifter after initial delay
-    if (m_time > m_startdelay)
-      RobotContainer.lifter.liftBalls();
+    if (m_time > m_startdelay && RobotContainer.hubTargeting.isTargetPresent())
+      // lift balls - set lifter motor to 5,000 rpm
+      RobotContainer.lifter.liftBalls(-4500.0);
 
     // do we have any balls in the stack? if not, count up no-ball time
     // if we find something, then restart time counter
@@ -56,7 +59,7 @@ public class AutoShootAllCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     // reset shooter back to idle, and stop lifter
-    RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed());
+    //RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed());
     RobotContainer.lifter.stopMotor();
   }
 
