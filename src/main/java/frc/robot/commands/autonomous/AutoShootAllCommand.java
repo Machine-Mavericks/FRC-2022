@@ -43,7 +43,7 @@ public class AutoShootAllCommand extends CommandBase {
     m_time += 0.02;
     
     // is it time to switch on lifter? turn on lifter after initial delay
-    if (m_time > m_startdelay)
+    if (m_time > m_startdelay && RobotContainer.hubTargeting.isTargetPresent())
       // lift balls - set lifter motor to 5,000 rpm
       RobotContainer.lifter.liftBalls(-4500.0);
 
