@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.AimThenShoot;
-import frc.robot.commands.BallCameraAutoTilt;
+import frc.robot.commands.ClimbGroup;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LEDCommand;
@@ -21,7 +21,6 @@ import frc.robot.commands.autonomous.AlternateFourBallCommand;
 import frc.robot.commands.autonomous.AnywhereTwoBallAuto;
 import frc.robot.commands.autonomous.FiveBallAuto;
 import frc.robot.subsystems.BallTargeting;
-import frc.robot.subsystems.CameraTilt;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gyro;
@@ -58,7 +57,6 @@ public class RobotContainer {
   public static final Intake intake = new Intake();
   public static final BallTargeting ballTargeting = new BallTargeting();
   public static final HubTargeting hubTargeting = new HubTargeting();
-  public static final CameraTilt cameraTilt = new CameraTilt();
   public static final Climber climber = new Climber();
 
   /**
@@ -68,8 +66,7 @@ public class RobotContainer {
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
     LEDStrip.setDefaultCommand(new LEDCommand());
-    cameraTilt.setDefaultCommand(new BallCameraAutoTilt());
-
+    
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -114,6 +111,7 @@ public class RobotContainer {
     OI.undershootButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Undershoot));
     OI.shothitButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Hit));
     OI.bounceoutButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.BouncedOut));
+    OI.climbButton.whenHeld(new ClimbGroup());
     //}
     
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new

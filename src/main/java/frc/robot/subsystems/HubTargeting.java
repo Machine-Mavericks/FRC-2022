@@ -160,26 +160,26 @@ public class HubTargeting extends SubsystemBase {
   /**
    * Finds the RPM (rates per minute) needed to shoot a distance
    * Note: equation will change with finished shooter + testing
-   * 
-   * @return RPM as double
-   */
-  public double GetTargetRPM() {
-    // get distance in m
-    double m = EstimateDistance();
-
+   * @return RPM as double*/
+  public double GetTargetRPM(double distance) {
     // based on test data from April 2 2022
+    double m = distance;
     double RPM;
     if (m <= 6.50)
       RPM = 79.754607 * m * m * m - 1048.135892 * m * m + 4676.800317 * m - 5344.739444;
     else
-      RPM = -155.138546 * m * m + 2579.107342 * m - 7666.820108;
-    // RPM = -223.553975*m*m + 3614.984958*m - 11390.579404;
-    // RPM = -490.671237*m*m + 7244.183846*m - 23572.468835;
+      RPM = -155.138546*m*m +2579.107342*m - 7666.820108;  
 
     // from field testing April 7 2022
     if (m>6.30 && m<6.69)
       RPM += 30.0;
-      
+    if (m>4.10 && m<4.40)
+      RPM -= 30.0;
+
+    // April 9 2022 
+    if (m<3.75)
+      RPM += 50.0;
+
     // add in RPM adustment (if any) from shuffleboard
     RPM += m_RPMAdjust.getDouble(0.0);
 
@@ -189,25 +189,32 @@ public class HubTargeting extends SubsystemBase {
     return RPM;
   }
 
-  public double GetTopTargetRPM() {
-    // get distance in m
-    double m = EstimateDistance();
+   public double GetTargetRPM()
+   { return GetTargetRPM(EstimateDistance()); }
 
+  
+  
+   public double GetTopTargetRPM(double distance) {
+    // get distance in m
+    double m = distance;
+    
     // based on test data from April 2 2022
     double RPM;
     if (m < 5.50)
       RPM = 24.836680 * m * m + 21.019404 * m + 2409.906201;
     else
-      RPM = 436.415649 * m * m - 6400.682739 * m + 25605.030690;
-
-    if (m < 3.75)
+      RPM = 436.415649*m*m -6400.682739*m +25605.030690;
+    
+    // April 9 2022 
+    if (m<3.75)
+      RPM -= 50.0;
+    
+    /*if (m<3.75)
       RPM += 50.0;
-    if (m < 3.50)
+    if (m<3.50)
       RPM += 50.0;
-    if (m < 3.25)
-      RPM += 50.0;
-
-    // RPM = -171.693590*m*m +1810.923496*m - 1559.209071;
+    if (m<3.25)
+      RPM += 50.0; */
 
     // adjust top flywheel RPM
     RPM += m_TopRPMAdjust.getDouble(0.0);
@@ -215,15 +222,16 @@ public class HubTargeting extends SubsystemBase {
     return RPM;
   }
 
-  /**
-   * Finds the Shooter Hood actuator Setting need to shoot a distance
-   * 
-   * @return hood actuator setting
-   */
-  public double GetTargetHoodSetting() {
-    // get distance in m
-    double m = EstimateDistance();
+  public double GetTopTargetRPM()
+    { return GetTopTargetRPM(EstimateDistance()); }
+   
 
+  /** Finds the Shooter Hood actuator Setting need to shoot a distance
+   * @return hood actuator setting*/
+  public double GetTargetHoodSetting(double distance) {
+    // get distance in m
+    double m = distance;
+    
     // based on test data from April 2 2022
     double hood;
     if (m <= 4.78)
@@ -236,6 +244,10 @@ public class HubTargeting extends SubsystemBase {
 
     return hood;
   }
+  
+  public double GetTargetHoodSetting()
+    { return GetTargetHoodSetting(EstimateDistance()); }
+    
 
   /** Returns shooter idle speed (rpm) */
   public double getShooterIdleSpeed() {
@@ -297,11 +309,13 @@ public class HubTargeting extends SubsystemBase {
         .getEntry();
 
     m_TopRPMAdjust = Tab.add("Top Flywheel Speed Adjust (rpm)", 0.0)
-        .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(Map.of("min", -500.0, "max", 500.0))
-        .withPosition(3, 3)
-        .withSize(3, 1)
-        .getEntry();
+                  .withWidget(BuiltInWidgets.kNumberSlider)
+                  .withProperties(Map.of("min", -500.0, "max", 500.0))
+                  .withPosition(3,3)
+                  .withSize(3,1)
+                  .getEntry();
+  }
+
 
   }
 

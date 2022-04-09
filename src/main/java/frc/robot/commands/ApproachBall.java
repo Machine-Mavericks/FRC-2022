@@ -49,7 +49,7 @@ double TargetAngle = 0;
 if ((RobotContainer.ballTargeting.IsBall())){
 
   
-  TargetAngle = RobotContainer.ballTargeting.ballAngle();
+  TargetAngle = RobotContainer.ballTargeting.getTargetHorAngle();
     
   // determine angle correction - uses PI controller
   angle = pidController.calculate(TargetAngle+5.0);
