@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
@@ -79,6 +80,13 @@ public class SwerveOdometry extends SubsystemBase {
 
     // set robot odometry
     m_odometry.resetPosition(position, new Rotation2d(gyroangle * DEGtoRAD));
+  }
+
+  public void setPositionHub(double dist) {
+    double theta = getAngle()-180;
+    double x = 8.23-dist*Math.cos(Math.toRadians(theta));
+    double y = 4.11-dist*Math.sin(Math.toRadians(theta));
+    setPosition(x,y,getAngle(),RobotContainer.gyro.getYaw());
   }
 
   /** Update current robot dometry - called by scheduler at 50Hz */
