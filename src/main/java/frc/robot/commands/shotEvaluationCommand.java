@@ -8,75 +8,75 @@ package frc.robot.commands;
 import java.util.ArrayList;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Shooter;
+import frc.robot.logging.ShooterLog;
+import frc.robot.logging.ShooterLog.ShotData;
+import frc.robot.subsystems.HubTargeting;
+import frc.robot.subsystems.Lifter;
 
 public class ShotEvaluationCommand extends CommandBase {
 
+  public enum ShotType {Overshoot, Undershoot, Hit, BouncedOut};
   public static Pose2d RobotPose;
 
-  Shooter m_shooter = RobotContainer.m_shooter;
-  public final double RPMIncrement = 30;
+  private final double HubDistanceIncrement = 0.05;
+
+  Lifter m_lifter = RobotContainer.lifter;
+  HubTargeting m_hubTargeting = RobotContainer.hubTargeting;
+  private ShotType m_shotType;
+
+  //Logs odometry and shot successfullness, but does nothing with it, implement logging to file later.
+  // private ArrayList<ArrayList<String>> ShotList = new ArrayList<ArrayList<String>>();
 
   /** Creates a new shotEvaluationCommand. */
-  public ShotEvaluationCommand(String shotType) {
-    if (m_shooter.ShotsTaken > m_shooter.ShotsLogged){
-      //Define arraylist of data for this shot
-      ArrayList<String> SavedCurrentShotData = new ArrayList<String>();
-      
-      //Define the robot's current Pose2D
-      //Pose2d RobotPose = RobotContainer.odometry.getPose2d();
-
-      //First value is what happened to that shot
-      SavedCurrentShotData.add(shotType);
-      //Second value is X position
-      SavedCurrentShotData.add(String.valueOf(RobotPose.getX()));
-      //Third value is Y position
-      SavedCurrentShotData.add(String.valueOf(RobotPose.getY()));
-      //Fourth value is robot rotation in degrees
-      SavedCurrentShotData.add(String.valueOf(RobotPose.getRotation().getDegrees()));
-
-      //Save this shot to the list of shots
-      m_shooter.ShotList.add(SavedCurrentShotData);
-
-      //Move previous shot back by one in array
-      m_shooter.LastTwoShots[0] = m_shooter.LastTwoShots[1];
-      //Set new shot into array
-      m_shooter.LastTwoShots[1] = shotType;
-
-      m_shooter.ShotsLogged+=1;
-    }
-   
-
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.m_shooter);
+  public ShotEvaluationCommand(ShotType shotType) {
+    m_shotType = shotType;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+    RobotPose = RobotContainer.odometry.getPose2d();
+    SmartDashboard.putNumber("array size",ShooterLog.instance().pastShots.size());
+
+    if (m_lifter.shotsTaken > ShooterLog.instance().pastShots.size()){
+
+    ShooterLog.instance().logShot(new ShooterLog.ShotData(m_shotType,RobotPose.getX(),RobotPose.getY(),RobotPose.getRotation().getDegrees()));
+
+    double Offset;
+
+    ArrayList<ShotData> pastShots = ShooterLog.instance().pastShots;
+
+    if ((pastShots.size()>=2) && pastShots.get(pastShots.size()-1).type == pastShots.get(pastShots.size()-2).type){
+      
+      switch (m_shotType) {
+        case BouncedOut:
+          Offset = 0;
+          break;
+        case Hit:
+          Offset = 0;
+          break;
+        case Undershoot:
+          Offset = HubDistanceIncrement;
+          break;
+        case Overshoot:
+          Offset = -HubDistanceIncrement;
+          break;
+        default:
+          Offset = 0.0;
+          break;
+      }
+      m_hubTargeting.m_DistanceAdjust.setDouble(m_hubTargeting.m_DistanceAdjust.getDouble(0.0)+ Offset);
+    }
+  }
+}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    double Offset;
-    if (m_shooter.LastTwoShots[0]==m_shooter.LastTwoShots[1]) {
-      switch (m_shooter.LastTwoShots[1]) {
-        case "Hit":
-          Offset = 0;
-        case "Overshoot":
-          Offset = RPMIncrement;
-        case "Undershoot":
-          Offset = -RPMIncrement;
-        default:
-          Offset = 0;
-      }
-      m_shooter.ShooterSpeedOffset+=Offset;
-      RobotContainer.hubTargeting.m_OnTheFlyRPMAdjust = m_shooter.ShooterSpeedOffset;
-    }
-  }
-
+  public void execute() {}
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
@@ -84,6 +84,6 @@ public class ShotEvaluationCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

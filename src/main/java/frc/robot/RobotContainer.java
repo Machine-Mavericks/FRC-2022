@@ -14,9 +14,9 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LEDCommand;
 import frc.robot.commands.LowerShooter;
 import frc.robot.commands.ReleaseBall;
+import frc.robot.commands.ShotEvaluationCommand;
 import frc.robot.commands.SteerTowardsBall;
 import frc.robot.commands.TiltShooter;
-import frc.robot.commands.ShotEvaluationCommand;
 import frc.robot.commands.autonomous.AlternateFourBallCommand;
 import frc.robot.commands.autonomous.AnywhereTwoBallAuto;
 import frc.robot.commands.autonomous.FiveBallAuto;
@@ -52,7 +52,6 @@ public class RobotContainer {
   public static final Drivetrain drivetrain = new Drivetrain();
   public static final SwerveOdometry odometry = new SwerveOdometry();
   public static final PowerPanel panel = new PowerPanel();
-  // public static final LED LEDStrip = new LED(RobotMap.PWMPorts.LED_STRIP1);
   public static final LEDBlinkin LEDStrip = new LEDBlinkin();
   public static final Shooter m_shooter = new Shooter();
   public static final Lifter lifter = new Lifter();
@@ -84,7 +83,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private static void configureButtonBindings() {
-    // OI.LEDButton.whenPressed(() -> led.SetEntireStripColorRGB(255, 0, 0));
 
     //OI.highSpeedButton.whileHeld(new ShooterCommand());
     //OI.highSpeedButton.whileHeld(new AutoShootCommand(RobotContainer.hubTargeting::GetTargetRPM).deadlineWith(new SteerTowardsHub()));
@@ -132,25 +130,13 @@ public class RobotContainer {
    */
   public static Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    if (RobotContainer.shuffleboard.m_selectedPath == 0) 
+    if (RobotContainer.shuffleboard.m_selectedPath == 0)
       return new AnywhereTwoBallAuto();
     else if (RobotContainer.shuffleboard.m_selectedPath == 1)
       return new FiveBallAuto();
     else if (RobotContainer.shuffleboard.m_selectedPath == 2)
       return new AlternateFourBallCommand();
-    else 
+    else
       return new AnywhereTwoBallAuto();
-    // if (RobotContainer.shuffleboard.m_selectedPath == 0) {
-    //   return new TwoBallAuto();
-    // } else if (RobotContainer.shuffleboard.m_selectedPath == 1) {
-    //   return new ThreeBallAuto();
-    // } else if (RobotContainer.shuffleboard.m_selectedPath == 2) {
-    //     return new AnywhereTwoBallAuto();
-    // } else if (RobotContainer.shuffleboard.m_selectedPath == 3) {
-    //     return new FiveBallAuto();
-    //   //return new OneBallAuto();
-    // } else {
-    //   return new LowBallAuto();
-    // }
   }
 }
