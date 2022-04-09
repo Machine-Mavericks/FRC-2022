@@ -22,11 +22,17 @@ public class AutoShootAllCommand extends CommandBase {
   private double distanceestimate;
   private boolean FinishedSampling;
   private boolean NoSamplesFound;
+  private boolean m_lockwheels;
 
   /** Creates a new AutoShootAllCommand. */
-  public AutoShootAllCommand() {
+  public AutoShootAllCommand(boolean lockwheels) {
+    m_lockwheels = lockwheels;
+    
     // aiming uses drive system
-    addRequirements(RobotContainer.drivetrain);
+    if (m_lockwheels)
+      addRequirements(RobotContainer.drivetrain);
+
+    
   }
 
   // Called when the command is initially scheduled.
@@ -36,7 +42,8 @@ public class AutoShootAllCommand extends CommandBase {
     m_noballtime = 0.0;
 
     // stop robot from moving
-    RobotContainer.drivetrain.drive(new Translation2d(0,0),0, false);
+    if (m_lockwheels)
+      RobotContainer.drivetrain.drive(new Translation2d(0,0),0, false);
 
     // reset number of camera samples
     NumSamples = 0;
