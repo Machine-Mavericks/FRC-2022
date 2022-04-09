@@ -110,10 +110,10 @@ public class RobotContainer {
     //Breaks climber, removed because of keymapping issues, once button layout is finalized, uncomment and fix
     //OI.ClimberButtonReverse.whileHeld(new ClimbCommand());
 
-    OI.overshootButton.whenPressed(new ShotEvaluationCommand("Overshoot"));
-    OI.undershootButton.whenPressed(new ShotEvaluationCommand("Undershoot"));
-    OI.shothitButton.whenPressed(new ShotEvaluationCommand("Hit"));
-    OI.bounceoutButton.whenPressed(new ShotEvaluationCommand("Bounced-Out"));
+    OI.overshootButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Overshoot));
+    OI.undershootButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Undershoot));
+    OI.shothitButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Hit));
+    OI.bounceoutButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.BouncedOut));
     //}
     
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new

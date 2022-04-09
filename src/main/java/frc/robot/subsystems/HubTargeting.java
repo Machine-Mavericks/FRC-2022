@@ -57,9 +57,6 @@ public class HubTargeting extends SubsystemBase {
     updateShuffleboard();
   }
 
-  public void setShooterSpeedOffset(double Offset){
-      m_OnTheFlyRPMAdjust = Offset;
-  }
   /**
    * Function to tell if target is visible in limelight.
    * 
@@ -81,11 +78,6 @@ public class HubTargeting extends SubsystemBase {
 
     // we have valid target if distance is >2.9m
     return (target == true && distance >= 2.90);
-  }
-
-  public void barPipeline() {
-    // set the pipeline to the bar
-    m_hubCamera.setPipeline(1);
   }
 
   public double getBarTY() {
@@ -137,7 +129,7 @@ public class HubTargeting extends SubsystemBase {
       distance = 0.0039 * ty * ty - 0.1523 * ty + 4.094;
 
     // add in adustment (if any) from shuffleboard
-    distance += m_DistanceAdjust.getDouble(0.0);
+    distance += (m_DistanceAdjust.getDouble(0.0));
 
     // return distance estimate (m)
     return distance;
@@ -162,7 +154,6 @@ public class HubTargeting extends SubsystemBase {
   public boolean ReadyToShoot() {
     double targetAngle = getHubAngle();
     Boolean target = IsTarget();
-    Boolean ready;
     return (targetAngle <= 1.0 && targetAngle >= -1.0 && target == true);
   }
 
@@ -293,7 +284,7 @@ public class HubTargeting extends SubsystemBase {
 
     m_DistanceAdjust = Tab.addPersistent("Hub Distance Adjust (m)", 0.0)
         .withWidget(BuiltInWidgets.kNumberSlider)
-        .withProperties(Map.of("min", -0.25, "max", 0.25))
+        .withProperties(Map.of("min", -1.0, "max", 1.0))
         .withPosition(3, 1)
         .withSize(3, 1)
         .getEntry();

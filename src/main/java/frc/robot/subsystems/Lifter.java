@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
@@ -27,6 +28,9 @@ public class Lifter extends SubsystemBase {
   public NetworkTableEntry lifterSpeedEntry;
 
   public DigitalInput liftLimit = new DigitalInput(RobotMap.LIFTER_LIMIT_ID);
+
+  public int shotsTaken = 0;
+  private boolean hasBall = false;
 
   /** Creates a new Lifter. */
   public Lifter() {
@@ -50,6 +54,15 @@ public class Lifter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (hasBall && liftLimit.get()){
+      hasBall = false;
+      shotsTaken++;
+    }
+    if (!liftLimit.get()){
+      hasBall = true;
+    }
+    SmartDashboard.putNumber("ShotsTaken", shotsTaken);
+
     updateShuffleboard();
   }
 

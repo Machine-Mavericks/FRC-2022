@@ -57,7 +57,7 @@ public class Shooter extends SubsystemBase {
 
   // Shot evaluation variables
   
-  public double ShooterSpeedOffset = 0;
+  public double HubDistanceOffset = 0;
 
   public static int ShotsTaken = 0;
   public static Pose2d RobotPose;

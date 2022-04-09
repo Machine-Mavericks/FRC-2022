@@ -31,11 +31,7 @@ public class DelayCommand extends CommandBase {
     // Returns false when the command should end.
     @Override
     public boolean isFinished() {
-        if (m_Timer.hasElapsed(m_delayTimer)==true) {
-            return true;
-        } else {
-            return false;
-        }
+        return(m_Timer.hasElapsed(m_delayTimer));
     }
 
     @Override
