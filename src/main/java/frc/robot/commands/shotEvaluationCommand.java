@@ -6,31 +6,22 @@ package frc.robot.commands;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Shooter;
 
-public class shotEvaluationCommand extends CommandBase {
-  //int ShotNumber;
-  
-  private double ShooterSpeedOffset = 0;
+public class ShotEvaluationCommand extends CommandBase {
 
-  public static int ShotsTaken = 0;
   public static Pose2d RobotPose;
-  private int ShotsLogged = 0;
 
-  private String[] LastTwoShots = {"",""};
-
-  private final double RPMIncrement = 30;
-
-  //Logs odometry and shot successfullness, but does nothing with it, implement logging to file later.
-  private ArrayList<ArrayList<String>> ShotList = new ArrayList<ArrayList<String>>();
+  Shooter m_shooter = RobotContainer.m_shooter;
+  public final double RPMIncrement = 30;
 
   /** Creates a new shotEvaluationCommand. */
-  public shotEvaluationCommand(String shotType) {
-    if (ShotsTaken > ShotsLogged){
+  public ShotEvaluationCommand(String shotType) {
+    if (m_shooter.ShotsTaken > m_shooter.ShotsLogged){
       //Define arraylist of data for this shot
       ArrayList<String> SavedCurrentShotData = new ArrayList<String>();
       
@@ -47,14 +38,14 @@ public class shotEvaluationCommand extends CommandBase {
       SavedCurrentShotData.add(String.valueOf(RobotPose.getRotation().getDegrees()));
 
       //Save this shot to the list of shots
-      ShotList.add(SavedCurrentShotData);
+      m_shooter.ShotList.add(SavedCurrentShotData);
 
       //Move previous shot back by one in array
-      LastTwoShots[0] = LastTwoShots[1];
+      m_shooter.LastTwoShots[0] = m_shooter.LastTwoShots[1];
       //Set new shot into array
-      LastTwoShots[1] = shotType;
+      m_shooter.LastTwoShots[1] = shotType;
 
-      ShotsLogged+=1;
+      m_shooter.ShotsLogged+=1;
     }
    
 
@@ -70,8 +61,8 @@ public class shotEvaluationCommand extends CommandBase {
   @Override
   public void execute() {
     double Offset;
-    if (LastTwoShots[0]==LastTwoShots[1]) {
-      switch (LastTwoShots[1]) {
+    if (m_shooter.LastTwoShots[0]==m_shooter.LastTwoShots[1]) {
+      switch (m_shooter.LastTwoShots[1]) {
         case "Hit":
           Offset = 0;
         case "Overshoot":
@@ -81,8 +72,8 @@ public class shotEvaluationCommand extends CommandBase {
         default:
           Offset = 0;
       }
-      ShooterSpeedOffset+=Offset;
-      RobotContainer.hubTargeting.m_OnTheFlyRPMAdjust = ShooterSpeedOffset;
+      m_shooter.ShooterSpeedOffset+=Offset;
+      RobotContainer.hubTargeting.m_OnTheFlyRPMAdjust = m_shooter.ShooterSpeedOffset;
     }
   }
 

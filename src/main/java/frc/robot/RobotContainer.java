@@ -9,19 +9,16 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.AimThenShoot;
 import frc.robot.commands.BallCameraAutoTilt;
-import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LEDCommand;
 import frc.robot.commands.LowerShooter;
 import frc.robot.commands.ReleaseBall;
 import frc.robot.commands.SteerTowardsBall;
-import frc.robot.commands.SteerTowardsHub;
 import frc.robot.commands.TiltShooter;
-import frc.robot.commands.shotEvaluationCommand;
+import frc.robot.commands.ShotEvaluationCommand;
 import frc.robot.commands.autonomous.AlternateFourBallCommand;
 import frc.robot.commands.autonomous.AnywhereTwoBallAuto;
-import frc.robot.commands.autonomous.AutoShootAllCommand;
 import frc.robot.commands.autonomous.FiveBallAuto;
 import frc.robot.subsystems.BallTargeting;
 import frc.robot.subsystems.CameraTilt;
@@ -115,10 +112,10 @@ public class RobotContainer {
     //Breaks climber, removed because of keymapping issues, once button layout is finalized, uncomment and fix
     //OI.ClimberButtonReverse.whileHeld(new ClimbCommand());
 
-    OI.overshootButton.whenPressed(new shotEvaluationCommand("Overshoot"));
-    OI.undershootButton.whenPressed(new shotEvaluationCommand("Undershoot"));
-    OI.shothitButton.whenPressed(new shotEvaluationCommand("Hit"));
-    OI.bounceoutButton.whenPressed(new shotEvaluationCommand("Bounced-Out"));
+    OI.overshootButton.whenPressed(new ShotEvaluationCommand("Overshoot"));
+    OI.undershootButton.whenPressed(new ShotEvaluationCommand("Undershoot"));
+    OI.shothitButton.whenPressed(new ShotEvaluationCommand("Hit"));
+    OI.bounceoutButton.whenPressed(new ShotEvaluationCommand("Bounced-Out"));
     //}
     
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new

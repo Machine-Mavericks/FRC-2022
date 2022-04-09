@@ -40,9 +40,9 @@ public class ShooterCommand extends CommandBase {
       // And the shooter has reached 95% flywheel speed, feed balls
       if((RobotContainer.m_shooter.getShooterSpeed() >= RobotContainer.hubTargeting.GetTargetRPM()*0.95)){
         //If two balls are loaded, then increment the number of shots taken in shotEvaluationCommand by two, if only one is loaded, increment it by one 
-        if (TwoBallsLoaded){shotEvaluationCommand.ShotsTaken+=2;}else{shotEvaluationCommand.ShotsTaken+=1;}
+        if (TwoBallsLoaded){RobotContainer.m_shooter.ShotsTaken+=2;}else{RobotContainer.m_shooter.ShotsTaken+=1;}
         //Set the current pose2D for odometry recording purposes
-        shotEvaluationCommand.RobotPose = RobotContainer.odometry.getPose2d();
+        ShotEvaluationCommand.RobotPose = RobotContainer.odometry.getPose2d();
 
         //Lift balls
         RobotContainer.lifter.liftBalls();

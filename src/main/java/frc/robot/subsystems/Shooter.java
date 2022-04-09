@@ -4,10 +4,14 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -49,6 +53,20 @@ public class Shooter extends SubsystemBase {
   // max speed servo can move at = range of position / total time
   // -1.0 to 0.75 over time of 3.2s
   private final double m_HoodMaxSpeed = (1.0 + 0.75)/3.2;
+
+
+  // Shot evaluation variables
+  
+  public double ShooterSpeedOffset = 0;
+
+  public static int ShotsTaken = 0;
+  public static Pose2d RobotPose;
+  public int ShotsLogged = 0;
+
+  public String[] LastTwoShots = {"",""};
+
+  //Logs odometry and shot successfullness, but does nothing with it, implement logging to file later.
+  public ArrayList<ArrayList<String>> ShotList = new ArrayList<ArrayList<String>>();
 
   /** Creates a new Shooter. */
   public Shooter() {
