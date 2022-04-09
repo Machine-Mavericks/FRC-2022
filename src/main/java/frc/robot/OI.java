@@ -80,8 +80,7 @@ public class OI {
         static final Button BALL_RELEASE_BUTTON = XboxController.Button.kBack;
 
         //Not the right mappings, fix later
-        //static final Button CLIMBER_BUTTON = XboxController.Button.kLeftBumper;
-        //static final Button CLIMBER_BUTTON_REVERSE = XboxController.Button.kStart;
+        static final Button CLIMBER_BUTTON = XboxController.Button.kStart;
 
         // button to tilt the shooter
         static final Button SHOOTER_TILT_BUTTON = XboxController.Button.kA;
@@ -132,6 +131,7 @@ public class OI {
     public static final JoystickButton overshootButton = new JoystickButton(operatorController, Bindings.OPERATOREVALUATION_OVERSHOOT.value);
     public static final JoystickButton shothitButton = new JoystickButton(operatorController, Bindings.OPERATOREVALUATION_SHOTHIT.value);
     public static final JoystickButton bounceoutButton = new JoystickButton(operatorController, Bindings.OPERATOREVALUATION_BOUNCEOUT.value);
+    public static final JoystickButton climbButton = new JoystickButton(operatorController, Bindings.CLIMBER_BUTTON.value);
 
 }
  

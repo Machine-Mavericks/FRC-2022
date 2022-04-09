@@ -317,8 +317,6 @@ public class HubTargeting extends SubsystemBase {
   }
 
 
-  }
-
   /** Update subsystem shuffle board page with current targeting values */
   private void updateShuffleboard() {
     // target within range and ready to shoot
