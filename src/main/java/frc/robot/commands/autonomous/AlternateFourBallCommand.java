@@ -42,7 +42,7 @@ public class AlternateFourBallCommand extends SequentialCommandGroup {
       //new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
       // Shoot first ball
       //new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub())
-      new AutoShootAllCommand().deadlineWith(new SteerTowardsHub()),
+      new AutoShootAllCommand(false).deadlineWith(new SteerTowardsHub()),
 
       // switch on intake to allow human ball player to provide ball
       new InstantCommand(()-> RobotContainer.intake.setMotorSpeed(0))

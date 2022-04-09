@@ -33,7 +33,7 @@ public class FiveBallAuto extends SequentialCommandGroup {
       // Intake the ball
       new SteerTowardsBall(true, 2.0, 0.3),
       // Shoot first ball
-      new AutoShootAllCommand().deadlineWith(new SteerTowardsHub()),
+      new AutoShootAllCommand(false).deadlineWith(new SteerTowardsHub()),
       //new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
       // Drive to back corner
       //new AutoDriveToPose(new Pose2d(new Translation2d(-5.78, 0.134), Rotation2d.fromDegrees(-147.9)), 0.45, 0.15, 15.0),
@@ -62,10 +62,15 @@ public class FiveBallAuto extends SequentialCommandGroup {
       //new AutoDriveToPose(new Pose2d(new Translation2d(-4.95, -0.42), Rotation2d.fromDegrees(-150.0)), 0.7, 0.10, 15.0),
       
       // Shoot balls
-      new AutoShootAllCommand().deadlineWith(new SteerTowardsHub()),
+      new AutoShootAllCommand(false).deadlineWith(new SteerTowardsHub()),
 
       // switch on intake to allow human ball player to provide ball
       new InstantCommand(()-> RobotContainer.intake.setMotorSpeed(0))
       );
+  }
+
+  @Override
+  public boolean isFinished(){
+    return super.isFinished() && true;
   }
 }

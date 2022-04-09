@@ -23,7 +23,7 @@ public class AimThenShoot extends SequentialCommandGroup {
       new AimToHub(),
     
       // Shoot all our balls
-      new AutoShootAllCommand()
+      new AutoShootAllCommand(true)
 
     );
   }
