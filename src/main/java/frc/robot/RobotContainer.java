@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.AimThenShoot;
 import frc.robot.commands.BallCameraAutoTilt;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DriveCommand;
@@ -90,7 +91,8 @@ public class RobotContainer {
 
     //OI.highSpeedButton.whileHeld(new ShooterCommand());
     //OI.highSpeedButton.whileHeld(new AutoShootCommand(RobotContainer.hubTargeting::GetTargetRPM).deadlineWith(new SteerTowardsHub()));
-    OI.highSpeedButton.whileHeld(new AutoShootAllCommand().deadlineWith(new SteerTowardsHub()));
+    //OI.highSpeedButton.whileHeld(new AutoShootAllCommand().deadlineWith(new SteerTowardsHub()));
+    OI.highSpeedButton.whileHeld(new AimThenShoot());
 
     // TODO: Disable binding for competition use
     OI.zeroButton.whenPressed(() -> gyro.resetGyro());
@@ -98,7 +100,8 @@ public class RobotContainer {
     OI.intakeButton.whileHeld(new IntakeCommand());
     OI.ballTrackingButton.whenHeld(new SteerTowardsBall(false, 20.0));
     //OI.ballTrackingButton.whenHeld(new AutoPickUpBallCommand());
-    OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
+    //OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
+    OI.hubTrackingButton.whenHeld(new AimThenShoot());
     OI.releaseBallButton.whileHeld(new ReleaseBall());
 
     OI.tiltShooterButton.whenPressed(new TiltShooter());

@@ -19,7 +19,8 @@ public class AutoShootAllCommand extends CommandBase {
   
   /** Creates a new AutoShootAllCommand. */
   public AutoShootAllCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
+    // aiming uses drive system
+    addRequirements(RobotContainer.drivetrain);
   }
 
   // Called when the command is initially scheduled.
@@ -45,7 +46,7 @@ public class AutoShootAllCommand extends CommandBase {
     // is it time to switch on lifter? turn on lifter after initial delay
     if (m_time > m_startdelay)
       // lift balls - set lifter motor to 5,000 rpm
-      RobotContainer.lifter.liftBalls(-4500.0);
+      RobotContainer.lifter.liftBalls(-2500.0);
 
     // do we have any balls in the stack? if not, count up no-ball time
     // if we find something, then restart time counter

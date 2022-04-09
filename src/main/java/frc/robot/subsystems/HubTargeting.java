@@ -142,6 +142,10 @@ public class HubTargeting extends SubsystemBase {
     //RPM = -223.553975*m*m + 3614.984958*m - 11390.579404;
     //RPM = -490.671237*m*m + 7244.183846*m - 23572.468835;
 
+    // from field testing April 7 2022
+    if (m>6.30 && m<6.69)
+      RPM += 30.0;
+      
     // add in RPM adustment (if any) from shuffleboard
     RPM += m_RPMAdjust.getDouble(0.0);
 
