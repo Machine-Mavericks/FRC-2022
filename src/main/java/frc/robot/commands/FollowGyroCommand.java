@@ -50,28 +50,30 @@ public class FollowGyroCommand extends CommandBase {
   @Override
   public void execute() {
 
+    // if we have raised our arm, drive slowly
     if (!m_raiseClimb)
       m_speed = 0.1;
 
+    // if the ty is 0, the camera isn't picking up the bar, but drive forward anyways
     if (!barSeen && RobotContainer.hubTargeting.getBarTY() != 0)
       barSeen = true;
 
     if (m_climbLevel == 4) {
       if (m_raiseClimb){
-      if (!barSeen)
-        m_speed = 0.5;
-      if (RobotContainer.hubTargeting.getBarTY() > -18.0 && RobotContainer.hubTargeting.getBarTY() < -15.0)
-        m_speed = 0.2;
-      if (RobotContainer.hubTargeting.getBarTY() > -15.0)
-        m_speed = 0.08;
-      if (!(RobotContainer.hubTargeting.getBarTY() > -10 && RobotContainer.hubTargeting.getBarTY() != 0)) {
-        if (RobotContainer.hubTargeting.getBarTY() > largestTy)
-          largestTy = RobotContainer.hubTargeting.getBarTY();
-        err = RobotContainer.gyro.getYaw() - targetYaw;
-        angle = pidController.calculate(err);
-        RobotContainer.drivetrain.drive(
-            new Translation2d(-m_speed * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND, 0.0),
-            angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
+        if (!barSeen)
+          m_speed = 0.5;
+        if (RobotContainer.hubTargeting.getBarTY() > -18.0 && RobotContainer.hubTargeting.getBarTY() < -15.0)
+          m_speed = 0.2;
+        if (RobotContainer.hubTargeting.getBarTY() > -15.0)
+          m_speed = 0.08;
+        if (!(RobotContainer.hubTargeting.getBarTY() > -10 && RobotContainer.hubTargeting.getBarTY() != 0)) {
+          if (RobotContainer.hubTargeting.getBarTY() > largestTy)
+            largestTy = RobotContainer.hubTargeting.getBarTY();
+          err = RobotContainer.gyro.getYaw() - targetYaw;
+          angle = pidController.calculate(err);
+          RobotContainer.drivetrain.drive(
+              new Translation2d(-m_speed * Drivetrain.MAX_VELOCITY_METERS_PER_SECOND, 0.0),
+              angle * Drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, false);
       }}
     }
 

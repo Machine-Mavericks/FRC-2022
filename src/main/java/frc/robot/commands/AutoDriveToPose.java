@@ -21,7 +21,7 @@ public class AutoDriveToPose extends CommandBase {
   private double m_time;
 
   // final position tolerance (m) / angle tolerance (deg) to consider we have arrived at destination
-  private final double m_positiontolerance = 0.12;
+  private final double m_positiontolerance;
   private final double m_angletolerance = 2.0;
 
   // x, y, rotation PID controllers
@@ -44,6 +44,7 @@ public class AutoDriveToPose extends CommandBase {
     m_rotspeed = rotationalspeed;
     m_timeout = timeout;
     m_recallPoint = false;
+    m_positiontolerance = 0.12;
   }
 
   /** use this during teleop to go to pre-recorded position*/
@@ -52,6 +53,7 @@ public class AutoDriveToPose extends CommandBase {
     m_speed = speed;
     m_rotspeed = rotationalspeed;
     m_recallPoint = true;
+    m_positiontolerance = 0.12;
   }
 
   // Called when the command is initially scheduled.
@@ -112,14 +114,10 @@ public class AutoDriveToPose extends CommandBase {
   public boolean isFinished() {
     Pose2d curr = RobotContainer.odometry.getPose2d();
 
-    // we are finished if we are within erorr of target or command had timeed out
+    // we are finished if we are within erorr of target or command had timed out
     return (((Math.abs(m_target.getX() - curr.getX()) <  m_positiontolerance) &&
           (Math.abs(m_target.getY() - curr.getY()) <  m_positiontolerance) &&
           (Math.abs(m_target.getRotation().getDegrees() - curr.getRotation().getDegrees()) < m_angletolerance)) ||
           (m_time >= m_timeout));
   }
-
-  
-
-
 }

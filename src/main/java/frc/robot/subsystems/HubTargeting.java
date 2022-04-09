@@ -25,6 +25,8 @@ public class HubTargeting extends SubsystemBase {
   private NetworkTableEntry m_targetWithinRange;
   private NetworkTableEntry m_readyToShoot;
   private NetworkTableEntry m_targetDetected;
+  private NetworkTableEntry m_estimatedHighBarTarget;
+  private NetworkTableEntry m_estimatedLowBarTarget;
 
   private NetworkTableEntry m_RPMAdjust;
   private NetworkTableEntry m_DistanceAdjust;
@@ -262,6 +264,9 @@ public class HubTargeting extends SubsystemBase {
     m_RPM = l1.add("Target RPM", 0.0).getEntry();
     m_Hood = l1.add("Target Hood", 0.0).getEntry();
 
+    m_estimatedHighBarTarget = l1.add("high bar estimated distance", 0.0).getEntry();
+    m_estimatedLowBarTarget = l1.add("low bar estimated distance", 0.0).getEntry();
+
     // does camera detect target
     m_targetDetected = Tab.add("Detected", false)
         .withPosition(2, 0).getEntry();
@@ -306,6 +311,8 @@ public class HubTargeting extends SubsystemBase {
     m_targetDetected.setBoolean(m_hubCamera.isTargetPresent());
     m_targetWithinRange.setBoolean(IsTarget());
     m_readyToShoot.setBoolean(ReadyToShoot());
+    m_estimatedHighBarTarget.setDouble(estimateHorizontalDistanceToUpperBar());
+    m_estimatedLowBarTarget.setDouble(estimateHorizontalDistanceToLowerBar());
 
     // estimated target attributes
     m_ty.setDouble(m_hubCamera.getVerticalTargetOffsetAngle());
