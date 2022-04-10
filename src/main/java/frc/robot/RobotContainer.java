@@ -81,45 +81,21 @@ public class RobotContainer {
    */
   private static void configureButtonBindings() {
 
-    //OI.highSpeedButton.whileHeld(new ShooterCommand());
-    //OI.highSpeedButton.whileHeld(new AutoShootCommand(RobotContainer.hubTargeting::GetTargetRPM).deadlineWith(new SteerTowardsHub()));
-    //OI.highSpeedButton.whileHeld(new AutoShootAllCommand().deadlineWith(new SteerTowardsHub()));
-    OI.highSpeedButton.whileHeld(new AimThenShoot());
+    OI.shootButton.whileHeld(new AimThenShoot());
 
     // TODO: Disable binding for competition use
     OI.zeroButton.whenPressed(() -> gyro.resetGyro());
-    // OI.zeroButton.whenPressed(new RecordCurrentPose2d());
     OI.intakeButton.whileHeld(new IntakeCommand());
     OI.ballTrackingButton.whenHeld(new SteerTowardsBall(false, 20.0));
-    //OI.ballTrackingButton.whenHeld(new AutoPickUpBallCommand());
-    //OI.hubTrackingButton.whenHeld(new SteerTowardsHub());
-    OI.hubTrackingButton.whenHeld(new AimThenShoot());
-    OI.releaseBallButton.whileHeld(new ReleaseBall());
-
-    OI.tiltShooterButton.whenPressed(new TiltShooter());
-    OI.lowerShooterButton.whenPressed(new LowerShooter());
-    // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(0.5, 0.20));
-
-    // don't lift the climber unless the time is greater than 119.0
-    // if (HAL.getMatchTime() > 119.0){
-    
-    
-    //Breaks climber, removed because of keymapping issues, once button layout is finalized, uncomment and fix
-    //OI.ClimberButtonReverse.whileHeld(new ClimbCommand());
 
     OI.overshootButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Overshoot));
     OI.undershootButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Undershoot));
     OI.shothitButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Hit));
     OI.bounceoutButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.BouncedOut));
-    OI.climbButton.whileHeld(new ClimbGroup());
-    //}
+    OI.releaseBallButton.whenPressed(new ReleaseBall());
     
-    // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new
-    // Rotation2d(0)), 0.35, 0.15, 20.0));
-    // new TurnRobot(45.0,false,2.0));//new SampleAutoCommand());
-
-    // (new JoystickButton(OI.driverController, XboxController.Button.kB.value)).whenHeld(new AutoShootCommand(AutoShootCommand.HIGH_SPEED));
-  }
+    OI.climbButton.whileHeld(new ClimbGroup());
+ }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

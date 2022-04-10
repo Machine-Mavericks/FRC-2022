@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.OI;
+import frc.robot.RobotContainer;
 import frc.robot.RobotMap;
 
 public class Lifter extends SubsystemBase {
@@ -57,7 +59,7 @@ public class Lifter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (hasBall && liftLimit.get() && shooting){
+    if (hasBall && liftLimit.get() && OI.shootButton.get()){
       hasBall = false;
       shotsTaken++;
     }
