@@ -111,7 +111,7 @@ public class RobotContainer {
     OI.undershootButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Undershoot));
     OI.shothitButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Hit));
     OI.bounceoutButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.BouncedOut));
-    OI.climbButton.whenHeld(new ClimbGroup());
+    OI.climbButton.whileHeld(new ClimbGroup());
     //}
     
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new

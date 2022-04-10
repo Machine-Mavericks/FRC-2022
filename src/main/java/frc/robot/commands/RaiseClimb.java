@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
 public class RaiseClimb extends CommandBase {
-  private double m_encoderi;
+  //private double m_encoderi;
   private int m_encDisp;
 
   /** Creates a new RaiseClimb. */
@@ -22,7 +22,7 @@ public class RaiseClimb extends CommandBase {
   @Override
   public void initialize() {
     // set base encoder value
-    m_encoderi = RobotContainer.climber.encoderVal();
+    //m_encoderi = RobotContainer.climber.encoderVal();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,6 +41,7 @@ public class RaiseClimb extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (RobotContainer.climber.encoderVal() > (m_encoderi + m_encDisp));
+    //return (RobotContainer.climber.encoderVal() > (m_encoderi + m_encDisp));
+    return RobotContainer.climber.encoderVal() > m_encDisp;
   }
 }

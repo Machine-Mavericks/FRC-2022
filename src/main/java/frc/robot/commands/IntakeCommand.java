@@ -27,8 +27,13 @@ public class IntakeCommand extends CommandBase {
   public void initialize() {
     // turn on the intake and the lifter
     RobotContainer.intake.setMotorSpeed(Intake.MOTORSPEED);
-    RobotContainer.lifter.liftBalls();
-
+    //check if limit switch is activated
+    if (!RobotContainer.lifter.liftLimit.get()){
+      RobotContainer.lifter.stopMotor();
+    }
+    else{
+      RobotContainer.lifter.liftBalls();
+    }
     // initialize timer at start of command
     m_timer = 0;
   }
