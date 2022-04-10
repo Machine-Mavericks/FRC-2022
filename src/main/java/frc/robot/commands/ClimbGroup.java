@@ -19,18 +19,18 @@ public class ClimbGroup extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
 
   addCommands(
-    
+    new ClimbStart(),
     // switch ball camera to look for line
     new InstantCommand(()-> RobotContainer.ballTargeting.SettoClimbTarget()), 
   
     // move robot until angle in camera is 0.0deg
-    new ClimbDrive(0.0, 0.2),
+    new ClimbDrive(2.5, 0.2),
 
     //new DelayCommand(5.0),
     // raise climber
     new RaiseClimb(300000),
 
-    new ClimbDrive(-4.20, 0.10),
+    new ClimbDrive(-6.20, 0.10),
 
     // lower climber
     new RaiseClimb(400000)
