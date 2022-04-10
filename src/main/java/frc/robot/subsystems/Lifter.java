@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -31,6 +33,7 @@ public class Lifter extends SubsystemBase {
 
   public int shotsTaken = 0;
   private boolean hasBall = false;
+  public boolean shooting = false;
 
   /** Creates a new Lifter. */
   public Lifter() {
@@ -54,7 +57,7 @@ public class Lifter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (hasBall && liftLimit.get()){
+    if (hasBall && liftLimit.get() && shooting){
       hasBall = false;
       shotsTaken++;
     }

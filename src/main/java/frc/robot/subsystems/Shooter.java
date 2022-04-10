@@ -59,7 +59,7 @@ public class Shooter extends SubsystemBase {
   
   public double HubDistanceOffset = 0;
 
-  public static int ShotsTaken = 0;
+  //public static int ShotsTaken = 0;
   public static Pose2d RobotPose;
   public int ShotsLogged = 0;
 

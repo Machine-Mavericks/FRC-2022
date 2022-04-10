@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.Lifter;
 
 public class ShooterCommand extends CommandBase {
 
@@ -30,7 +31,7 @@ public class ShooterCommand extends CommandBase {
   public void execute() {
     // If the fire button is held
     //RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(5000.0));
-    boolean TwoBallsLoaded = RobotContainer.lifter.liftLimit.get();
+    RobotContainer.lifter.shooting = true;
 
     RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.GetTargetRPM());
     RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
@@ -40,7 +41,7 @@ public class ShooterCommand extends CommandBase {
       // And the shooter has reached 95% flywheel speed, feed balls
       if((RobotContainer.m_shooter.getShooterSpeed() >= RobotContainer.hubTargeting.GetTargetRPM()*0.95)){
         //If two balls are loaded, then increment the number of shots taken in shotEvaluationCommand by two, if only one is loaded, increment it by one 
-        if (TwoBallsLoaded){RobotContainer.m_shooter.ShotsTaken+=2;}else{RobotContainer.m_shooter.ShotsTaken+=1;}
+        //if (TwoBallsLoaded){RobotContainer.m_shooter.ShotsTaken+=2;}else{RobotContainer.m_shooter.ShotsTaken+=1;}
         //Set the current pose2D for odometry recording purposes
         ShotEvaluationCommand.RobotPose = RobotContainer.odometry.getPose2d();
 
@@ -62,6 +63,7 @@ public class ShooterCommand extends CommandBase {
     RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed());
     RobotContainer.lifter.stopMotor();
     RobotContainer.intake.setMotorSpeed(0.0);
+    RobotContainer.lifter.shooting = false;
     shootTime = 0.0;
   }
 
