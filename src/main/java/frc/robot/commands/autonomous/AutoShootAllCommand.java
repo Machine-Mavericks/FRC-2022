@@ -7,6 +7,7 @@ package frc.robot.commands.autonomous;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -95,8 +96,7 @@ public class AutoShootAllCommand extends CommandBase {
         RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting(distanceestimate));
         RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.GetTargetRPM(distanceestimate));
         RobotContainer.m_shooter.setTopShooterSpeed(RobotContainer.hubTargeting.GetTopTargetRPM(distanceestimate));
-        SmartDashboard.putBoolean("Test", true);
-        RobotContainer.odometry.setPositionHub(distanceestimate);
+        if(!DriverStation.isAutonomous()) RobotContainer.odometry.setPositionHub(distanceestimate);
       }
       else
         // we have no camera target. set flag to exit command

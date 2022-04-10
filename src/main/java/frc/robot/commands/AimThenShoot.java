@@ -6,6 +6,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 import frc.robot.commands.autonomous.AutoShootAllCommand;
+import frc.robot.commands.autonomous.TurnToHubCommand;
 import frc.robot.commands.AimToHub;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -18,6 +19,8 @@ public class AimThenShoot extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+
+      new TurnToHubCommand(0.70, 2),
 
       // aim robot to hub
       new AimToHub(),
