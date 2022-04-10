@@ -12,11 +12,9 @@ import frc.robot.commands.ClimbGroup;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.LEDCommand;
-import frc.robot.commands.LowerShooter;
 import frc.robot.commands.ReleaseBall;
 import frc.robot.commands.ShotEvaluationCommand;
 import frc.robot.commands.SteerTowardsBall;
-import frc.robot.commands.TiltShooter;
 import frc.robot.commands.autonomous.AlternateFourBallCommand;
 import frc.robot.commands.autonomous.AnywhereTwoBallAuto;
 import frc.robot.commands.autonomous.FiveBallAuto;
@@ -92,8 +90,8 @@ public class RobotContainer {
     OI.undershootButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Undershoot));
     OI.shothitButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Hit));
     OI.bounceoutButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.BouncedOut));
-    OI.releaseBallButton.whenPressed(new ReleaseBall());
-    
+    OI.releaseBallButton.whileHeld(new ReleaseBall());
+
     OI.climbButton.whileHeld(new ClimbGroup());
  }
 
