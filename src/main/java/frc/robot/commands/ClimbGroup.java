@@ -22,7 +22,7 @@ public class ClimbGroup extends SequentialCommandGroup {
       new InstantCommand(()-> RobotContainer.ballTargeting.SettoClimbTarget()), 
     
       // move robot until angle in camera is 0.0deg
-      new ClimbDrive(0.0, 0.2),
+      new ClimbDrive(2.5, 0.2),
 
       //new DelayCommand(5.0),
       // raise climber
