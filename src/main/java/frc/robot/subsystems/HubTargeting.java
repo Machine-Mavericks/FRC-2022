@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
 import java.util.Map;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -13,6 +14,9 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
+import frc.robot.commands.ShotEvaluationCommand.ShotType;
+import frc.robot.logging.ShooterLog;
+import frc.robot.logging.ShooterLog.ShotData;
 
 public class HubTargeting extends SubsystemBase {
   private Limelight m_hubCamera;
@@ -21,6 +25,8 @@ public class HubTargeting extends SubsystemBase {
   private NetworkTableEntry m_distance;
   private NetworkTableEntry m_RPM;
   private NetworkTableEntry m_Hood;
+  private NetworkTableEntry m_lastShot;
+  private NetworkTableEntry m_lastShot2;
 
   private NetworkTableEntry m_targetWithinRange;
   private NetworkTableEntry m_readyToShoot;
@@ -34,6 +40,8 @@ public class HubTargeting extends SubsystemBase {
   private NetworkTableEntry m_TopRPMAdjust;
 
   public double m_OnTheFlyRPMAdjust = 0;
+  private boolean m_lastShotIn = false;
+  private boolean m_lastShotIn2 = false;
 
   // default shooter idle speed (rpm)
   private final double m_ShooterIdleSpeed = 1650.0;
@@ -54,6 +62,16 @@ public class HubTargeting extends SubsystemBase {
       // RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.GetTargetRPM());
       // RobotContainer.m_shooter.setTopShooterSpeed(RobotContainer.hubTargeting.GetTopTargetRPM());
     }
+
+    ArrayList<ShotData> pastShots = ShooterLog.instance().pastShots;
+
+    if (pastShots.size()>=2){
+    ShotType m_lastShotType = pastShots.get(pastShots.size()-1).type;
+    ShotType m_lastShotType2 = pastShots.get(pastShots.size()-2).type;
+
+    m_lastShotIn = (m_lastShotType == ShotType.Hit);
+    m_lastShotIn2 = (m_lastShotType2 == ShotType.Hit);}
+    
     updateShuffleboard();
   }
 
@@ -293,6 +311,18 @@ public class HubTargeting extends SubsystemBase {
         .withPosition(3, 0)
         .withSize(3, 1)
         .getEntry();
+    
+    m_lastShot = Tab.add("Last shot (in or not)", 0.0)
+        .withWidget(BuiltInWidgets.kBooleanBox)
+        .withPosition(4, 1)
+        .withSize(1, 1)
+        .getEntry();
+
+    m_lastShot2 = Tab.add("Last shot (in or not) 2", 0.0)
+        .withWidget(BuiltInWidgets.kBooleanBox)
+        .withPosition(1,1)
+        .withSize(1, 1)
+        .getEntry();
 
     m_DistanceAdjust = Tab.addPersistent("Hub Distance Adjust (m)", 0.0)
         .withWidget(BuiltInWidgets.kNumberSlider)
@@ -331,6 +361,9 @@ public class HubTargeting extends SubsystemBase {
     m_distance.setDouble(EstimateDistance());
     m_RPM.setDouble(GetTargetRPM());
     m_Hood.setDouble(GetTargetHoodSetting());
+
+    m_lastShot.setBoolean(m_lastShotIn);
+    m_lastShot2.setBoolean(m_lastShotIn2);
   }
 
 }

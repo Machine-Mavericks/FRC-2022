@@ -21,7 +21,7 @@ public class ShotEvaluationCommand extends CommandBase {
   public enum ShotType {Overshoot, Undershoot, Hit, BouncedOut};
   public static Pose2d RobotPose;
 
-  private final double HubDistanceIncrement = 0.05;
+  private final double HubDistanceIncrement = 0.10;
 
   Lifter m_lifter = RobotContainer.lifter;
   HubTargeting m_hubTargeting = RobotContainer.hubTargeting;
