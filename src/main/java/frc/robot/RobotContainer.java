@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.AimThenShoot;
+import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ClimbGroup;
 import frc.robot.commands.ClimbStart;
 import frc.robot.commands.DriveCommand;
@@ -91,9 +92,11 @@ public class RobotContainer {
     OI.undershootButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Undershoot));
     OI.shothitButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Hit));
     OI.bounceoutButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.BouncedOut));
+    
     OI.releaseBallButton.whileHeld(new ReleaseBall());
 
     OI.climbButton.whileHeld(new ClimbGroup());
+    OI.manualClimbButton.whileHeld(new ClimbCommand());
  }
 
   /**

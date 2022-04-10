@@ -83,6 +83,7 @@ public class OI {
         static final Button OPERATOREVALUATION_BOUNCEOUT = XboxController.Button.kY;
 
         static final Button RELEASE_BALL_BUTTON = XboxController.Button.kBack;
+        static final Button MANUAL_CLIMB_BUTTON = XboxController.Button.kStart;
     }
 
     /** Port for controller used by driver */
@@ -118,6 +119,9 @@ public class OI {
     
     /** climb button. Mapped to {@link Bindings#CLIMBER_BUTTON} */
     public static final JoystickButton climbButton = new JoystickButton(operatorController, Bindings.CLIMBER_BUTTON.value);
+
+    /** climb button. Mapped to {@link Bindings#MANUAL_CLIMB_BUTTON} */
+    public static final JoystickButton manualClimbButton = new JoystickButton(operatorController, Bindings.MANUAL_CLIMB_BUTTON.value);
     
     /** climb button. Mapped to {@link Bindings#CLIMBER_BUTTON} */
     public static final JoystickButton releaseBallButton = new JoystickButton(operatorController, Bindings.RELEASE_BALL_BUTTON.value);
