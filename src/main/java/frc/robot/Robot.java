@@ -100,6 +100,7 @@ public class Robot extends TimedRobot {
     
     // set targeting to ball
     RobotContainer.ballTargeting.SettoBallTarget();
+    RobotContainer.hubTargeting.SettoHubTarget();
 
     // robot is now initialized
     robotIsInitialized = true;
@@ -142,6 +143,7 @@ public class Robot extends TimedRobot {
 
     // set targeting to ball
     RobotContainer.ballTargeting.SettoBallTarget();
+    RobotContainer.hubTargeting.SettoHubTarget();
 
   }
 

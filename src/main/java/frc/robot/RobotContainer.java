@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.AimThenShoot;
-import frc.robot.commands.ClimbCommand;
+import frc.robot.commands.ClimbDrive;
 import frc.robot.commands.ClimbGroup;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
@@ -107,7 +107,7 @@ public class RobotContainer {
 
     // don't lift the climber unless the time is greater than 119.0
     // if (HAL.getMatchTime() > 119.0){
-    OI.ClimberButtonReverse.whenHeld(new ClimbGroup());
+    OI.ClimberButtonReverse.whileHeld(new ClimbGroup());
     //}
     
     // OI.testRobotRelativePath.whileHeld(new AutoDriveToPose(new Pose2d(0, 0, new

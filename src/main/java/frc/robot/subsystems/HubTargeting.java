@@ -38,7 +38,7 @@ public class HubTargeting extends SubsystemBase {
   /** Creates a new HubTargeting. */
   public HubTargeting() {
     m_hubCamera = new Limelight("limelight-hub");
-    m_hubCamera.setPipeline(0);
+    SettoHubTarget();
     initializeShuffleboard();
   }
 
@@ -52,6 +52,13 @@ public class HubTargeting extends SubsystemBase {
     }
     updateShuffleboard();
   }
+
+  // ------- SET and GET target types
+
+  /** Set to Ball Pipeline*/
+  public void SettoHubTarget()
+  { m_hubCamera.setPipeline(0); }
+
 
   /** Function to tell if target is visible in limelight.
    * @return boolean (true if target is in sight) */

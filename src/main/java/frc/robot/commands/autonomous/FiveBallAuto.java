@@ -43,8 +43,9 @@ public class FiveBallAuto extends SequentialCommandGroup {
       // Intake the ball
       //new SteerTowardsBall(true, 4.0, 0.2),
       // Drive back a bit
-      new AutoDriveToPose(new Pose2d(new Translation2d(-6.0, 0.5), Rotation2d.fromDegrees(-128.0)), 0.7, 0.10, 15.0),
+      new AutoDriveToPose(new Pose2d(new Translation2d(-5.48, -0.03), Rotation2d.fromDegrees(-145.0)), 0.7, 0.10, 15.0),
       // -6.12, -0.165, -158deeg
+      // -5.48, -0.03, -145deg
       
       new SteerTowardsBall(true, 2.0, 0.3),
 
