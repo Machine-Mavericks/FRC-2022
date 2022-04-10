@@ -20,13 +20,11 @@ public class AimThenShoot extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
 
-      new TurnToHubCommand(0.70, 2),
-
       // aim robot to hub
       new AimToHub(),
     
       // Shoot all our balls
-      new AutoShootAllCommand(true)
+      new AutoShootAllCommand(true, true)
 
     );
   }

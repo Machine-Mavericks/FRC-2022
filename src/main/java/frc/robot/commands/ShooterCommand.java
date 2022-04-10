@@ -2,12 +2,19 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+
+/** THIS COMMAND IS NOT USED. IF YOU ARE TRYING TO CHANGE SHOOTER CODE, GO TO AUTOSHOOTALLCOMMAND */
+/** THIS COMMAND IS NOT USED. IF YOU ARE TRYING TO CHANGE SHOOTER CODE, GO TO AUTOSHOOTALLCOMMAND */
+/** THIS COMMAND IS NOT USED. IF YOU ARE TRYING TO CHANGE SHOOTER CODE, GO TO AUTOSHOOTALLCOMMAND */
+/** THIS COMMAND IS NOT USED. IF YOU ARE TRYING TO CHANGE SHOOTER CODE, GO TO AUTOSHOOTALLCOMMAND */
+/** THIS COMMAND IS NOT USED. IF YOU ARE TRYING TO CHANGE SHOOTER CODE, GO TO AUTOSHOOTALLCOMMAND */
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Lifter;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ShooterCommand extends CommandBase {
 
@@ -32,7 +39,7 @@ public class ShooterCommand extends CommandBase {
     // If the fire button is held
     //RobotContainer.m_shooter.setShooterSpeed(RobotContainer.m_shooter.ChosenSpeed.getDouble(5000.0));
     RobotContainer.lifter.shooting = true;
-
+    SmartDashboard.putBoolean("shooting boolean", true); //RobotContainer.lifter.shooting);
     RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.GetTargetRPM());
     RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
     RobotContainer.lifter.liftBalls();

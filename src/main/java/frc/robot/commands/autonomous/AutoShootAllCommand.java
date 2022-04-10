@@ -26,6 +26,7 @@ public class AutoShootAllCommand extends CommandBase {
   private boolean FinishedSampling;
   private boolean NoSamplesFound;
   private boolean m_lockwheels;
+  public boolean m_inTeleop;
 
   /** Creates a new AutoShootAllCommand. */
   public AutoShootAllCommand(boolean lockwheels) {
@@ -37,6 +38,19 @@ public class AutoShootAllCommand extends CommandBase {
 
     
   }
+
+    /** Creates a new AutoShootAllCommand. */
+  public AutoShootAllCommand(boolean lockwheels, boolean teleop) {
+      m_lockwheels = lockwheels;
+
+      m_inTeleop = teleop;
+      
+      // aiming uses drive system
+      if (m_lockwheels)
+        addRequirements(RobotContainer.drivetrain);
+  
+      
+    }
 
   // Called when the command is initially scheduled.
   @Override
@@ -58,6 +72,10 @@ public class AutoShootAllCommand extends CommandBase {
     //RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting());
     //RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.GetTargetRPM());
     //RobotContainer.m_shooter.setTopShooterSpeed(RobotContainer.hubTargeting.GetTopTargetRPM());
+
+    if (m_inTeleop){
+      RobotContainer.lifter.shooting = true;
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -96,7 +114,6 @@ public class AutoShootAllCommand extends CommandBase {
         RobotContainer.m_shooter.setShooterAngle(RobotContainer.hubTargeting.GetTargetHoodSetting(distanceestimate));
         RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.GetTargetRPM(distanceestimate));
         RobotContainer.m_shooter.setTopShooterSpeed(RobotContainer.hubTargeting.GetTopTargetRPM(distanceestimate));
-        if(!DriverStation.isAutonomous()) RobotContainer.odometry.setPositionHub(distanceestimate);
       }
       else
         // we have no camera target. set flag to exit command
@@ -123,6 +140,7 @@ public class AutoShootAllCommand extends CommandBase {
     // reset shooter back to idle, and stop lifter
     //RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed());
     RobotContainer.lifter.stopMotor();
+    RobotContainer.lifter.shooting = false;
   }
 
   // Returns true when the command should end.
