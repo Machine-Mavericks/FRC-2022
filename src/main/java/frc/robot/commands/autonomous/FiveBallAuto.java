@@ -33,35 +33,45 @@ public class FiveBallAuto extends SequentialCommandGroup {
       // Intake the ball
       new SteerTowardsBall(true, 2.0, 0.3),
       // Shoot first ball
-      new AutoShootAllCommand().deadlineWith(new SteerTowardsHub()),
+      new AutoShootAllCommand(false).deadlineWith(new SteerTowardsHub()),
       //new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
       // Drive to back corner
       //new AutoDriveToPose(new Pose2d(new Translation2d(-5.78, 0.134), Rotation2d.fromDegrees(-147.9)), 0.45, 0.15, 15.0),
       // ramp up shooter speed in preparation to shoot balls  
-      new InstantCommand(()-> RobotContainer.m_shooter.setShooterSpeed(4450.0)),  
+      new InstantCommand(()-> RobotContainer.m_shooter.setShooterSpeed(2500.0)), 
+      new InstantCommand(()-> RobotContainer.m_shooter.setTopShooterSpeed(2200.0)),
       // Intake the ball
       //new SteerTowardsBall(true, 4.0, 0.2),
       // Drive back a bit
-      new AutoDriveToPose(new Pose2d(new Translation2d(-6.0, 0.5), Rotation2d.fromDegrees(-128.0)), 0.7, 0.10, 15.0),
+      new AutoDriveToPose(new Pose2d(new Translation2d(-5.48, -0.03), Rotation2d.fromDegrees(-145.0)), 0.7, 0.10, 15.0),
       // -6.12, -0.165, -158deeg
+      // -5.48, -0.03, -145deg
       
       new SteerTowardsBall(true, 2.0, 0.3),
 
       // wait for 300ms to try and get human ball. after 300ms, start next command
-      new SteerTowardsBall(true, 0.3, 0),
+      new SteerTowardsBall(true, 0.8, 0),
       
       // switch on intake to allow human ball player to provide ball
       new InstantCommand(()-> RobotContainer.intake.setMotorSpeed(0.5)),
       
-      new AutoDriveToPose(new Pose2d(new Translation2d(-4.95, -0.42), Rotation2d.fromDegrees(-150.0)), 0.7, 0.10, 15.0),
-      // Shoot first ball
-      //new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
-      // Shoot first ball
-      //new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub())
-      new AutoShootAllCommand().deadlineWith(new SteerTowardsHub()),
+      new InstantCommand(()-> RobotContainer.m_shooter.setShooterSpeed(1700.0)), 
+      new InstantCommand(()-> RobotContainer.m_shooter.setTopShooterSpeed(2800.0)),
+
+      new AutoDriveToPose(new Pose2d(new Translation2d(-3.02, -0.30), Rotation2d.fromDegrees(-146.7)), 0.7, 0.20, 10.0),
+      //new AutoDriveToPose(new Pose2d(new Translation2d(-1.46, 0.74), Rotation2d.fromDegrees(-157)), 0.7, 0.20, 10.0),
+      //new AutoDriveToPose(new Pose2d(new Translation2d(-4.95, -0.42), Rotation2d.fromDegrees(-150.0)), 0.7, 0.10, 15.0),
+      
+      // Shoot balls
+      new AutoShootAllCommand(false).deadlineWith(new SteerTowardsHub()),
 
       // switch on intake to allow human ball player to provide ball
       new InstantCommand(()-> RobotContainer.intake.setMotorSpeed(0))
       );
+  }
+
+  @Override
+  public boolean isFinished(){
+    return super.isFinished() && true;
   }
 }

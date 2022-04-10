@@ -38,11 +38,7 @@ public class LEDCommand extends CommandBase {
       counter=0;
 
 
-    // // low battery voltage warning
-    // if (RobotContainer.panel.getVoltage() <11.0)
-    // {
-    //   RobotContainer.LEDStrip.setPattern(LED_PATTERN.LOWBATTERY);
-    // }
+    
     
     // ball present
     if (RobotContainer.ballTargeting.IsBall())
@@ -60,11 +56,16 @@ public class LEDCommand extends CommandBase {
     // }  
 
     // hub present
-    else if (RobotContainer.hubTargeting.isTargetPresent() && counter >12 && counter <25)
+    else if (RobotContainer.hubTargeting.IsTarget() && counter >12 && counter <25)
     {
       RobotContainer.LEDStrip.setPattern(LED_PATTERN.HUB);
     }
-    
+    // low battery voltage warning
+    else if (RobotContainer.panel.getVoltage() <11.0)
+    {
+       RobotContainer.LEDStrip.setPattern(LED_PATTERN.LOWBATTERY);
+    }
+
     
     // should we turn off?
     if ( !(RobotContainer.panel.getVoltage() <11.0 ) &&

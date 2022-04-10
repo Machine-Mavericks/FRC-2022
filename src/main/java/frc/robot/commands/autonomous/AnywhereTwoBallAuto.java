@@ -20,18 +20,16 @@ public class AnywhereTwoBallAuto extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       // ramp up shooter speed in preparation to shoot balls  
-      new InstantCommand(()-> RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed())),  
+      new InstantCommand(()-> RobotContainer.m_shooter.setShooterSpeed(1600.0)),  
+      new InstantCommand(()-> RobotContainer.m_shooter.setTopShooterSpeed(2800.0)),
+      
       // auto delay per shuffleboard value
       new AutoDelayCommand(),
       // Intake the ball
       new SteerTowardsBall(true, 2.5, 0.2),
       // Shoot all balls
-      new AutoShootAllCommand().deadlineWith(new SteerTowardsHub())
+      new AutoShootAllCommand(false).deadlineWith(new SteerTowardsHub())
       
-      // Shoot first ball
-      //new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub()),
-      // Shoot second ball
-      //new AutoShootCommand(AutoShootCommand.HIGH_SPEED).deadlineWith(new SteerTowardsHub())
     );
   }
 }

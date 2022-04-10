@@ -104,7 +104,7 @@ public class SteerTowardsBall extends CommandBase {
     // do we have a valid target?
     if ((RobotContainer.ballTargeting.IsBall())){
 
-      TargetAngle = RobotContainer.ballTargeting.ballAngle();
+      TargetAngle = RobotContainer.ballTargeting.getTargetHorAngle();
     
       // determine angle correction - uses PI controller
       // limit rotation to +/- 100% of available speed

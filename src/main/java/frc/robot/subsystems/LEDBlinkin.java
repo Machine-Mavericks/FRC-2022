@@ -53,7 +53,7 @@ public class LEDBlinkin extends SubsystemBase {
         led.setSpeed(-0.07);   // strobe red
       break;
       case LOWBATTERY:
-        led.setSpeed(0.59);    // solid dark red
+        led.setSpeed(0.91);    // solid purple
       break;
       case DISCO:
         led.setSpeed(-0.45);   // color wave - rainbow

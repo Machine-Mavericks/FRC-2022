@@ -4,46 +4,44 @@
 
 package frc.robot.commands;
 
-import javax.lang.model.util.ElementScanner6;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
-import edu.wpi.first.hal.HAL;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 
-public class ClimbCommand extends CommandBase {
-  
-  double motorSpeed;
+public class RaiseClimb extends CommandBase {
+  //private double m_encoderi;
+  private int m_encDisp;
 
-  /** Creates a new ClimbCommand. */
-  public ClimbCommand() {
+  /** Creates a new RaiseClimb. */
+  public RaiseClimb(int encDisp) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.climber);
+    m_encDisp = encDisp;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    // set base encoder value
+    //m_encoderi = RobotContainer.climber.encoderVal();
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (DriverStation.getMatchTime() < 30.0) //do not deploy climber if it isn't endgame
-      RobotContainer.climber.motorVelocity();
-    else
-    RobotContainer.climber.m_climberFalcon.set(ControlMode.PercentOutput, 0.0);
+    //
+    RobotContainer.climber.motorVelocity();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.climber.m_climberFalcon.set(ControlMode.PercentOutput, 0.0);
+    RobotContainer.climber.stopMotor();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; 
+    //return (RobotContainer.climber.encoderVal() > (m_encoderi + m_encDisp));
+    return RobotContainer.climber.encoderVal() > m_encDisp;
   }
 }

@@ -78,7 +78,9 @@ public class Climber extends SubsystemBase {
     m_climberFalcon.set(ControlMode.Velocity, 0);
   }
  
-
+  public double encoderVal() {
+    return (m_climberFalcon.getSelectedSensorPosition(0));
+  }
 
 
   public NetworkTableEntry climbSpeed;

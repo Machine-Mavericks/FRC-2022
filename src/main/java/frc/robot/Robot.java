@@ -6,13 +6,11 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.DelayCommand;
+import frc.robot.commands.ReleaseBall;
 
 
 /**
@@ -44,11 +42,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     RobotContainer.init();
 
-    // set ball pickup pipeline
-    if (DriverStation.getAlliance() == Alliance.Red)
-      RobotContainer.ballTargeting.setBallPipeline(1);
-    else
-      RobotContainer.ballTargeting.setBallPipeline(2);
+    // set targeting to ball
+    RobotContainer.ballTargeting.SettoBallTarget();
 
     // reset the gyro when robot powered up
     RobotContainer.gyro.resetGyro();
@@ -77,6 +72,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     SmartDashboard.putNumber("X In", OI.driverController.getLeftX());
     SmartDashboard.putNumber("Y In", OI.driverController.getLeftY());
+    
     SmartDashboard.putBoolean("Button1", OI.driverController.getRawButton(1));
   }
 
@@ -100,11 +96,9 @@ public class Robot extends TimedRobot {
     // RobotContainer.gyro.resetGyro(); // Todo: Removed as auto may start at variying angles
     RobotContainer.odometry.InitializefromShuffleboard();
     
-    // set ball pickup pipeline
-    if (DriverStation.getAlliance() == Alliance.Red)
-      RobotContainer.ballTargeting.setBallPipeline(1);
-    else
-      RobotContainer.ballTargeting.setBallPipeline(2);
+    // set targeting to ball
+    RobotContainer.ballTargeting.SettoBallTarget();
+    RobotContainer.hubTargeting.SettoHubTarget();
 
     // robot is now initialized
     robotIsInitialized = true;
@@ -135,6 +129,7 @@ public class Robot extends TimedRobot {
    
    
     RobotContainer.m_shooter.setShooterSpeed(RobotContainer.hubTargeting.getShooterIdleSpeed());
+    RobotContainer.m_shooter.setTopShooterSpeed(RobotContainer.hubTargeting.getTopShooterIdleSpeed());
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
@@ -144,12 +139,9 @@ public class Robot extends TimedRobot {
       autonomousCommand.cancel();
     }
 
-    // TODO remove from teleop init
-    // set ball pickup pipeline
-    if (DriverStation.getAlliance() == Alliance.Red)
-    RobotContainer.ballTargeting.setBallPipeline(1);
-    else
-    RobotContainer.ballTargeting.setBallPipeline(2);
+    // set targeting to ball
+    RobotContainer.ballTargeting.SettoBallTarget();
+    RobotContainer.hubTargeting.SettoHubTarget();
 
   }
 
