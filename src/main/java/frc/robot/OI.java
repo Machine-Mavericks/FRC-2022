@@ -80,7 +80,7 @@ public class OI {
         static final Button BALL_RELEASE_BUTTON = XboxController.Button.kBack;
 
         //Not the right mappings, fix later
-        static final Button CLIMBER_BUTTON = XboxController.Button.kStart;
+        static final Button CLIMBER_BUTTON = XboxController.Button.kLeftBumper;
 
         // button to tilt the shooter
         static final Button SHOOTER_TILT_BUTTON = XboxController.Button.kA;
