@@ -4,10 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.AimThenShoot;
+import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.ClimbGroup;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
@@ -64,7 +66,15 @@ public class RobotContainer {
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
     LEDStrip.setDefaultCommand(new LEDCommand());
-    
+
+    CameraServer.	startAutomaticCapture(0);
+    CameraServer.	startAutomaticCapture(1);
+    CameraServer.	startAutomaticCapture(2);
+    CameraServer.	startAutomaticCapture(3);
+    CameraServer.	startAutomaticCapture(4);
+    CameraServer.	startAutomaticCapture(5);
+    CameraServer.	startAutomaticCapture(6);
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -90,9 +100,11 @@ public class RobotContainer {
     OI.undershootButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Undershoot));
     OI.shothitButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.Hit));
     OI.bounceoutButton.whenPressed(new ShotEvaluationCommand(ShotEvaluationCommand.ShotType.BouncedOut));
+    
     OI.releaseBallButton.whileHeld(new ReleaseBall());
 
     OI.climbButton.whileHeld(new ClimbGroup());
+    OI.manualClimbButton.whileHeld(new ClimbCommand());
  }
 
   /**
