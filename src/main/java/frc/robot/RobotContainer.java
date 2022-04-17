@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -65,7 +66,15 @@ public class RobotContainer {
   public static void init() {
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain));
     LEDStrip.setDefaultCommand(new LEDCommand());
-    
+
+    CameraServer.	startAutomaticCapture(0);
+    CameraServer.	startAutomaticCapture(1);
+    CameraServer.	startAutomaticCapture(2);
+    CameraServer.	startAutomaticCapture(3);
+    CameraServer.	startAutomaticCapture(4);
+    CameraServer.	startAutomaticCapture(5);
+    CameraServer.	startAutomaticCapture(6);
+
     // Configure the button bindings
     configureButtonBindings();
   }
